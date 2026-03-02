@@ -5,11 +5,8 @@ import {
   RABillData, COPData, COPStatus, COPAdjustmentLine,
   loadCOP, saveCOP, loadAllCOPs,
 } from '@/lib/raStore';
-import {
-  billingSummaryTotals, PROJECT_INFO,
-  MATERIAL_DATA, HOLD_DATA,
-} from '@/data/projectData';
-import { fmt } from '@/lib/utils';
+import { useVendor } from '@/lib/VendorContext';
+import { fmt, toWords } from '@/lib/utils';
 import SignatureCanvas from './SignatureCanvas';
 
 interface ApprovalEntry {
@@ -26,26 +23,6 @@ interface ApprovalEntry {
 
 function uid() { return Math.random().toString(36).slice(2, 8); }
 
-function toWords(n: number): string {
-  if (!n || isNaN(n) || !isFinite(n) || n <= 0) return 'Zero Rupees Only';
-  const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
-    'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-  function w(num: number): string {
-    if (!num || num <= 0) return '';
-    if (num < 20) return a[num] + ' ';
-    if (num < 100) return b[Math.floor(num / 10)] + (num % 10 ? ' ' + a[num % 10] : '') + ' ';
-    if (num < 1000) return a[Math.floor(num / 100)] + ' Hundred ' + w(num % 100);
-    if (num < 100000) return w(Math.floor(num / 1000)) + 'Thousand ' + w(num % 1000);
-    if (num < 10000000) return w(Math.floor(num / 100000)) + 'Lakh ' + w(num % 100000);
-    return w(Math.floor(num / 10000000)) + 'Crore ' + w(num % 10000000);
-  }
-  const rupees = Math.floor(n);
-  const paise = Math.round((n - rupees) * 100);
-  let out = w(rupees).trim() + ' Rupees';
-  if (paise > 0) out += ' and ' + w(paise).trim() + ' Paise';
-  return out + ' Only';
-}
 
 const GST = 0.09;
 
@@ -81,10 +58,13 @@ interface Props {
   materialDeductionThis: number;
   activeHoldsTotal: number;
   releasedHoldsTotal: number;
+  vendorId?: string;
   showApprovalsOnly?: boolean;
 }
 
-export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, activeHoldsTotal, releasedHoldsTotal }: Props) {
+export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, activeHoldsTotal, releasedHoldsTotal, vendorId = 'lpw' }: Props) {
+  const vendor = useVendor();
+  const { billingSummaryTotals, defaultMaterialRows: MATERIAL_DATA, defaultHoldItems: HOLD_DATA } = vendor;
   const [raNumber, setRaNumber] = useState<number | null>(null);
   const [cop, setCOP] = useState<any | null>(null);
   const [unsaved, setUnsaved] = useState(false);
@@ -102,11 +82,11 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
   const [rejectMode, setRejectMode] = useState(false);
   const [rejectNote, setRejectNote] = useState('');
 
-  useEffect(() => { setAllCOPs(loadAllCOPs()); }, []);
+  useEffect(() => { setAllCOPs(loadAllCOPs(vendorId)); }, [vendorId]);
 
   useEffect(() => {
     if (raNumber === null) { setCOP(null); return; }
-    const saved = loadCOP(raNumber);
+    const saved = loadCOP(raNumber, vendorId);
     if (saved) {
       setRetentionPct((saved as any).retentionPct ?? 5);
       setMobAdvance((saved as any).mobAdvance ?? 0);
@@ -171,7 +151,7 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
   };
 
   const persist = (data: any) => {
-    saveCOP(data); setCOP(data); setUnsaved(false); setAllCOPs(loadAllCOPs()); onCOPSave();
+    saveCOP(data, vendorId); setCOP(data); setUnsaved(false); setAllCOPs(loadAllCOPs(vendorId)); onCOPSave();
   };
 
   const handleSave = () => { if (!raNumber) return; persist(buildData()); };
@@ -558,11 +538,11 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
                 <table style={{ width: '100%', borderCollapse: 'collapse' as const, border: '1px solid #d1d5db', fontSize: 10 }}>
                   <tbody>
                     {([
-                      ['Project', PROJECT_INFO.name || 'LPW Warehousing & Logistic Park, Echur', 'Trade', 'EPC Turnkey — Civil, MEP & Infra Works'],
-                      ['Invoice to', PROJECT_INFO.client, 'PO No.', PROJECT_INFO.woNumber],
-                      ['GSTIN (Client)', '–', 'PO Date', PROJECT_INFO.woDate],
-                      ['Vendor', PROJECT_INFO.contractor, 'Tax Invoice No & Date', `${cop?.copNumber ?? `COP-${raNumber}`} / ${new Date().toLocaleDateString('en-IN')}`],
-                      ['Address', 'Echur Village, Chennai–Bengaluru Highway, Tamil Nadu', 'Payment Certificate No.', cop?.copNumber ?? `COP-${raNumber}`],
+                      ['Project', vendor.projectName, 'Trade', 'EPC Turnkey — Civil, MEP & Infra Works'],
+                      ['Invoice to', vendor.client, 'PO No.', vendor.woNumber],
+                      ['GSTIN (Client)', '–', 'PO Date', vendor.woDate],
+                      ['Vendor', vendor.contractor, 'Tax Invoice No & Date', `${cop?.copNumber ?? `COP-${raNumber}`} / ${new Date().toLocaleDateString('en-IN')}`],
+                      ['Address', vendor.projectName, 'Payment Certificate No.', cop?.copNumber ?? `COP-${raNumber}`],
                       ['GST No.', '–', 'This Bill No.', `RA Bill - ${raNumber}`],
                     ] as [string, string, string, string][]).map(([l1, v1, l2, v2], i) => (
                       <tr key={i} style={{ borderBottom: '1px solid #e2e8f0' }}>

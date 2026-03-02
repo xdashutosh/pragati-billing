@@ -1,18 +1,15 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { billingMilestones, infraBillingMilestones } from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { fmt } from '@/lib/utils';
 import {
   RABillData, BuildingMilestoneEntry, InfraMilestoneEntry,
   BK, BKEYS, loadRA, saveRA, deleteRA, getSavedRANumbers,
 } from '@/lib/raStore';
+import { BLOCK_COLORS, BLOCK_BG, BLOCK_MED } from '@/lib/colors';
 
 type TabType = 'building' | 'infra';
-
-const B_COLORS = ['#1e40af', '#166534', '#9a3412', '#6b21a8'];
-const B_BG = ['#eff6ff', '#f0fdf4', '#fff7ed', '#faf5ff'];
-const B_MED = ['#dbeafe', '#dcfce7', '#ffedd5', '#f3e8ff'];
 
 const CAT_COLORS: Record<string, string> = {
   'Building Civil Works': '#1a56b0',
@@ -42,10 +39,11 @@ function capAmt(amt: number, maxAmt: number): { amt: number; capped: boolean } {
   return { amt, capped: false };
 }
 
-interface Props { onSave: () => void; }
+interface Props { onSave: () => void; vendorId?: string; }
 
-export default function NewRAEntryPage({ onSave }: Props) {
-  const [raNumber, setRaNumber] = useState(17);
+export default function NewRAEntryPage({ onSave, vendorId = 'lpw' }: Props) {
+  const { billingMilestones, infraBillingMilestones, currentRA } = useVendor();
+  const [raNumber, setRaNumber] = useState(currentRA + 1);
   const [tab, setTab] = useState<TabType>('building');
   const [bldg, setBldg] = useState<Record<number, BuildingMilestoneEntry>>({});
   const [infra, setInfra] = useState<Record<number, InfraMilestoneEntry>>({});
@@ -55,10 +53,10 @@ export default function NewRAEntryPage({ onSave }: Props) {
   // Track which cells were capped so we can show a warning
   const [cappedCells, setCappedCells] = useState<Set<string>>(new Set());
 
-  useEffect(() => { setSavedNums(getSavedRANumbers()); }, []);
+  useEffect(() => { setSavedNums(getSavedRANumbers(vendorId)); }, [vendorId]);
 
   useEffect(() => {
-    const data = loadRA(raNumber);
+    const data = loadRA(raNumber, vendorId);
     if (data) {
       setBldg(data.building || {});
       setInfra(data.infra || {});
@@ -82,17 +80,17 @@ export default function NewRAEntryPage({ onSave }: Props) {
       building: bldg, infra,
       buildingTotal: bldgTotal, infraTotal, grandTotal,
     };
-    saveRA(data);
+    saveRA(data, vendorId);
     setSavedAt(data.savedAt);
     setUnsaved(false);
-    setSavedNums(getSavedRANumbers());
+    setSavedNums(getSavedRANumbers(vendorId));
     onSave();
   }, [raNumber, bldg, infra, bldgTotal, infraTotal, grandTotal, onSave]);
 
   const handleDelete = (ra: number) => {
     if (!confirm(`Delete RA-${ra} permanently?`)) return;
-    deleteRA(ra);
-    setSavedNums(getSavedRANumbers());
+    deleteRA(ra, vendorId);
+    setSavedNums(getSavedRANumbers(vendorId));
     if (ra === raNumber) { setBldg({}); setInfra({}); setSavedAt(null); setUnsaved(false); }
     onSave();
   };
@@ -179,9 +177,9 @@ export default function NewRAEntryPage({ onSave }: Props) {
     infraGrouped[cat].push(idx);
   });
 
-  const highestSaved = Math.max(...[...savedNums, 16]);
+  const highestSaved = Math.max(...[...savedNums, currentRA]);
   const nextRAAvailable = highestSaved + 1;
-  const isCurrentlyAvailableNew = !savedNums.includes(raNumber) && raNumber !== 16;
+  const isCurrentlyAvailableNew = !savedNums.includes(raNumber) && raNumber !== currentRA;
 
   // ── Shared input style ────────────────────────────────────────────────────
   const inp = (color: string, capped?: boolean): React.CSSProperties => ({
@@ -213,13 +211,13 @@ export default function NewRAEntryPage({ onSave }: Props) {
             </div>
             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>
               <span style={{ fontSize: 11, color: '#64748b' }}>Select RA:</span>
-              <button onClick={() => setRaNumber(16)} style={{
+              <button onClick={() => setRaNumber(currentRA)} style={{
                 padding: '3px 10px', borderRadius: 4,
-                border: `1.5px solid ${raNumber === 16 ? '#0f2044' : '#d1d5db'}`,
-                background: raNumber === 16 ? '#0f2044' : '#f8fafc',
-                color: raNumber === 16 ? '#fff' : '#475569',
+                border: `1.5px solid ${raNumber === currentRA ? '#0f2044' : '#d1d5db'}`,
+                background: raNumber === currentRA ? '#0f2044' : '#f8fafc',
+                color: raNumber === currentRA ? '#fff' : '#475569',
                 fontFamily: 'inherit', fontSize: 11, fontWeight: 700, cursor: 'pointer',
-              }}>RA-16 <span style={{ fontSize: 9, opacity: 0.5 }}>(read-only)</span></button>
+              }}>RA-{currentRA} <span style={{ fontSize: 9, opacity: 0.5 }}>(read-only)</span></button>
 
               {savedNums.map(ra => (
                 <div key={ra} style={{ display: 'flex' }}>
@@ -263,17 +261,17 @@ export default function NewRAEntryPage({ onSave }: Props) {
 
           {/* Save button */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-            <button onClick={handleSave} disabled={raNumber === 16} style={{
+            <button onClick={handleSave} disabled={raNumber === currentRA} style={{
               padding: '8px 24px', borderRadius: 6, border: 'none',
-              cursor: raNumber === 16 ? 'not-allowed' : 'pointer',
+              cursor: raNumber === currentRA ? 'not-allowed' : 'pointer',
               fontFamily: 'inherit', fontSize: 13, fontWeight: 700, transition: 'all 0.2s',
-              background: raNumber === 16 ? '#e2e8f0' : unsaved ? '#1a56b0' : '#dcfce7',
-              color: raNumber === 16 ? '#94a3b8' : unsaved ? '#fff' : '#166534',
-              boxShadow: unsaved && raNumber !== 16 ? '0 2px 10px #1a56b040' : 'none',
+              background: raNumber === currentRA ? '#e2e8f0' : unsaved ? '#1a56b0' : '#dcfce7',
+              color: raNumber === currentRA ? '#94a3b8' : unsaved ? '#fff' : '#166534',
+              boxShadow: unsaved && raNumber !== currentRA ? '0 2px 10px #1a56b040' : 'none',
             }}>
-              {raNumber === 16 ? 'Read-only' : unsaved ? `💾 Save RA-${raNumber}` : '✓ Saved'}
+              {raNumber === currentRA ? 'Read-only' : unsaved ? `💾 Save RA-${raNumber}` : '✓ Saved'}
             </button>
-            {savedAt && raNumber !== 16 && (
+            {savedAt && raNumber !== currentRA && (
               <span style={{
                 fontSize: 10, background: '#dcfce7', color: '#166534',
                 padding: '2px 8px', borderRadius: 20, fontWeight: 700,
@@ -347,7 +345,7 @@ export default function NewRAEntryPage({ onSave }: Props) {
                   Milestone
                 </th>
                 {BKEYS.map((bk, i) => (
-                  <th key={bk} colSpan={4} style={{ background: B_MED[i], color: B_COLORS[i] }}>
+                  <th key={bk} colSpan={4} style={{ background: BLOCK_MED[i], color: BLOCK_COLORS[i] }}>
                     Block-{i + 1}
                   </th>
                 ))}
@@ -357,10 +355,10 @@ export default function NewRAEntryPage({ onSave }: Props) {
                   description
                 </th>
                 {BKEYS.map((bk, i) => [
-                  <th key={`${bk}-sc`} style={{ background: B_BG[i], width: 110, fontSize: 10 }}>Scope (₹)</th>,
-                  <th key={`${bk}-pc`} style={{ background: B_BG[i], width: 110, fontSize: 10 }}>Prev Cum (₹)</th>,
-                  <th key={`${bk}-tp`} style={{ background: B_MED[i], color: B_COLORS[i], width: 80 }}>This %</th>,
-                  <th key={`${bk}-ta`} style={{ background: B_MED[i], color: B_COLORS[i], width: 120 }}>This ₹</th>,
+                  <th key={`${bk}-sc`} style={{ background: BLOCK_BG[i], width: 110, fontSize: 10 }}>Scope (₹)</th>,
+                  <th key={`${bk}-pc`} style={{ background: BLOCK_BG[i], width: 110, fontSize: 10 }}>Prev Cum (₹)</th>,
+                  <th key={`${bk}-tp`} style={{ background: BLOCK_MED[i], color: BLOCK_COLORS[i], width: 80 }}>This %</th>,
+                  <th key={`${bk}-ta`} style={{ background: BLOCK_MED[i], color: BLOCK_COLORS[i], width: 120 }}>This ₹</th>,
                 ])}
               </tr>
             </thead>
@@ -403,44 +401,44 @@ export default function NewRAEntryPage({ onSave }: Props) {
                             const isComplete = cumPct >= 99.9;
 
                             if (!scope) return [
-                              <td key={`${bk}-sc`} style={{ background: B_BG[i], color: '#cbd5e1', fontSize: 10 }}>N/A</td>,
-                              <td key={`${bk}-pc`} style={{ background: B_BG[i], color: '#cbd5e1', fontSize: 10 }}>—</td>,
-                              <td key={`${bk}-tp`} style={{ background: B_BG[i], color: '#cbd5e1', fontSize: 10 }}>—</td>,
-                              <td key={`${bk}-ta`} style={{ background: B_BG[i], color: '#cbd5e1', fontSize: 10 }}>—</td>,
+                              <td key={`${bk}-sc`} style={{ background: BLOCK_BG[i], color: '#cbd5e1', fontSize: 10 }}>N/A</td>,
+                              <td key={`${bk}-pc`} style={{ background: BLOCK_BG[i], color: '#cbd5e1', fontSize: 10 }}>—</td>,
+                              <td key={`${bk}-tp`} style={{ background: BLOCK_BG[i], color: '#cbd5e1', fontSize: 10 }}>—</td>,
+                              <td key={`${bk}-ta`} style={{ background: BLOCK_BG[i], color: '#cbd5e1', fontSize: 10 }}>—</td>,
                             ];
 
                             return [
                               // Scope
-                              <td key={`${bk}-sc`} style={{ background: B_BG[i], padding: '5px 8px' }}>
+                              <td key={`${bk}-sc`} style={{ background: BLOCK_BG[i], padding: '5px 8px' }}>
                                 <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#475569' }}>{fmt(scope)}</div>
                                 {/* Scope bar */}
                                 <div style={{ height: 3, background: '#e2e8f0', borderRadius: 2, marginTop: 3 }}>
-                                  <div style={{ width: `${Math.min(cumPct, 100)}%`, height: '100%', background: B_COLORS[i] + '70', borderRadius: 2 }} />
+                                  <div style={{ width: `${Math.min(cumPct, 100)}%`, height: '100%', background: BLOCK_COLORS[i] + '70', borderRadius: 2 }} />
                                 </div>
                               </td>,
 
                               // Prev cumulative
-                              <td key={`${bk}-pc`} style={{ background: B_BG[i], padding: '5px 8px' }}>
+                              <td key={`${bk}-pc`} style={{ background: BLOCK_BG[i], padding: '5px 8px' }}>
                                 <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#0f2044', fontWeight: 600 }}>
                                   {fmt(cumAmt)}
                                 </div>
                                 <div style={{ fontSize: 9, marginTop: 2 }}>
                                   {isComplete
                                     ? <span style={{ color: '#0e6d41', fontWeight: 700 }}>✓ 100% done</span>
-                                    : <span style={{ color: B_COLORS[i] }}>{cumPct.toFixed(0)}% · rem {remPct.toFixed(0)}%</span>
+                                    : <span style={{ color: BLOCK_COLORS[i] }}>{cumPct.toFixed(0)}% · rem {remPct.toFixed(0)}%</span>
                                   }
                                 </div>
                               </td>,
 
                               // This % input
-                              <td key={`${bk}-tp`} style={{ background: B_BG[i], padding: 4 }}>
+                              <td key={`${bk}-tp`} style={{ background: BLOCK_BG[i], padding: 4 }}>
                                 {isComplete
                                   ? <div style={{ textAlign: 'center', fontSize: 10, color: '#0e6d41' }}>✓</div>
                                   : <input
                                     type="number" min="0" max={maxPct.toFixed(1)} step="0.1"
                                     placeholder={`max ${maxPct.toFixed(0)}%`}
                                     value={thisPct > 0 ? parseFloat(thisPct.toFixed(2)) : ''}
-                                    style={inp(B_COLORS[i], isCapped)}
+                                    style={inp(BLOCK_COLORS[i], isCapped)}
                                     title={`Maximum: ${maxPct.toFixed(2)}%`}
                                     onChange={e => setBldgPct(idx, bk, parseFloat(e.target.value) || 0)}
                                   />
@@ -448,14 +446,14 @@ export default function NewRAEntryPage({ onSave }: Props) {
                               </td>,
 
                               // This ₹ input
-                              <td key={`${bk}-ta`} style={{ background: B_BG[i], padding: 4 }}>
+                              <td key={`${bk}-ta`} style={{ background: BLOCK_BG[i], padding: 4 }}>
                                 {isComplete
                                   ? <div style={{ textAlign: 'center', fontSize: 10, color: '#0e6d41' }}>✓</div>
                                   : <input
                                     type="number" min="0" max={Math.round(maxAmt)} step="1000"
                                     placeholder={`max ₹${fmt(maxAmt)}`}
                                     value={thisAmt > 0 ? Math.round(thisAmt) : ''}
-                                    style={inp(B_COLORS[i], isCapped)}
+                                    style={inp(BLOCK_COLORS[i], isCapped)}
                                     title={`Maximum: ₹ ${fmt(maxAmt)}`}
                                     onChange={e => setBldgAmt(idx, bk, parseFloat(e.target.value) || 0)}
                                   />
@@ -480,10 +478,10 @@ export default function NewRAEntryPage({ onSave }: Props) {
                             Subtotal — {cat}
                           </td>
                           {subs.map((s, i) => [
-                            <td key={`${i}-sc`} className="mono" style={{ fontSize: 11, color: '#475569', fontWeight: 600, background: B_BG[i] }}>{fmt(s.scope)}</td>,
-                            <td key={`${i}-pc`} className="mono" style={{ fontSize: 11, color: '#0f2044', fontWeight: 600, background: B_BG[i] }}>{fmt(s.cumAmt)}</td>,
-                            <td key={`${i}-tp`} style={{ background: B_BG[i] }}></td>,
-                            <td key={`${i}-ta`} className="mono" style={{ fontSize: 11, fontWeight: 700, color: B_COLORS[i], background: B_MED[i] }}>{s.thisAmt ? fmt(s.thisAmt) : '–'}</td>,
+                            <td key={`${i}-sc`} className="mono" style={{ fontSize: 11, color: '#475569', fontWeight: 600, background: BLOCK_BG[i] }}>{fmt(s.scope)}</td>,
+                            <td key={`${i}-pc`} className="mono" style={{ fontSize: 11, color: '#0f2044', fontWeight: 600, background: BLOCK_BG[i] }}>{fmt(s.cumAmt)}</td>,
+                            <td key={`${i}-tp`} style={{ background: BLOCK_BG[i] }}></td>,
+                            <td key={`${i}-ta`} className="mono" style={{ fontSize: 11, fontWeight: 700, color: BLOCK_COLORS[i], background: BLOCK_MED[i] }}>{s.thisAmt ? fmt(s.thisAmt) : '–'}</td>,
                           ])}
                         </tr>
                       );
@@ -709,14 +707,14 @@ export default function NewRAEntryPage({ onSave }: Props) {
           &nbsp;=&nbsp;
           <strong style={{ fontFamily: 'monospace', color: '#0e6d41', fontSize: 14 }}>₹{fmt(grandTotal)}</strong>
         </span>
-        <button onClick={handleSave} disabled={raNumber === 16} style={{
+        <button onClick={handleSave} disabled={raNumber === currentRA} style={{
           marginLeft: 'auto', padding: '7px 20px', borderRadius: 6,
-          border: 'none', cursor: raNumber === 16 ? 'not-allowed' : 'pointer',
+          border: 'none', cursor: raNumber === currentRA ? 'not-allowed' : 'pointer',
           fontFamily: 'inherit', fontSize: 12, fontWeight: 700,
-          background: raNumber === 16 ? '#e2e8f0' : unsaved ? '#1a56b0' : '#dcfce7',
-          color: raNumber === 16 ? '#94a3b8' : unsaved ? '#fff' : '#166534',
+          background: raNumber === currentRA ? '#e2e8f0' : unsaved ? '#1a56b0' : '#dcfce7',
+          color: raNumber === currentRA ? '#94a3b8' : unsaved ? '#fff' : '#166534',
         }}>
-          {raNumber === 16 ? 'Read-only' : unsaved ? `💾 Save RA-${raNumber}` : '✓ Saved'}
+          {raNumber === currentRA ? 'Read-only' : unsaved ? `💾 Save RA-${raNumber}` : '✓ Saved'}
         </button>
       </div>
     </div>

@@ -1,19 +1,18 @@
 'use client';
 
 import { useMemo } from 'react';
-import { billingMilestones, blockTotals } from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { fmt } from '@/lib/utils';
 import { RABillData, BKEYS } from '@/lib/raStore';
-
-const B_COLORS = ['#1e40af','#166534','#9a3412','#6b21a8'];
-const B_BG     = ['#eff6ff','#f0fdf4','#fff7ed','#faf5ff'];
-const B_MED    = ['#dbeafe','#dcfce7','#ffedd5','#f3e8ff'];
+import { BLOCK_COLORS, BLOCK_BG, BLOCK_MED } from '@/lib/colors';
+import { useCategoryGrouping } from '@/lib/hooks';
 type BK = 'block1'|'block2'|'block3'|'block4';
 
 interface Props { activeRA: RABillData | null; }
 
 export default function BuildingPage({ activeRA }: Props) {
-  const raNum = activeRA?.raNumber ?? 16;
+  const { billingMilestones, blockTotals, currentRA } = useVendor();
+  const raNum = activeRA?.raNumber ?? currentRA;
 
   // For each milestone+block: this bill amount comes from activeRA if set, else from JSON baseline
   const getThis = (idx: number, bk: BK): number => {
@@ -21,14 +20,7 @@ export default function BuildingPage({ activeRA }: Props) {
     return billingMilestones[idx]?.[bk]?.thisAmt ?? 0;
   };
 
-  const grouped: Record<string, number[]> = useMemo(() => {
-    const m: Record<string, number[]> = {};
-    billingMilestones.forEach((row, idx) => {
-      if (!m[row.category]) m[row.category] = [];
-      m[row.category].push(idx);
-    });
-    return m;
-  }, []);
+  const { grouped } = useCategoryGrouping(billingMilestones);
 
   // Grand totals per block
   const grandTotals = useMemo(() => BKEYS.map((_,i) => ({
@@ -52,13 +44,13 @@ export default function BuildingPage({ activeRA }: Props) {
         <div>
           <div style={{ fontWeight:600 }}>Building Milestones — RA-{raNum}</div>
           <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>
-            {activeRA ? `Showing RA-${raNum} entered data` : 'Showing RA-16 baseline from JSON'}
+            {activeRA ? `Showing RA-${raNum} entered data` : `Showing RA-${currentRA} baseline`}
           </div>
         </div>
         <div style={{ display:'flex', gap:8 }}>
           {BKEYS.map((k,i) => (
             <span key={k} style={{
-              background:B_COLORS[i]+'20', color:B_COLORS[i],
+              background:BLOCK_COLORS[i]+'20', color:BLOCK_COLORS[i],
               padding:'2px 10px', borderRadius:3, fontSize:10, fontWeight:700,
             }}>Block-{i+1} · ₹{(blockTotals[k]/1e7).toFixed(2)} Cr</span>
           ))}
@@ -73,15 +65,15 @@ export default function BuildingPage({ activeRA }: Props) {
                 Milestone
               </th>
               {BKEYS.map((k,i) => (
-                <th key={k} colSpan={3} style={{ background:B_MED[i], color:B_COLORS[i] }}>Block-{i+1}</th>
+                <th key={k} colSpan={3} style={{ background:BLOCK_MED[i], color:BLOCK_COLORS[i] }}>Block-{i+1}</th>
               ))}
             </tr>
             <tr>
               <th style={{ position:'sticky', left:0, background:'#f8fafc', zIndex:2 }}></th>
               {BKEYS.map((k,i) => [
-                <th key={`${k}-p`} style={{ background:B_BG[i], width:130 }}>Prev Amt (₹)</th>,
-                <th key={`${k}-t`} style={{ background:B_MED[i], color:B_COLORS[i], width:130 }}>RA-{raNum} This (₹)</th>,
-                <th key={`${k}-c`} style={{ background:B_BG[i], width:130 }}>Cumulative (₹)</th>,
+                <th key={`${k}-p`} style={{ background:BLOCK_BG[i], width:130 }}>Prev Amt (₹)</th>,
+                <th key={`${k}-t`} style={{ background:BLOCK_MED[i], color:BLOCK_COLORS[i], width:130 }}>RA-{raNum} This (₹)</th>,
+                <th key={`${k}-c`} style={{ background:BLOCK_BG[i], width:130 }}>Cumulative (₹)</th>,
               ])}
             </tr>
           </thead>
@@ -113,19 +105,19 @@ export default function BuildingPage({ activeRA }: Props) {
                           const scope = m[bk].scope;
                           const cumPct = scope > 0 ? (cum/scope)*100 : 0;
                           return [
-                            <td key={`${bk}-p`} className="mono" style={{ fontSize:11, color:'#94a3b8', background:B_BG[i] }}>
+                            <td key={`${bk}-p`} className="mono" style={{ fontSize:11, color:'#94a3b8', background:BLOCK_BG[i] }}>
                               {prev ? fmt(prev) : '–'}
                             </td>,
                             <td key={`${bk}-t`} className="mono" style={{
-                              fontSize:11, background:B_MED[i],
-                              color:thisAmt>0?B_COLORS[i]:'#94a3b8', fontWeight:thisAmt>0?700:400,
+                              fontSize:11, background:BLOCK_MED[i],
+                              color:thisAmt>0?BLOCK_COLORS[i]:'#94a3b8', fontWeight:thisAmt>0?700:400,
                             }}>
                               {thisAmt ? fmt(thisAmt) : '–'}
                             </td>,
-                            <td key={`${bk}-c`} style={{ background:B_BG[i], padding:'4px 8px' }}>
+                            <td key={`${bk}-c`} style={{ background:BLOCK_BG[i], padding:'4px 8px' }}>
                               <div style={{ fontFamily:'monospace', fontSize:11 }}>{cum?fmt(cum):'–'}</div>
                               {scope>0 && <div style={{ height:3, background:'#e2e8f0', borderRadius:2, marginTop:2 }}>
-                                <div style={{ width:`${Math.min(cumPct,100)}%`, height:'100%', background:B_COLORS[i], borderRadius:2 }}/>
+                                <div style={{ width:`${Math.min(cumPct,100)}%`, height:'100%', background:BLOCK_COLORS[i], borderRadius:2 }}/>
                               </div>}
                             </td>,
                           ];
@@ -145,9 +137,9 @@ export default function BuildingPage({ activeRA }: Props) {
                           Subtotal — {cat}
                         </td>
                         {catT.map((ct,i) => [
-                          <td key={`${i}-p`} className="mono" style={{ fontWeight:600, fontSize:11, color:'#64748b', background:B_BG[i] }}>{fmt(ct.prev)}</td>,
-                          <td key={`${i}-t`} className="mono" style={{ fontWeight:700, fontSize:11, color:B_COLORS[i], background:B_MED[i] }}>{fmt(ct.this)}</td>,
-                          <td key={`${i}-c`} className="mono" style={{ fontWeight:600, fontSize:11, background:B_BG[i] }}>{fmt(ct.prev+ct.this)}</td>,
+                          <td key={`${i}-p`} className="mono" style={{ fontWeight:600, fontSize:11, color:'#64748b', background:BLOCK_BG[i] }}>{fmt(ct.prev)}</td>,
+                          <td key={`${i}-t`} className="mono" style={{ fontWeight:700, fontSize:11, color:BLOCK_COLORS[i], background:BLOCK_MED[i] }}>{fmt(ct.this)}</td>,
+                          <td key={`${i}-c`} className="mono" style={{ fontWeight:600, fontSize:11, background:BLOCK_BG[i] }}>{fmt(ct.prev+ct.this)}</td>,
                         ])}
                       </tr>
                     );
@@ -178,7 +170,7 @@ export default function BuildingPage({ activeRA }: Props) {
         {BKEYS.map((k,i) => (
           <span key={k} style={{ fontSize:12, color:'#475569' }}>
             Block-{i+1}:&nbsp;
-            <strong style={{ fontFamily:'monospace', color:B_COLORS[i] }}>
+            <strong style={{ fontFamily:'monospace', color:BLOCK_COLORS[i] }}>
               ₹ {fmt(grandTotals[i].thisAmt)}
             </strong>
           </span>

@@ -1,25 +1,17 @@
 'use client';
 
 import { useMemo } from 'react';
-import { billingMilestones, blockTotals } from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { fmt } from '@/lib/utils';
 import { RABillData, BKEYS } from '@/lib/raStore';
-
-const B_COLORS = ['#1e40af','#166534','#9a3412','#6b21a8'];
-const B_BG     = ['#eff6ff','#f0fdf4','#fff7ed','#faf5ff'];
-const B_MED    = ['#dbeafe','#dcfce7','#ffedd5','#f3e8ff'];
+import { BLOCK_COLORS, BLOCK_BG, BLOCK_MED } from '@/lib/colors';
+import { useCategoryGrouping } from '@/lib/hooks';
 
 interface Props { allRAs: RABillData[]; }
 
 export default function RABuildingHistoryPage({ allRAs }: Props) {
-  const grouped: Record<string,number[]> = useMemo(() => {
-    const m: Record<string,number[]> = {};
-    billingMilestones.forEach((row,idx) => {
-      if (!m[row.category]) m[row.category] = [];
-      m[row.category].push(idx);
-    });
-    return m;
-  }, []);
+  const { billingMilestones, blockTotals, currentRA } = useVendor();
+  const { grouped } = useCategoryGrouping(billingMilestones);
 
   const grandTotals = useMemo(() => BKEYS.map((_,bi) => ({
     prevAmt: billingMilestones.reduce((s,m) => s + m[BKEYS[bi]].prevAmt, 0),
@@ -42,17 +34,17 @@ export default function RABuildingHistoryPage({ allRAs }: Props) {
               Building RA History
             </div>
             <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>
-              Cumulative (all prev RAs) + RA-16 + {allRAs.length>0 ? allRAs.map(r=>`RA-${r.raNumber}`).join(', ') : 'no saved RAs yet'}
+              Cumulative (all prev RAs) + RA-{currentRA} + {allRAs.length>0 ? allRAs.map(r=>`RA-${r.raNumber}`).join(', ') : 'no saved RAs yet'}
             </div>
           </div>
           <div style={{ display:'flex', gap:8 }}>
             {BKEYS.map((k,i) => (
               <div key={k} style={{
-                background:B_BG[i], border:`1px solid ${B_COLORS[i]}30`,
+                background:BLOCK_BG[i], border:`1px solid ${BLOCK_COLORS[i]}30`,
                 borderRadius:6, padding:'5px 10px', textAlign:'center',
               }}>
                 <div style={{ fontSize:9, color:'#475569' }}>Block-{i+1} Scope</div>
-                <div style={{ fontFamily:'monospace', fontWeight:700, color:B_COLORS[i], fontSize:11 }}>
+                <div style={{ fontFamily:'monospace', fontWeight:700, color:BLOCK_COLORS[i], fontSize:11 }}>
                   ₹ {(blockTotals[k]/1e7).toFixed(2)} Cr
                 </div>
               </div>
@@ -71,24 +63,24 @@ export default function RABuildingHistoryPage({ allRAs }: Props) {
             const scope = blockTotals[k];
             const cumPct = scope ? (cumAmt/scope)*100 : 0;
             return (
-              <div key={k} style={{ background:B_BG[i], border:`1px solid ${B_COLORS[i]}20`, borderRadius:6, padding:'8px 10px' }}>
+              <div key={k} style={{ background:BLOCK_BG[i], border:`1px solid ${BLOCK_COLORS[i]}20`, borderRadius:6, padding:'8px 10px' }}>
                 <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
-                  <span style={{ fontSize:10, fontWeight:700, color:B_COLORS[i] }}>Block-{i+1}</span>
+                  <span style={{ fontSize:10, fontWeight:700, color:BLOCK_COLORS[i] }}>Block-{i+1}</span>
                   <span style={{ fontSize:10, color:'#475569' }}>{cumPct.toFixed(1)}% cum</span>
                 </div>
                 <div style={{ height:6, background:'#e2e8f0', borderRadius:3, overflow:'hidden' }}>
                   <div style={{ display:'flex', height:'100%' }}>
-                    <div style={{ width:`${Math.min((prevAmt/scope)*100,100)}%`, background:B_COLORS[i]+'50' }}/>
-                    <div style={{ width:`${Math.min((ra16/scope)*100,100)}%`, background:B_COLORS[i]+'90' }}/>
+                    <div style={{ width:`${Math.min((prevAmt/scope)*100,100)}%`, background:BLOCK_COLORS[i]+'50' }}/>
+                    <div style={{ width:`${Math.min((ra16/scope)*100,100)}%`, background:BLOCK_COLORS[i]+'90' }}/>
                     {allRAs.map(ra => {
                       const amt = (gt as any)[`ra${ra.raNumber}`] as number || 0;
-                      return <div key={ra.raNumber} style={{ width:`${Math.min((amt/scope)*100,100)}%`, background:B_COLORS[i] }}/>;
+                      return <div key={ra.raNumber} style={{ width:`${Math.min((amt/scope)*100,100)}%`, background:BLOCK_COLORS[i] }}/>;
                     })}
                   </div>
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between', marginTop:3, flexWrap:'wrap', gap:2 }}>
                   <span style={{ fontSize:9, color:'#94a3b8' }}>Prev: ₹{(prevAmt/1e7).toFixed(2)}Cr</span>
-                  <span style={{ fontSize:9, color:B_COLORS[i], fontWeight:700 }}>RA-16: ₹{(ra16/1e7).toFixed(2)}Cr</span>
+                  <span style={{ fontSize:9, color:BLOCK_COLORS[i], fontWeight:700 }}>RA-{currentRA}: ₹{(ra16/1e7).toFixed(2)}Cr</span>
                   {allRAs.map(ra => {
                     const amt = (gt as any)[`ra${ra.raNumber}`] as number || 0;
                     return amt > 0 ? <span key={ra.raNumber} style={{ fontSize:9, color:'#7c3aed', fontWeight:700 }}>RA-{ra.raNumber}: ₹{(amt/1e7).toFixed(2)}Cr</span> : null;
@@ -108,7 +100,7 @@ export default function RABuildingHistoryPage({ allRAs }: Props) {
                 Milestone
               </th>
               {BKEYS.map((k,i) => (
-                <th key={k} colSpan={2 + allRAs.length} style={{ background:B_MED[i], color:B_COLORS[i] }}>
+                <th key={k} colSpan={2 + allRAs.length} style={{ background:BLOCK_MED[i], color:BLOCK_COLORS[i] }}>
                   Block-{i+1}
                 </th>
               ))}
@@ -116,8 +108,8 @@ export default function RABuildingHistoryPage({ allRAs }: Props) {
             <tr>
               <th style={{ position:'sticky', left:0, background:'#f8fafc', zIndex:2 }}></th>
               {BKEYS.map((k,i) => [
-                <th key={`${k}-prev`} style={{ background:B_BG[i], width:130 }}>Prev Cum (₹)</th>,
-                <th key={`${k}-16`}   style={{ background:B_MED[i], color:B_COLORS[i], width:130 }}>RA-16 (₹)</th>,
+                <th key={`${k}-prev`} style={{ background:BLOCK_BG[i], width:130 }}>Prev Cum (₹)</th>,
+                <th key={`${k}-16`}   style={{ background:BLOCK_MED[i], color:BLOCK_COLORS[i], width:130 }}>RA-{currentRA} (₹)</th>,
                 ...allRAs.map(ra => (
                   <th key={`${k}-${ra.raNumber}`} style={{ background:'#ede9fe', color:'#7c3aed', width:130 }}>
                     RA-{ra.raNumber} ✓
@@ -152,12 +144,12 @@ export default function RABuildingHistoryPage({ allRAs }: Props) {
                           const ra16  = m[bk].thisAmt;
                           const scope = m[bk].scope;
                           return [
-                            <td key={`${bk}-prev`} className="mono" style={{ fontSize:11, color:'#94a3b8', background:B_BG[i] }}>
+                            <td key={`${bk}-prev`} className="mono" style={{ fontSize:11, color:'#94a3b8', background:BLOCK_BG[i] }}>
                               {prev?fmt(prev):'–'}
                             </td>,
                             <td key={`${bk}-16`} className="mono" style={{
-                              fontSize:11, background:B_MED[i],
-                              color:ra16>0?B_COLORS[i]:'#94a3b8', fontWeight:ra16>0?700:400,
+                              fontSize:11, background:BLOCK_MED[i],
+                              color:ra16>0?BLOCK_COLORS[i]:'#94a3b8', fontWeight:ra16>0?700:400,
                             }}>
                               {ra16?fmt(ra16):'–'}
                             </td>,

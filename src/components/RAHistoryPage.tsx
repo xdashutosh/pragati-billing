@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { infraBillingMilestones } from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { fmt } from '@/lib/utils';
 import { RABillData } from '@/lib/raStore';
 
@@ -10,32 +10,36 @@ const CAT_COLORS: Record<string,string> = {
   'External Fire Works': '#b91c1c', 'Consultant Fees for Complete Park': '#0e6d41', 'Alteration Item': '#92400e',
 };
 
-// RA-02 to RA-15 history columns from JSON
-const JSON_RA_COLS = [
-  'RA Bill - 02','RA Bill - 03','RA Bill - 04','RA Bill - 05',
-  'RA Bill - 06','RA Bill - 07','RA Bill - 08','RA Bill - 09',
-  'RA Bill - 10','RA Bill - 11','RA Bill - 12','RA Bill - 13',
-  'RA Bill - 14','RA Bill - 15',
-];
-
 interface Props { allRAs: RABillData[]; }
 type ViewMode = 'amounts' | 'pct';
 
 export default function RAHistoryPage({ allRAs }: Props) {
+  const { infraRAMilestones, currentRA } = useVendor();
   const [viewMode, setViewMode] = useState<ViewMode>('amounts');
   const [selectedCat, setSelectedCat] = useState('all');
-  const [highlightCol, setHighlightCol] = useState('RA Bill - 16');
+  const [highlightCol, setHighlightCol] = useState(`RA Bill - ${currentRA}`);
 
-  const categories = ['all', ...Array.from(new Set(infraBillingMilestones.map(m => m.category).filter(Boolean)))];
+  // Collect ALL unique raHistory keys across every milestone (some RAs may only appear on certain rows)
+  const JSON_RA_COLS = useMemo(() => {
+    const all = new Set<string>();
+    infraRAMilestones.forEach(m => { if (m.raHistory) Object.keys(m.raHistory).forEach(k => all.add(k)); });
+    return Array.from(all).sort();
+  }, [infraRAMilestones]);
 
-  const filtered = selectedCat === 'all'
-    ? infraBillingMilestones.map((_,idx) => idx)
-    : infraBillingMilestones.map((_,idx) => idx).filter(idx => infraBillingMilestones[idx].category === selectedCat);
+  const categories = ['all', ...Array.from(new Set(infraRAMilestones.map(m => m.category).filter(Boolean)))];
 
-  // All columns: JSON history + RA-16 baseline + any saved RAs
+  // Sort indices within each category by sno (numeric) for sequential display
+  const filtered = useMemo(() => {
+    const indices = selectedCat === 'all'
+      ? infraRAMilestones.map((_,idx) => idx)
+      : infraRAMilestones.map((_,idx) => idx).filter(idx => infraRAMilestones[idx].category === selectedCat);
+    return indices.sort((a, b) => parseInt(infraRAMilestones[a].sno) - parseInt(infraRAMilestones[b].sno));
+  }, [selectedCat, infraRAMilestones]);
+
+  // All columns: JSON history + currentRA baseline + any saved RAs
   const allCols = [
     ...JSON_RA_COLS.map(k => ({ key: k, label: k.replace('RA Bill - ','RA-'), isSaved: false, raNum: 0 })),
-    { key: 'RA Bill - 16', label: 'RA-16', isSaved: false, raNum: 16 },
+    { key: `RA Bill - ${currentRA}`, label: `RA-${currentRA}`, isSaved: false, raNum: currentRA },
     ...allRAs.map(ra => ({ key: `saved-${ra.raNumber}`, label: `RA-${ra.raNumber}`, isSaved: true, raNum: ra.raNumber })),
   ];
 
@@ -45,12 +49,12 @@ export default function RAHistoryPage({ allRAs }: Props) {
       const entry = ra?.infra[idx];
       return { amt: entry?.amt ?? 0, pct: entry?.pct ?? 0 };
     }
-    if (col.key === 'RA Bill - 16') {
-      const m = infraBillingMilestones[idx];
+    if (col.raNum === currentRA) {
+      const m = infraRAMilestones[idx];
       return { amt: m.thisAmt, pct: m.thisPct * 100 };
     }
     // JSON history
-    const m = infraBillingMilestones[idx] as any;
+    const m = infraRAMilestones[idx];
     const hist = m.raHistory?.[col.key];
     return { amt: hist?.amt ?? 0, pct: (hist?.pct ?? 0) * 100 };
   };
@@ -59,10 +63,10 @@ export default function RAHistoryPage({ allRAs }: Props) {
   const colTotals = useMemo(() => {
     const t: Record<string,number> = {};
     allCols.forEach(col => {
-      t[col.key] = infraBillingMilestones.reduce((_s,_,idx) => _s + getVal(col,idx).amt, 0);
+      t[col.key] = infraRAMilestones.reduce((_s,_,idx) => _s + getVal(col,idx).amt, 0);
     });
     return t;
-  }, [allRAs]);
+  }, [allRAs, infraRAMilestones]);
 
   return (
     <div style={{
@@ -73,12 +77,12 @@ export default function RAHistoryPage({ allRAs }: Props) {
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
           <div>
             <div style={{ fontWeight:700, fontSize:14, color:'#0f2044' }}>
-              Infra RA History — RA-02 to RA-{allRAs.length ? Math.max(16,...allRAs.map(r=>r.raNumber)) : 16}
+              Infra RA History — up to RA-{allRAs.length ? Math.max(currentRA,...allRAs.map(r=>r.raNumber)) : currentRA}
             </div>
             <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>
               {allRAs.length > 0
                 ? `Includes ${allRAs.length} saved RA${allRAs.length>1?'s':''}: ${allRAs.map(r=>`RA-${r.raNumber}`).join(', ')}`
-                : 'No additional RAs saved yet — use New RA Entry to add RA-17+'}
+                : `No additional RAs saved yet — use New RA Entry to add RA-${currentRA + 1}+`}
             </div>
           </div>
           <div style={{ display:'flex', gap:8 }}>
@@ -109,7 +113,7 @@ export default function RAHistoryPage({ allRAs }: Props) {
             <button key={col.key} onClick={() => setHighlightCol(col.key)} style={{
               padding:'2px 8px', borderRadius:4, border:'none', cursor:'pointer',
               fontFamily:'inherit', fontSize:10, fontWeight:700,
-              background: highlightCol===col.key ? (col.isSaved?'#7c3aed':col.raNum===16?'#1a56b0':'#0f2044') : '#f1f5f9',
+              background: highlightCol===col.key ? (col.isSaved?'#7c3aed':col.raNum===currentRA?'#1a56b0':'#0f2044') : '#f1f5f9',
               color: highlightCol===col.key ? '#fff' : '#475569',
             }}>{col.label}</button>
           ))}
@@ -124,14 +128,14 @@ export default function RAHistoryPage({ allRAs }: Props) {
               <th className="left" style={{ minWidth:280, position:'sticky', left:44, background:'#f8fafc', zIndex:2 }}>Description</th>
               <th style={{ width:120 }}>Scope (₹)</th>
               {allCols.map(col => {
-                const isHL  = col.key === highlightCol;
-                const is16  = col.raNum === 16 && !col.isSaved;
+                const isHL    = col.key === highlightCol;
+                const isCurRA = col.raNum === currentRA && !col.isSaved;
                 const isSaved = col.isSaved;
                 return (
                   <th key={col.key} style={{
                     width:110, cursor:'pointer',
-                    background: isSaved ? '#7c3aed' : is16 ? '#1a56b0' : isHL ? '#0f2044' : undefined,
-                    color: (isSaved||is16||isHL) ? '#fff' : undefined,
+                    background: isSaved ? '#7c3aed' : isCurRA ? '#1a56b0' : isHL ? '#0f2044' : undefined,
+                    color: (isSaved||isCurRA||isHL) ? '#fff' : undefined,
                   }} onClick={() => setHighlightCol(col.key)}>
                     {col.label}{isSaved ? ' ✓' : ''}
                   </th>
@@ -144,20 +148,28 @@ export default function RAHistoryPage({ allRAs }: Props) {
             {(() => {
               let lastCat = '';
               return filtered.map(idx => {
-                const m = infraBillingMilestones[idx];
+                const m = infraRAMilestones[idx];
                 const showCat = m.category && m.category !== lastCat;
                 if (m.category) lastCat = m.category;
                 const col = CAT_COLORS[m.category] || '#1a56b0';
-                // cumulative including any new RA
                 const newRATotal = allRAs.reduce((s,ra) => s + (ra.infra[idx]?.amt ?? 0), 0);
                 const cumPct = m.scopeAmount ? ((m.cumAmt + newRATotal)/m.scopeAmount)*100 : 0;
                 return (
                   <>
                     {showCat && (
                       <tr key={`cat-${m.category}-${idx}`}>
-                        <td colSpan={3+allCols.length+1} style={{ background:col, color:'#fff', fontWeight:700, fontSize:11, padding:'6px 12px' }}>
+                        <td style={{ position:'sticky', left:0, background:'#fff', zIndex:1, borderTop:'2px solid #e2e8f0', padding:0 }} />
+                        <td style={{
+                          position:'sticky', left:44, background:'#fff', zIndex:1,
+                          color: col, fontWeight:700, fontSize:10,
+                          padding:'6px 12px 3px',
+                          borderLeft:`3px solid ${col}`,
+                          borderTop:'2px solid #e2e8f0',
+                          textTransform:'uppercase', letterSpacing:0.4,
+                        }}>
                           {m.category}
                         </td>
+                        <td colSpan={allCols.length+2} style={{ borderTop:'2px solid #e2e8f0' }} />
                       </tr>
                     )}
                     <tr key={idx}>
@@ -168,17 +180,21 @@ export default function RAHistoryPage({ allRAs }: Props) {
                       <td className="mono" style={{ fontSize:11 }}>{m.scopeAmount?fmt(m.scopeAmount):'–'}</td>
                       {allCols.map(col => {
                         const { amt, pct } = getVal(col, idx);
-                        const isHL   = col.key === highlightCol;
-                        const is16   = col.raNum === 16 && !col.isSaved;
+                        const isHL    = col.key === highlightCol;
+                        const isCurRA = col.raNum === currentRA && !col.isSaved;
                         const isSaved = col.isSaved;
-                        const hasVal = viewMode==='amounts' ? amt>0 : pct>0;
+                        const hasVal  = viewMode==='amounts' ? amt>0 : pct>0;
                         const display = viewMode==='amounts' ? (amt?fmt(amt):'–') : (pct?pct.toFixed(1)+'%':'–');
+                        const textColor = !hasVal ? '#d1d5db'
+                          : isSaved  ? '#7c3aed'
+                          : isCurRA  ? '#1a56b0'
+                          : isHL     ? '#0e6d41'
+                          : '#374151';
                         return (
                           <td key={col.key} className="mono" style={{
-                            fontSize:11,
-                            background: isSaved && hasVal ? '#ede9fe' : is16 && hasVal ? '#dbeafe' : isHL && hasVal ? '#f0fdf4' : undefined,
-                            color: isSaved && hasVal ? '#7c3aed' : is16 && hasVal ? '#1e40af' : isHL && hasVal ? '#0e6d41' : hasVal ? '#0f2044' : '#cbd5e1',
-                            fontWeight: (isSaved||is16||isHL) && hasVal ? 700 : 400,
+                            fontSize: isCurRA && hasVal ? 12 : 11,
+                            color: textColor,
+                            fontWeight: (isSaved || isCurRA || isHL) && hasVal ? 700 : 400,
                           }}>{display}</td>
                         );
                       })}
@@ -203,14 +219,14 @@ export default function RAHistoryPage({ allRAs }: Props) {
               </td>
               <td className="mono" style={{ color:'rgba(255,255,255,0.5)' }}>scope</td>
               {allCols.map(col => {
-                const total = colTotals[col.key] ?? 0;
-                const isHL = col.key === highlightCol;
-                const is16 = col.raNum === 16 && !col.isSaved;
+                const total   = colTotals[col.key] ?? 0;
+                const isHL    = col.key === highlightCol;
+                const isCurRA = col.raNum === currentRA && !col.isSaved;
                 return (
                   <td key={col.key} className="mono" style={{
-                    color: col.isSaved ? '#c4b5fd' : is16 ? '#93c5fd' : isHL ? '#86efac' : 'rgba(255,255,255,0.5)',
-                    fontWeight: (col.isSaved||is16||isHL) ? 700 : 400,
-                    fontSize: (col.isSaved||is16) ? 13 : 11,
+                    color: col.isSaved ? '#c4b5fd' : isCurRA ? '#93c5fd' : isHL ? '#86efac' : 'rgba(255,255,255,0.5)',
+                    fontWeight: (col.isSaved||isCurRA||isHL) ? 700 : 400,
+                    fontSize: (col.isSaved||isCurRA) ? 13 : 11,
                   }}>
                     {viewMode==='amounts' ? (total?fmt(total):'–') : '–'}
                   </td>

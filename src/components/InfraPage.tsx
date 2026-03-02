@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { infraBillingMilestones } from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { fmt } from '@/lib/utils';
 import { RABillData } from '@/lib/raStore';
 
@@ -16,7 +16,8 @@ const CAT_COLORS: Record<string,string> = {
 interface Props { activeRA: RABillData | null; }
 
 export default function InfraPage({ activeRA }: Props) {
-  const raNum = activeRA?.raNumber ?? 16;
+  const { infraBillingMilestones, currentRA } = useVendor();
+  const raNum = activeRA?.raNumber ?? currentRA;
 
   const getThis = (idx: number): number => {
     if (activeRA) return activeRA.infra[idx]?.amt ?? 0;
@@ -52,7 +53,7 @@ export default function InfraPage({ activeRA }: Props) {
       <div style={{ padding:'12px 16px', borderBottom:'1px solid #d1d5db', background:'#f8fafc', flexShrink:0 }}>
         <div style={{ fontWeight:600 }}>Infra Milestones — RA-{raNum}</div>
         <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>
-          {activeRA ? `Showing RA-${raNum} entered data` : 'Showing RA-16 baseline from JSON'}
+          {activeRA ? `Showing RA-${raNum} entered data` : `Showing RA-${currentRA} baseline`}
         </div>
       </div>
 

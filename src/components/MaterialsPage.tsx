@@ -1,32 +1,26 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { MaterialRow, MATERIAL_DATA } from '@/data/projectData';
+import { useMemo } from 'react';
+import { MaterialRow } from '@/data/projectData';
 import { fmt } from '@/lib/utils';
 
 interface MaterialsPageProps {
-  onTotalChange?: (amount: number) => void;
+  rows: MaterialRow[];
+  onRowsChange: (rows: MaterialRow[]) => void;
 }
 
-export default function MaterialsPage({ onTotalChange }: MaterialsPageProps) {
-  const [rows, setRows] = useState<MaterialRow[]>(MATERIAL_DATA);
+export default function MaterialsPage({ rows, onRowsChange }: MaterialsPageProps) {
+  const updateRow = (idx: number, val: number) => {
+    onRowsChange(rows.map((r, i) => i === idx ? { ...r, thisV: val } : r));
+  };
+
   const totals = useMemo(() => ({
     total: rows.reduce((s, r) => s + r.total, 0),
-    prev: rows.reduce((s, r) => s + r.prev, 0),
+    prev:  rows.reduce((s, r) => s + r.prev,  0),
     thisV: rows.reduce((s, r) => s + r.thisV, 0),
-    cum: rows.reduce((s, r) => s + r.prev + r.thisV, 0),
-    bal: rows.reduce((s, r) => s + (r.total - r.prev - r.thisV), 0),
+    cum:   rows.reduce((s, r) => s + r.prev + r.thisV, 0),
+    bal:   rows.reduce((s, r) => s + (r.total - r.prev - r.thisV), 0),
   }), [rows]);
-
-  useEffect(() => {
-    if (onTotalChange) {
-      onTotalChange(totals.thisV);
-    }
-  }, [totals.thisV, onTotalChange]);
-
-  const updateRow = (idx: number, val: number) => {
-    setRows(rows.map((r, i) => i === idx ? { ...r, thisV: val } : r));
-  };
 
   return (
     <div style={{

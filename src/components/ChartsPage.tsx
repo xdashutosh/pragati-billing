@@ -5,7 +5,7 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
     PieChart, Pie, Cell, LineChart, Line, AreaChart, Area
 } from 'recharts';
-import { billingSummaryItems, billingSummaryTotals } from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { fmt } from '@/lib/utils';
 
 const COLORS = [
@@ -26,6 +26,7 @@ const STATUS_COLORS = {
 };
 
 export default function ChartsPage() {
+    const { billingSummaryItems, billingSummaryTotals } = useVendor();
     // 1. Data Transformation: Aggregate by Block/Infra
     const processData = () => {
         const categories: Record<string, { name: string; scope: number; previous: number; current: number; cumulative: number }> = {

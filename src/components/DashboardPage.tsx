@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -6,12 +5,9 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
     ResponsiveContainer, Cell, PieChart, Pie,
 } from 'recharts';
-import {
-    billingSummaryItems, billingSummaryTotals,
-    billingMilestones, infraRAMilestones,
-    MATERIAL_DATA, HOLD_DATA, PROJECT_INFO,
-} from '@/data/projectData';
+import { useVendor } from '@/lib/VendorContext';
 import { loadAllRAs, loadAllCOPs, RABillData, COPData } from '@/lib/raStore';
+import { fmtCr, fmtPct } from '@/lib/utils';
 import { NavPage } from '@/app/page';
 
 // ─── Color palette (matches globals.css) ──────────────────────────────────────
@@ -42,8 +38,6 @@ const C = {
 
 const BLOCK_COLORS = [C.navy, C.blue, C.teal, C.violet];
 
-function cr(n: number) { return `₹${(n / 1e7).toFixed(2)} Cr`; }
-function pct(n: number) { return `${n.toFixed(1)}%`; }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -247,15 +241,23 @@ function DrillDownPanel({ state, onClose }: { state: DrillState; onClose: () => 
 }
 
 export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPage) => void }) {
+    const vendor = useVendor();
+    const {
+        billingSummaryItems, billingSummaryTotals,
+        billingMilestones, infraRAMilestones,
+        defaultMaterialRows: MATERIAL_DATA, defaultHoldItems: HOLD_DATA,
+        currentRA,
+    } = vendor;
+
     const [allRAs, setAllRAs] = useState<RABillData[]>([]);
     const [allCOPs, setAllCOPs] = useState<COPData[]>([]);
     const [drill, setDrill] = useState<DrillState>(DRILL_CLOSED);
     const closeDrill = useCallback(() => setDrill(DRILL_CLOSED), []);
 
     useEffect(() => {
-        setAllRAs(loadAllRAs());
-        setAllCOPs(loadAllCOPs());
-    }, []);
+        setAllRAs(loadAllRAs(vendor.id));
+        setAllCOPs(loadAllCOPs(vendor.id));
+    }, [vendor.id]);
 
     // helper: open drill-down for a billingSummaryItem
     const openCategoryDrill = useCallback((item: typeof billingSummaryItems[0]) => {
@@ -274,11 +276,11 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
             ],
             rows: item.subItems.map(s => ({
                 desc: s.description,
-                order: cr(s.orderAmount),
-                prev: cr(s.prevBillAmount),
-                thisBill: s.thisBillAmount > 0 ? cr(s.thisBillAmount) : '—',
-                cum: cr(s.cumulativeAmount),
-                pct: s.orderAmount > 0 ? pct((s.cumulativeAmount / s.orderAmount) * 100) : '—',
+                order: fmtCr(s.orderAmount),
+                prev: fmtCr(s.prevBillAmount),
+                thisBill: s.thisBillAmount > 0 ? fmtCr(s.thisBillAmount) : '—',
+                cum: fmtCr(s.cumulativeAmount),
+                pct: s.orderAmount > 0 ? fmtPct((s.cumulativeAmount / s.orderAmount) * 100) : '—',
             })),
         });
     }, [onNavigate]);
@@ -294,15 +296,15 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                 { key: 'value', label: 'Value', mono: true },
             ],
             rows: [
-                { label: 'Scope Amount', value: cr(m.scopeAmount) },
-                { label: '% of Total Infra', value: pct(m.pctOfTotal * 100) },
-                { label: 'Prev Billed %', value: pct(m.prevPct * 100) },
-                { label: 'Prev Billed Amt', value: cr(m.prevAmt) },
-                { label: 'This Bill %', value: m.thisPct > 0 ? pct(m.thisPct * 100) : '—' },
-                { label: 'This Bill Amt', value: m.thisAmt > 0 ? cr(m.thisAmt) : '—' },
-                { label: 'Cumulative %', value: pct(m.cumPct * 100) },
-                { label: 'Cumulative Amt', value: cr(m.cumAmt) },
-                { label: 'Balance', value: cr(m.scopeAmount - m.cumAmt) },
+                { label: 'Scope Amount', value: fmtCr(m.scopeAmount) },
+                { label: '% of Total Infra', value: fmtPct(m.pctOfTotal * 100) },
+                { label: 'Prev Billed %', value: fmtPct(m.prevPct * 100) },
+                { label: 'Prev Billed Amt', value: fmtCr(m.prevAmt) },
+                { label: 'This Bill %', value: m.thisPct > 0 ? fmtPct(m.thisPct * 100) : '—' },
+                { label: 'This Bill Amt', value: m.thisAmt > 0 ? fmtCr(m.thisAmt) : '—' },
+                { label: 'Cumulative %', value: fmtPct(m.cumPct * 100) },
+                { label: 'Cumulative Amt', value: fmtCr(m.cumAmt) },
+                { label: 'Balance', value: fmtCr(m.scopeAmount - m.cumAmt) },
             ],
         });
     }, []);
@@ -391,7 +393,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                 <p style={{ fontWeight: 700, color: C.navy, marginBottom: 4 }}>{label}</p>
                 {payload.map((e: any, i: number) => (
                     <p key={i} style={{ color: e.color, margin: '1px 0' }}>
-                        {e.name}: {cr(e.value)}
+                        {e.name}: {fmtCr(e.value)}
                     </p>
                 ))}
             </div>
@@ -407,8 +409,8 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                 padding: '8px 12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', fontSize: 11, maxWidth: 220,
             }}>
                 <p style={{ fontWeight: 700, color: C.navy, marginBottom: 4 }}>{d.payload.fullName}</p>
-                <p style={{ color: C.blue }}>{cr(d.value)}</p>
-                <p style={{ color: C.gray400 }}>{pct(d.payload.pct)} of contract</p>
+                <p style={{ color: C.blue }}>{fmtCr(d.value)}</p>
+                <p style={{ color: C.gray400 }}>{fmtPct(d.payload.pct)} of contract</p>
             </div>
         );
     };
@@ -426,17 +428,17 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
             }}>
                 <div>
                     <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', letterSpacing: 0.3 }}>
-                        {PROJECT_INFO.name}
+                        {vendor.projectName}
                     </div>
                     <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', marginTop: 3 }}>
-                        {PROJECT_INFO.contractor} · WO: {PROJECT_INFO.woNumber} · WO Date: {PROJECT_INFO.woDate}
+                        {vendor.contractor} · WO: {vendor.woNumber} · WO Date: {vendor.woDate}
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-                    <BannerStat label="PMC" value="JLL" />
-                    <BannerStat label="Client" value="LPW Warehousing Pvt. Ltd." />
-                    <BannerStat label="Current RA" value={`RA-${PROJECT_INFO.currentRA}`} accent="#86efac" />
-                    <BannerStat label="WO Date" value={PROJECT_INFO.woDate} />
+                    <BannerStat label="PMC" value={vendor.pmc} />
+                    <BannerStat label="Client" value={vendor.client} />
+                    <BannerStat label="Current RA" value={`RA-${currentRA}`} accent="#86efac" />
+                    <BannerStat label="WO Date" value={vendor.woDate} />
                 </div>
             </div>
 
@@ -445,7 +447,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 12, marginBottom: 12 }}>
                     <KpiStat
                         label="Contract Value"
-                        value={cr(orderAmt)}
+                        value={fmtCr(orderAmt)}
                         sub={`₹${(orderAmt / 1e7).toFixed(0)} Cr total scope`}
                         accent={C.navy}
                         icon={<ContractIcon />}
@@ -453,31 +455,31 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                     />
                     <KpiStat
                         label="Cumulative Billed"
-                        value={cr(cumAmt)}
-                        sub={`${pct(progressPct)} of contract`}
+                        value={fmtCr(cumAmt)}
+                        sub={`${fmtPct(progressPct)} of contract`}
                         accent={C.blue}
                         icon={<BilledIcon />}
                         onClick={() => onNavigate('abstract')}
                     />
                     <KpiStat
-                        label="This Bill (RA-16)"
-                        value={cr(thisAmt)}
-                        sub={`Previous: ${cr(prevAmt)}`}
+                        label={`This Bill (RA-${currentRA})`}
+                        value={fmtCr(thisAmt)}
+                        sub={`Previous: ${fmtCr(prevAmt)}`}
                         accent={C.teal}
                         icon={<ThisBillIcon />}
                         onClick={() => onNavigate('abstract')}
                     />
                     <KpiStat
                         label="Balance to Bill"
-                        value={cr(remaining)}
-                        sub={`${pct(100 - progressPct)} remaining`}
+                        value={fmtCr(remaining)}
+                        sub={`${fmtPct(100 - progressPct)} remaining`}
                         accent={C.orange}
                         icon={<BalanceIcon />}
                         onClick={() => onNavigate('abstract')}
                     />
                     <KpiStat
                         label="Active Holds"
-                        value={cr(activeHolds)}
+                        value={fmtCr(activeHolds)}
                         sub={`${HOLD_DATA.filter(h => h.active).length} hold item(s)`}
                         accent={C.red}
                         icon={<HoldIcon />}
@@ -485,7 +487,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                     />
                     <KpiStat
                         label="Material Deductions"
-                        value={cr(materialTotal)}
+                        value={fmtCr(materialTotal)}
                         sub={`${MATERIAL_DATA.length} material(s)`}
                         accent={C.amber}
                         icon={<MaterialIcon />}
@@ -498,7 +500,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                         <span style={{ fontSize: 11, fontWeight: 600, color: C.navy }}>Overall Project Completion</span>
                         <span style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.blue }}>
-                            {pct(progressPct)}
+                            {fmtPct(progressPct)}
                         </span>
                     </div>
                     <div style={{ height: 10, background: C.gray200, borderRadius: 99, overflow: 'hidden' }}>
@@ -510,8 +512,8 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 10, color: C.gray400 }}>
                         <span>₹ 0</span>
-                        <span>Billed: {cr(cumAmt)}</span>
-                        <span>Contract: {cr(orderAmt)}</span>
+                        <span>Billed: {fmtCr(cumAmt)}</span>
+                        <span>Contract: {fmtCr(orderAmt)}</span>
                     </div>
                 </Card>
             </Section>
@@ -555,20 +557,20 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                                     <ProgressBar value={item.cumulativeAmount} max={item.orderAmount} showPct={false} />
                                                 </td>
                                                 <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600, whiteSpace: 'nowrap' }}>
-                                                    {cr(item.orderAmount)}
+                                                    {fmtCr(item.orderAmount)}
                                                 </td>
                                                 <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.blue, whiteSpace: 'nowrap' }}>
-                                                    {cr(item.cumulativeAmount)}
+                                                    {fmtCr(item.cumulativeAmount)}
                                                 </td>
                                                 <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.teal, whiteSpace: 'nowrap' }}>
-                                                    {item.thisBillAmount > 0 ? cr(item.thisBillAmount) : <span style={{ color: C.gray400 }}>—</span>}
+                                                    {item.thisBillAmount > 0 ? fmtCr(item.thisBillAmount) : <span style={{ color: C.gray400 }}>—</span>}
                                                 </td>
                                                 <td style={{ padding: '8px 10px', textAlign: 'right', width: 60 }}>
                                                     <span style={{
                                                         fontSize: 10, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700,
                                                         color: cumPct >= 100 ? C.green : cumPct >= 50 ? C.blue : C.orange,
                                                     }}>
-                                                        {pct(cumPct)}
+                                                        {fmtPct(cumPct)}
                                                     </span>
                                                 </td>
                                             </tr>
@@ -580,16 +582,16 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                         GRAND TOTAL
                                     </td>
                                     <td style={{ padding: '9px 10px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, fontWeight: 700, color: '#fff' }}>
-                                        {cr(orderAmt)}
+                                        {fmtCr(orderAmt)}
                                     </td>
                                     <td style={{ padding: '9px 10px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, fontWeight: 700, color: '#86efac' }}>
-                                        {cr(cumAmt)}
+                                        {fmtCr(cumAmt)}
                                     </td>
                                     <td style={{ padding: '9px 10px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, fontWeight: 700, color: '#67e8f9' }}>
-                                        {cr(thisAmt)}
+                                        {fmtCr(thisAmt)}
                                     </td>
                                     <td style={{ padding: '9px 10px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 11, fontWeight: 700, color: '#fde68a' }}>
-                                        {pct(progressPct)}
+                                        {fmtPct(progressPct)}
                                     </td>
                                 </tr>
                             </tbody>
@@ -631,7 +633,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                         {d.name}
                                     </span>
                                     <span style={{ fontSize: 10, fontFamily: 'IBM Plex Mono, monospace', color: C.gray400, flexShrink: 0 }}>
-                                        {cr(d.value)}
+                                        {fmtCr(d.value)}
                                     </span>
                                 </div>
                             ))}
@@ -702,10 +704,10 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                 >
                                     <div style={{ fontSize: 10, fontWeight: 700, color: BLOCK_COLORS[i], marginBottom: 4 }}>{b.name}</div>
                                     <div style={{ fontSize: 14, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: BLOCK_COLORS[i] }}>
-                                        {pct(p)}
+                                        {fmtPct(p)}
                                     </div>
                                     <div style={{ fontSize: 9, color: C.gray400, marginTop: 2 }}>
-                                        {cr(b.cumulative)} / {cr(b.scope)}
+                                        {fmtCr(b.cumulative)} / {fmtCr(b.scope)}
                                     </div>
                                     <ProgressBar value={b.cumulative} max={b.scope} color={BLOCK_COLORS[i]} showPct={false} />
                                 </div>
@@ -785,16 +787,16 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                                     </span>
                                                 </td>
                                                 <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600, whiteSpace: 'nowrap' }}>
-                                                    {cr(m.scopeAmount)}
+                                                    {fmtCr(m.scopeAmount)}
                                                 </td>
                                                 <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray400 }}>
-                                                    {pct(m.prevPct * 100)}
+                                                    {fmtPct(m.prevPct * 100)}
                                                 </td>
                                                 <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.teal }}>
-                                                    {m.thisPct > 0 ? pct(m.thisPct * 100) : '—'}
+                                                    {m.thisPct > 0 ? fmtPct(m.thisPct * 100) : '—'}
                                                 </td>
                                                 <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: statusColor }}>
-                                                    {pct(cumPct)}
+                                                    {fmtPct(cumPct)}
                                                 </td>
                                                 <td style={{ padding: '7px 10px', textAlign: 'right' }}>
                                                     <span style={{
@@ -855,13 +857,13 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                             <td style={{ padding: '8px 12px', fontSize: 12, fontWeight: 700, color: C.navy }}>RA-{ra.raNumber}</td>
                                             <td style={{ padding: '8px 12px', fontSize: 11, color: C.gray600 }}>{ra.label}</td>
                                             <td style={{ padding: '8px 12px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>
-                                                {cr(ra.buildingTotal)}
+                                                {fmtCr(ra.buildingTotal)}
                                             </td>
                                             <td style={{ padding: '8px 12px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>
-                                                {cr(ra.infraTotal)}
+                                                {fmtCr(ra.infraTotal)}
                                             </td>
                                             <td style={{ padding: '8px 12px', fontSize: 12, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.blue }}>
-                                                {cr(ra.grandTotal)}
+                                                {fmtCr(ra.grandTotal)}
                                             </td>
                                             <td style={{ padding: '8px 12px' }}>
                                                 {cop ? (
@@ -872,7 +874,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                                 ) : <span style={{ fontSize: 10, color: C.gray400 }}>No COP</span>}
                                             </td>
                                             <td style={{ padding: '8px 12px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.green }}>
-                                                {cop ? cr(cop.netPayable) : <span style={{ color: C.gray400 }}>—</span>}
+                                                {cop ? fmtCr(cop.netPayable) : <span style={{ color: C.gray400 }}>—</span>}
                                             </td>
                                             <td style={{ padding: '8px 12px', fontSize: 10, textAlign: 'right', color: C.gray400 }}>
                                                 {new Date(ra.savedAt).toLocaleDateString('en-IN')}
@@ -886,7 +888,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                         Total — All Additional RAs
                                     </td>
                                     <td style={{ padding: '8px 12px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, fontWeight: 700, color: C.blue }}>
-                                        {cr(raTotalBilled)}
+                                        {fmtCr(raTotalBilled)}
                                     </td>
                                     <td colSpan={3} />
                                 </tr>
@@ -923,15 +925,15 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                     >
                                         <td style={{ padding: '8px 10px', fontSize: 10, color: C.gray400, textAlign: 'center' }}>{m.sno}</td>
                                         <td style={{ padding: '8px 10px', fontSize: 11, color: C.gray800 }}>{m.desc}</td>
-                                        <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.red }}>{cr(m.total)}</td>
-                                        <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>{cr(m.prev)}</td>
-                                        <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.red }}>{cr(m.thisV)}</td>
+                                        <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.red }}>{fmtCr(m.total)}</td>
+                                        <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>{fmtCr(m.prev)}</td>
+                                        <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.red }}>{fmtCr(m.thisV)}</td>
                                     </tr>);
                                 })}
                                 <tr style={{ background: C.redLight }}>
                                     <td colSpan={2} style={{ padding: '8px 10px', fontSize: 11, fontWeight: 700, color: C.red }}>Total</td>
                                     <td style={{ padding: '8px 10px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, fontWeight: 700, color: C.red }}>
-                                        {cr(materialTotal)}
+                                        {fmtCr(materialTotal)}
                                     </td>
                                     <td colSpan={2} />
                                 </tr>
@@ -966,7 +968,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                         <td style={{ padding: '8px 10px', fontSize: 10, fontFamily: 'IBM Plex Mono, monospace', color: C.gray400 }}>{h.id}</td>
                                         <td style={{ padding: '8px 10px', fontSize: 11, color: C.gray800 }}>{h.desc}</td>
                                         <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: h.active ? C.orange : C.green }}>
-                                            {cr(h.amt)}
+                                            {fmtCr(h.amt)}
                                         </td>
                                         <td style={{ padding: '8px 10px', textAlign: 'right' }}>
                                             <span style={{
@@ -980,7 +982,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                 <tr style={{ background: C.amberLight }}>
                                     <td colSpan={2} style={{ padding: '8px 10px', fontSize: 11, fontWeight: 700, color: C.amber }}>Total Holds</td>
                                     <td style={{ padding: '8px 10px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, fontWeight: 700, color: C.amber }}>
-                                        {cr(activeHolds)}
+                                        {fmtCr(activeHolds)}
                                     </td>
                                     <td />
                                 </tr>
@@ -1017,10 +1019,10 @@ function SegmentCard({ label, color, scope, cumulative, thisBill, onClick }: {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 10 }}>
                 <div>
                     <div style={{ fontSize: 9, color: C.gray400, marginBottom: 2 }}>Contract Scope</div>
-                    <div style={{ fontSize: 16, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.navy }}>{cr(scope)}</div>
+                    <div style={{ fontSize: 16, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.navy }}>{fmtCr(scope)}</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: 22, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color }}>{pct(p)}</div>
+                    <div style={{ fontSize: 22, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color }}>{fmtPct(p)}</div>
                     <div style={{ fontSize: 9, color: C.gray400 }}>complete</div>
                 </div>
             </div>
@@ -1028,17 +1030,17 @@ function SegmentCard({ label, color, scope, cumulative, thisBill, onClick }: {
             <div style={{ display: 'flex', gap: 20, marginTop: 12 }}>
                 <div>
                     <div style={{ fontSize: 9, color: C.gray400 }}>Cumulative Billed</div>
-                    <div style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color }}>{cr(cumulative)}</div>
+                    <div style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color }}>{fmtCr(cumulative)}</div>
                 </div>
                 <div>
                     <div style={{ fontSize: 9, color: C.gray400 }}>This Bill</div>
                     <div style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: thisBill > 0 ? color : C.gray400 }}>
-                        {thisBill > 0 ? cr(thisBill) : '—'}
+                        {thisBill > 0 ? fmtCr(thisBill) : '—'}
                     </div>
                 </div>
                 <div>
                     <div style={{ fontSize: 9, color: C.gray400 }}>Balance</div>
-                    <div style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.orange }}>{cr(scope - cumulative)}</div>
+                    <div style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.orange }}>{fmtCr(scope - cumulative)}</div>
                 </div>
             </div>
         </Card>
@@ -1060,7 +1062,7 @@ function MilestoneCard({ title, total, completed, partial, color, onClick }: {
             </div>
             <ProgressBar value={completed + partial * 0.5} max={total} color={color} />
             <div style={{ fontSize: 10, color: C.gray400, marginTop: 6 }}>
-                {total > 0 ? pct((completed / total) * 100) : '0.0%'} milestones fully completed
+                {total > 0 ? fmtPct((completed / total) * 100) : '0.0%'} milestones fully completed
             </div>
         </Card>
     );

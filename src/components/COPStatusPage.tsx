@@ -6,8 +6,11 @@ import { fmt } from '@/lib/utils';
 
 const STATUS_CFG: Record<COPStatus, { label: string; color: string; bg: string; border: string }> = {
     draft: { label: 'Draft', color: '#475569', bg: '#f1f5f9', border: '#cbd5e1' },
-    submitted: { label: 'Submitted', color: '#b45309', bg: '#fffbeb', border: '#fcd34d' },
-    approved: { label: 'Approved', color: '#166534', bg: '#f0fdf4', border: '#86efac' },
+    prepared: { label: 'Prepared', color: '#1e40af', bg: '#eff6ff', border: '#93c5fd' },
+    l1_approved: { label: 'L1 Checked', color: '#0369a1', bg: '#f0f9ff', border: '#7dd3fc' },
+    l2_approved: { label: 'L2 Verified', color: '#0891b2', bg: '#ecfeff', border: '#67e8f9' },
+    l3_approved: { label: 'L3 Certified', color: '#059669', bg: '#ecfdf5', border: '#6ee7b7' },
+    approved: { label: 'Approved', color: '#166534', bg: '#f0fd4', border: '#86efac' },
     rejected: { label: 'Rejected', color: '#b91c1c', bg: '#fef2f2', border: '#fca5a5' },
 };
 
@@ -25,7 +28,7 @@ export default function COPStatusPage({ onViewCOP }: Props) {
     const stats = {
         total: allCOPs.length,
         approved: allCOPs.filter(c => c.status === 'approved').length,
-        pending: allCOPs.filter(c => c.status === 'submitted').length,
+        pending: allCOPs.filter(c => !['approved', 'draft', 'rejected'].includes(c.status)).length,
         draft: allCOPs.filter(c => c.status === 'draft').length,
     };
 
@@ -120,7 +123,7 @@ function StatCard({ label, value, color }: { label: string; value: number; color
 }
 
 function StatusPill({ status }: { status: COPStatus }) {
-    const cfg = STATUS_CFG[status];
+    const cfg = STATUS_CFG[status] || STATUS_CFG.draft;
     return (
         <span style={{
             padding: '4px 10px',

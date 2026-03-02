@@ -25,54 +25,55 @@ export interface RABillData {
   grandTotal: number;
 }
 
-const KEY_PREFIX = 'lpw-ra-bill-';
-const KEY_LIST = 'lpw-ra-list';
+// Keys are namespaced by vendorId so each vendor has isolated storage.
+// LPW vendor uses id='lpw' → keys: 'lpw-ra-bill-X', 'lpw-ra-list' (backward-compat).
+const raKey = (v: string, n: number) => `${v}-ra-bill-${n}`;
+const raList = (v: string) => `${v}-ra-list`;
 
 // ─── Read ─────────────────────────────────────────────────────────────────────
-export function loadRA(raNumber: number): RABillData | null {
+export function loadRA(raNumber: number, vendorId = 'lpw'): RABillData | null {
   try {
-    const raw = localStorage.getItem(KEY_PREFIX + raNumber);
+    const raw = localStorage.getItem(raKey(vendorId, raNumber));
     return raw ? JSON.parse(raw) : null;
   } catch { return null; }
 }
 
-export function loadAllRAs(): RABillData[] {
+export function loadAllRAs(vendorId = 'lpw'): RABillData[] {
   try {
-    const list: number[] = JSON.parse(localStorage.getItem(KEY_LIST) || '[]');
-    return list.map(n => loadRA(n)).filter(Boolean) as RABillData[];
+    const list: number[] = JSON.parse(localStorage.getItem(raList(vendorId)) || '[]');
+    return list.map(n => loadRA(n, vendorId)).filter(Boolean) as RABillData[];
   } catch { return []; }
 }
 
-export function getSavedRANumbers(): number[] {
+export function getSavedRANumbers(vendorId = 'lpw'): number[] {
   try {
-    return JSON.parse(localStorage.getItem(KEY_LIST) || '[]');
+    return JSON.parse(localStorage.getItem(raList(vendorId)) || '[]');
   } catch { return []; }
 }
 
 // ─── Write ────────────────────────────────────────────────────────────────────
-export function saveRA(data: RABillData): void {
-  localStorage.setItem(KEY_PREFIX + data.raNumber, JSON.stringify(data));
-  // Update list
-  const list = getSavedRANumbers();
+export function saveRA(data: RABillData, vendorId = 'lpw'): void {
+  localStorage.setItem(raKey(vendorId, data.raNumber), JSON.stringify(data));
+  const list = getSavedRANumbers(vendorId);
   if (!list.includes(data.raNumber)) {
     list.push(data.raNumber);
     list.sort((a, b) => a - b);
-    localStorage.setItem(KEY_LIST, JSON.stringify(list));
+    localStorage.setItem(raList(vendorId), JSON.stringify(list));
   }
 }
 
-export function deleteRA(raNumber: number): void {
-  localStorage.removeItem(KEY_PREFIX + raNumber);
-  const list = getSavedRANumbers().filter(n => n !== raNumber);
-  localStorage.setItem(KEY_LIST, JSON.stringify(list));
-  deleteCOP(raNumber);
+export function deleteRA(raNumber: number, vendorId = 'lpw'): void {
+  localStorage.removeItem(raKey(vendorId, raNumber));
+  const list = getSavedRANumbers(vendorId).filter(n => n !== raNumber);
+  localStorage.setItem(raList(vendorId), JSON.stringify(list));
+  deleteCOP(raNumber, vendorId);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COP (Certificate of Payment) data
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type COPStatus = 'draft' | 'submitted' | 'approved' | 'rejected';
+export type COPStatus = 'draft' | 'prepared' | 'l1_approved' | 'l2_approved' | 'l3_approved' | 'approved' | 'rejected';
 
 export interface COPAdjustmentLine {
   id: string;
@@ -121,36 +122,36 @@ export interface COPData {
   }[];
 }
 
-const COP_PREFIX = 'lpw-cop-';
-const COP_LIST = 'lpw-cop-list';
+const copKey = (v: string, n: number) => `${v}-cop-${n}`;
+const copList = (v: string) => `${v}-cop-list`;
 
-export function loadCOP(raNumber: number): COPData | null {
+export function loadCOP(raNumber: number, vendorId = 'lpw'): COPData | null {
   try {
-    const raw = localStorage.getItem(COP_PREFIX + raNumber);
+    const raw = localStorage.getItem(copKey(vendorId, raNumber));
     return raw ? JSON.parse(raw) : null;
   } catch { return null; }
 }
 
-export function loadAllCOPs(): COPData[] {
+export function loadAllCOPs(vendorId = 'lpw'): COPData[] {
   try {
-    const list: number[] = JSON.parse(localStorage.getItem(COP_LIST) || '[]');
-    return list.map(n => loadCOP(n)).filter(Boolean) as COPData[];
+    const list: number[] = JSON.parse(localStorage.getItem(copList(vendorId)) || '[]');
+    return list.map(n => loadCOP(n, vendorId)).filter(Boolean) as COPData[];
   } catch { return []; }
 }
 
-export function saveCOP(data: COPData): void {
-  localStorage.setItem(COP_PREFIX + data.raNumber, JSON.stringify(data));
-  const list: number[] = JSON.parse(localStorage.getItem(COP_LIST) || '[]');
+export function saveCOP(data: COPData, vendorId = 'lpw'): void {
+  localStorage.setItem(copKey(vendorId, data.raNumber), JSON.stringify(data));
+  const list: number[] = JSON.parse(localStorage.getItem(copList(vendorId)) || '[]');
   if (!list.includes(data.raNumber)) {
     list.push(data.raNumber);
     list.sort((a, b) => a - b);
-    localStorage.setItem(COP_LIST, JSON.stringify(list));
+    localStorage.setItem(copList(vendorId), JSON.stringify(list));
   }
 }
 
-export function deleteCOP(raNumber: number): void {
-  localStorage.removeItem(COP_PREFIX + raNumber);
-  const list: number[] = JSON.parse(localStorage.getItem(COP_LIST) || '[]')
+export function deleteCOP(raNumber: number, vendorId = 'lpw'): void {
+  localStorage.removeItem(copKey(vendorId, raNumber));
+  const list: number[] = JSON.parse(localStorage.getItem(copList(vendorId)) || '[]')
     .filter((n: number) => n !== raNumber);
-  localStorage.setItem(COP_LIST, JSON.stringify(list));
+  localStorage.setItem(copList(vendorId), JSON.stringify(list));
 }

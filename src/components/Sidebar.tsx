@@ -2,8 +2,7 @@
 
 import { RABillData, COPData } from '@/lib/raStore';
 import { NavPage } from '@/app/page';
-
-
+import { VendorConfig } from '@/data/vendorRegistry';
 
 interface SidebarProps {
   activePage: NavPage;
@@ -13,26 +12,61 @@ interface SidebarProps {
   activeRA: RABillData | null;
   onSelectRA: (ra: RABillData | null) => void;
   onNewRA: () => void;
+  vendors: VendorConfig[];
+  activeVendorId: string;
+  onSwitchVendor: (id: string) => void;
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  draft: '#94a3b8', submitted: '#b45309', approved: '#166534', rejected: '#b91c1c',
+  draft: '#94a3b8', prepared: '#1e40af', l1_approved: '#0369a1', l2_approved: '#0891b2', l3_approved: '#059669', approved: '#166534', rejected: '#b91c1c',
 };
 const STATUS_BG: Record<string, string> = {
-  draft: '#f1f5f9', submitted: '#fffbeb', approved: '#dcfce7', rejected: '#fee2e2',
+  draft: '#f1f5f9', prepared: '#eff6ff', l1_approved: '#f0f9ff', l2_approved: '#ecfeff', l3_approved: '#ecfdf5', approved: '#dcfce7', rejected: '#fee2e2',
 };
 
-export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, activeRA, onSelectRA, onNewRA }: SidebarProps) {
+export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, activeRA, onSelectRA, onNewRA, vendors, activeVendorId, onSwitchVendor }: SidebarProps) {
+  const activeVendor = vendors.find(v => v.id === activeVendorId) ?? vendors[0];
   return (
     <aside style={{
-      width: 228, background: '#0f2044', color: '#fff',
+      width: 232, background: '#0f2044', color: '#fff',
       display: 'flex', flexDirection: 'column', flexShrink: 0,
     }}>
-      {/* Brand */}
-      <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: 0.5 }}>LPW Echur Project</div>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>
-          RA Billing & Contract Mgmt
+      {/* Vendor switcher */}
+      <div style={{ padding: '10px 10px 8px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Project</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {vendors.map(v => {
+            const isActive = v.id === activeVendorId;
+            const pct = v.billingSummaryTotals.orderAmount > 0
+              ? ((v.billingSummaryTotals.cumulativeAmount / v.billingSummaryTotals.orderAmount) * 100).toFixed(0)
+              : '0';
+            return (
+              <button key={v.id} onClick={() => onSwitchVendor(v.id)} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '6px 8px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
+                textAlign: 'left', fontFamily: 'inherit', transition: 'background 0.15s',
+              }}
+                onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.07)'; }}
+                onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              >
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? '#fff' : 'rgba(255,255,255,0.65)' }}>
+                    {v.shortName}
+                  </div>
+                  <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', marginTop: 1 }}>
+                    RA-{v.currentRA} · ₹{(v.billingSummaryTotals.orderAmount / 1e7).toFixed(1)} Cr
+                  </div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                  {isActive && <Dot color="#86efac" />}
+                  <div style={{ fontSize: 9, color: isActive ? '#86efac' : 'rgba(255,255,255,0.3)', fontWeight: 700 }}>
+                    {pct}%
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -55,7 +89,7 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <BillIcon />
             <span style={{ fontSize: 12, color: !activeRA ? '#fff' : 'rgba(255,255,255,0.6)' }}>
-              RA-16 <span style={{ fontSize: 9, opacity: 0.4 }}>(baseline)</span>
+              RA-{activeVendor.currentRA} <span style={{ fontSize: 9, opacity: 0.4 }}>(baseline)</span>
             </span>
           </div>
           {!activeRA && <Dot color="#86efac" />}
@@ -110,12 +144,12 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
         </NavBtn>
         <NavBtn id="approvals" active={activePage} onClick={() => onNavigate('approvals')} icon={<PlusIcon />} highlight="#86efac">
           Pending Approvals
-          {allCOPs.filter(c => c.status === 'submitted').length > 0 && (
+          {allCOPs.filter(c => !['approved', 'draft', 'rejected'].includes(c.status)).length > 0 && (
             <span style={{
               background: '#ef4444', color: '#fff', fontSize: 9, padding: '1px 5px',
               borderRadius: 10, marginLeft: 'auto', fontWeight: 700
             }}>
-              {allCOPs.filter(c => c.status === 'submitted').length}
+              {allCOPs.filter(c => !['approved', 'draft', 'rejected'].includes(c.status)).length}
             </span>
           )}
         </NavBtn>
@@ -141,10 +175,10 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Active</span>
           <span style={{ background: activeRA ? '#1a56b0' : '#374151', color: '#fff', padding: '2px 8px', borderRadius: 20, fontSize: 10, fontWeight: 700 }}>
-            RA-{activeRA?.raNumber ?? 16}
+            RA-{activeRA?.raNumber ?? activeVendor.currentRA}
           </span>
         </div>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 4 }}>Conserve Buildcon LLP</div>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 4 }}>{activeVendor.contractor}</div>
       </div>
     </aside>
   );

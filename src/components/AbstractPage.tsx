@@ -2,25 +2,16 @@
 
 import { fmt, fmtCr } from '@/lib/utils';
 import KpiCard from './KpiCard';
-import { billingSummaryItems, billingSummaryTotals, billingMilestones, infraBillingMilestones } from '@/data/projectData';
+import PctBar from './PctBar';
+import { useVendor } from '@/lib/VendorContext';
 import { RABillData, BKEYS } from '@/lib/raStore';
 
 interface Props { activeRA: RABillData | null; }
 
-function PctBar({ pct, color = '#1a56b0' }: { pct: number; color?: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <div style={{ width: 60, height: 5, background: '#e2e8f0', borderRadius: 3 }}>
-        <div style={{ width: `${Math.min(pct, 100)}%`, height: '100%', background: color, borderRadius: 3 }} />
-      </div>
-      <span style={{ fontSize: 11 }}>{pct.toFixed(1)}%</span>
-    </div>
-  );
-}
-
 export default function AbstractPage({ activeRA }: Props) {
+  const { billingSummaryItems, billingSummaryTotals, currentRA } = useVendor();
   const base = billingSummaryTotals;
-  const raNum = activeRA?.raNumber ?? 16;
+  const raNum = activeRA?.raNumber ?? currentRA;
 
   // If viewing a saved RA, compute this-bill from its entries
   const getRABldgTotal = () => {
@@ -106,7 +97,7 @@ export default function AbstractPage({ activeRA }: Props) {
         <div style={{ padding:'12px 16px', borderBottom:'1px solid #d1d5db', background:'#f8fafc', flexShrink:0 }}>
           <div style={{ fontWeight:600 }}>Bill Summary — RA-{raNum}</div>
           <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>
-            {activeRA ? `RA-${activeRA.raNumber} entered manually — amounts from saved entry` : 'Figures from billing_lpw.json (RA-16 baseline)'}
+            {activeRA ? `RA-${activeRA.raNumber} entered manually — amounts from saved entry` : `Baseline figures for RA-${currentRA}`}
           </div>
         </div>
 
@@ -142,7 +133,7 @@ export default function AbstractPage({ activeRA }: Props) {
         {/* Line item breakdown — always shows RA-16 baseline */}
         <div style={{ borderTop:'1px solid #d1d5db', flexShrink:0 }}>
           <div style={{ padding:'8px 16px', background:'#f8fafc', fontWeight:600, fontSize:12, color:'#0f2044' }}>
-            Line-item Breakdown (RA-16 Baseline)
+            Line-item Breakdown (RA-{currentRA} Baseline)
           </div>
           <div style={{ overflow:'auto', maxHeight:260 }}>
             <table className="data-table">
