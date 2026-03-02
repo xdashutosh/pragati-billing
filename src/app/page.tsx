@@ -198,7 +198,7 @@ export default function Home() {
           {/* Holds — we manage state here and pass down so COP sees it */}
           {page === 'holds' && (
             <HoldsPage
-              initialHolds={holdItems}
+              holds={holdItems}
               onHoldsChange={setHoldItems}
             />
           )}
