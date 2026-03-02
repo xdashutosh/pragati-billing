@@ -1,0 +1,1857 @@
+{
+  "abstractSummary": {
+    "projectName": "Pragati Echur Project",
+    "totalBasicCost": 868666069.5073293,
+    "costPerSqft": 1089.015339,
+    "items": [
+      {
+        "sno": "1",
+        "description": "Warehouse building civil works",
+        "amount": 394115111.7882,
+        "ratePerSqft": 494.0879,
+        "subItems": [
+          {
+            "description": "Block-1 Civil Works ",
+            "amount": 40931350.5321
+          },
+          {
+            "description": "Block-2 Civil Works ",
+            "amount": 98698792.5733
+          },
+          {
+            "description": "Block-3 Civil Works ",
+            "amount": 178017690.241
+          },
+          {
+            "description": "Block-4 Civil Works ",
+            "amount": 76467278.4418
+          }
+        ]
+      },
+      {
+        "sno": "2",
+        "description": "Electrical works",
+        "amount": 78540162.412,
+        "ratePerSqft": 98.463,
+        "subItems": [
+          {
+            "description": "Block-1 Electrical / Lighting works",
+            "amount": 3950238.339
+          },
+          {
+            "description": "Block-2 Electrical / Lighting works",
+            "amount": 11454281.9164
+          },
+          {
+            "description": "Block-3 Electrical / Lighting works",
+            "amount": 19792524.9696
+          },
+          {
+            "description": "Block-4 Electrical / Lighting works",
+            "amount": 8539312.7584
+          },
+          {
+            "description": "Infra Electrical works ",
+            "amount": 34803804.4287
+          }
+        ]
+      },
+      {
+        "sno": "3",
+        "description": "Fire fighting works",
+        "amount": 92644304.8378,
+        "ratePerSqft": 116.1448,
+        "subItems": [
+          {
+            "description": "Block-1 Fire fighting works ",
+            "amount": 6397676.9156
+          },
+          {
+            "description": "Block-2 Fire fighting works ",
+            "amount": 19440894.9952
+          },
+          {
+            "description": "Block-3 Fire fighting works ",
+            "amount": 34156281.816
+          },
+          {
+            "description": "Block-4 Fire fighting works ",
+            "amount": 13015927.58
+          },
+          {
+            "description": "Infra Fire fighting works ",
+            "amount": 19633523.531
+          }
+        ]
+      },
+      {
+        "sno": "4",
+        "description": "Plumbing",
+        "amount": 94856521.0077,
+        "ratePerSqft": 118.9182,
+        "subItems": [
+          {
+            "description": "Block-1 Plumbing works ",
+            "amount": 956106.8965
+          },
+          {
+            "description": "Block-2 Plumbing works ",
+            "amount": 2170010.4843
+          },
+          {
+            "description": "Block-3 Plumbing works ",
+            "amount": 3509058.9286
+          },
+          {
+            "description": "Block-4 Plumbing works ",
+            "amount": 1716165.6541
+          },
+          {
+            "description": "Infra Plumbing works ",
+            "amount": 86505179.0443
+          }
+        ]
+      },
+      {
+        "sno": "5",
+        "description": "Infra civil works",
+        "amount": 158145891.636,
+        "ratePerSqft": 198.2618,
+        "subItems": [
+          {
+            "description": "Parking, Pathway, Roads, Infra Earthwork, Boundary & retaining walls, Green area, OSR area, Kerbstone,etc.",
+            "amount": 158145891.636
+          }
+        ]
+      },
+      {
+        "sno": "6",
+        "description": "Ancillary Buildings & Services",
+        "amount": 39196810.9057,
+        "ratePerSqft": 49.1396,
+        "subItems": []
+      },
+      {
+        "sno": "7",
+        "description": "Project Design Charges",
+        "amount": 9571943.0742,
+        "ratePerSqft": 12.0,
+        "subItems": []
+      },
+      {
+        "sno": "8",
+        "description": "PEB Roof Profile Machine Foundation as per drawing for all blocks.",
+        "amount": 1595323.8457,
+        "ratePerSqft": 2.0,
+        "subItems": [
+          {
+            "description": "Total basic cost (GST Excluding )",
+            "amount": 868666069.5073
+          }
+        ]
+      }
+    ]
+  },
+  "buildingCostSheet": {
+    "blocks": [
+      {
+        "block": "Land area of WH (Block 1)",
+        "plinthArea": 60030.32883,
+        "mezzArea": 3209.50188,
+        "totalBUA": 63239.83071,
+        "trades": [
+          {
+            "tradeNo": 1,
+            "trade": "Civil Works PEB/SHED Area incl. flooring",
+            "rate": 681.8445,
+            "amount": 40931350.5321,
+            "items": [
+              {
+                "ref": "a",
+                "description": "Building foundation,pedastal, anchor bolts fixing, plinth beam,periphrial retaining wall , GP2, ATT, etc.",
+                "amount": 14047096.9463
+              },
+              {
+                "ref": "b",
+                "description": "Earthwork for plinth upto 1.2 mtr i.e. cutting or filling from inside premises soil or filling from bought-out soil as per contour and proposed levels - cost considered already in entire park land development cost item no. 1 O in infra cost sheet.",
+                "amount": 0
+              },
+              {
+                "ref": "c",
+                "description": "Brick /CC Block wall including tie beam ,stub columns, lintel beam, plastering, painting , openable/sliding aluminium windows with fixed mesh and pinhead glass,etc.",
+                "amount": 4202123.0181
+              },
+              {
+                "ref": "d",
+                "description": "Grade slab \n(GSB, Vapour barrier, concrete, reinforcement, Hardner, FM-2, Groove cutting & filling, armour joints, dowels,etc.)",
+                "amount": 15007582.2076
+              },
+              {
+                "ref": "e",
+                "description": "Mezzanine civil work (Including mezzanine foundations & 150mm grade slab)",
+                "amount": 693275.4232
+              },
+              {
+                "ref": "f",
+                "description": "Fire Door Exit staircase with/without canopy ,MHE Ramp Civil work 5mx14.4m & dock opening angle",
+                "amount": 1201057.014
+              },
+              {
+                "ref": "g",
+                "description": "SITC of Fire door ,MHE Manual Rolling shutter & Dock Motorized rolling shutter with dock bumpers",
+                "amount": 1140576.2478
+              },
+              {
+                "ref": "h",
+                "description": "Toilets Civil Work (Including 1 Handicap Toilet)",
+                "amount": 2219375.34
+              },
+              {
+                "ref": "i",
+                "description": "Dock pits civil work including angle fixing -  to be filled with sand and FM2 floor (7 T capacity) to be casted. (without equipment)",
+                "amount": 138960.0
+              },
+              {
+                "ref": "j",
+                "description": "Warehouse entrance platform , steps, glass door and handicap ramp (Civil work, granite, SS railing , Facade 8m.x 6.5m. with glass canopy)",
+                "amount": 2281304.3352
+              }
+            ]
+          },
+          {
+            "tradeNo": 2,
+            "trade": "Fire fighting works ",
+            "rate": 106.5741,
+            "amount": 6397676.9156,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Hydrant system - External Ring Main + Internal works including mezzanine",
+                "amount": 1981000.8514
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Sprinkler System - External Ring Main + Internal works including mezzanine",
+                "amount": 3396160.4741
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Fire detection system including mezzanine & toilets",
+                "amount": 960485.2613
+              },
+              {
+                "ref": "d",
+                "description": "SIT of Fire extinguishers",
+                "amount": 60030.3288
+              }
+            ]
+          },
+          {
+            "tradeNo": 3,
+            "trade": "Electrical / Lighting works",
+            "rate": 65.804,
+            "amount": 3950238.339,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Internal warehouse lighting including below mezzanine lighting of 200 Lux and canopy lighting 100 Lux - including light fixtures & cables.",
+                "amount": 1320667.2343
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Toilets lighting including light fixtures & cables.",
+                "amount": 102091.2656
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Inside warehouse LT Work - Sub-distribution Panel with incomer of EB and Outgoing Feeder 4 nos feeding to Dock leveler and Motorised Rolling Shutter DB's, Toilet DB's, Lighting DB's, Power DB, ELB DB,fire door electrical point and fire door exit outside light.(The sub-distribution panel of warehouse will feed lighting,dock levellers, motorised rolling shutters-the main LT panel of warehouse is not in D&B Scope)",
+                "amount": 1620818.8784
+              },
+              {
+                "ref": "d",
+                "description": "SITC of Building earthing grid and lightening protection system",
+                "amount": 720363.946
+              },
+              {
+                "ref": "e",
+                "description": "Dock pits - SITC conduits, electrical industrial socket ,DB's and cables.",
+                "amount": 90420.0
+              },
+              {
+                "ref": "f",
+                "description": "SITC of Mechanical Ventilation- SITC of Industrial type 12 inch, 1400 rpm. fan in each cubicle i.e. W/C ,Janitor, bath cubicle etc. \nFor common urinal area - a minumum of 2 nos. of exhaust fan with 18 inch 2550 CFM industrial type is required.",
+                "amount": 95877.0147
+              }
+            ]
+          },
+          {
+            "tradeNo": 4,
+            "trade": "Plumbing Works",
+            "rate": 15.9271,
+            "amount": 956106.8965,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Toilet Plumbing Work",
+                "amount": 956106.8965
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "block": "Land area of WH (Block 2)",
+        "plinthArea": 210154.26,
+        "mezzArea": 11237.616,
+        "totalBUA": 0,
+        "trades": [
+          {
+            "tradeNo": 1,
+            "trade": "Civil Works PEB/SHED Area incl. flooring & Fire Corridor ",
+            "rate": 469.6493,
+            "amount": 98698792.5733,
+            "items": [
+              {
+                "ref": "a",
+                "description": "Building foundation,pedastal, anchor bolts fixing, plinth beam,periphrial retaining wall , GP2, ATT, etc.",
+                "amount": 23747431.38
+              },
+              {
+                "ref": "b",
+                "description": "Earthwork for plinth upto 1.2 mtr i.e. cutting or filling from inside premises soil or filling from bought-out soil as per contour and proposed levels - cost considered already in entire park land development cost item no. 1 O in infra cost sheet.",
+                "amount": 0
+              },
+              {
+                "ref": "c",
+                "description": "Brick /CC Block wall including tie beam ,stub columns, lintel beam, plastering, painting , openable/sliding aluminium windows with fixed mesh and pinhead glass,etc.",
+                "amount": 6724936.32
+              },
+              {
+                "ref": "d",
+                "description": "Grade slab \n(GSB, Vapour barrier, concrete, reinforcement, Hardner, FM-2, Groove cutting & filling, armour joints, dowels,etc.)",
+                "amount": 52538565.0
+              },
+              {
+                "ref": "e",
+                "description": "Mezzanine civil work (Including mezzanine foundations & 150mm grade slab)",
+                "amount": 3000490.5276
+              },
+              {
+                "ref": "f",
+                "description": "Fire Door- Exit staircase with/without canopy ,MHE Ramp Civil work 5mx14.4m & dock opening angle",
+                "amount": 1893277.7537
+              },
+              {
+                "ref": "g",
+                "description": "SITC of Fire door ,MHE Manual Rolling shutter & Dock Motorized rolling shutter with dock bumpers",
+                "amount": 2733266.3056
+              },
+              {
+                "ref": "h",
+                "description": "Toilets Civil Work (Including 1 Handicap Toilet)",
+                "amount": 5334342.39
+              },
+              {
+                "ref": "i",
+                "description": "Dock pits civil work including angle fixing -  to be filled with sand and FM2 floor (7 T capacity) to be casted. (without equipment)",
+                "amount": 416880.0
+              },
+              {
+                "ref": "j",
+                "description": "Warehouse entrance platform , steps, glass door and handicap ramp (Civil work, granite, SS railing , Facade 8m.x6.5m. with glass canopy)",
+                "amount": 2309602.8965
+              }
+            ]
+          },
+          {
+            "tradeNo": 2,
+            "trade": "Fire fighting works ",
+            "rate": 92.5077,
+            "amount": 19440894.9952,
+            "items": [
+              {
+                "ref": "a",
+                "description": "Hydrant system - External Ring Main + Internal works including mezzanine",
+                "amount": 5464010.76
+              },
+              {
+                "ref": "b",
+                "description": "Sprinkler System - External Ring Main + Internal works including mezzanine",
+                "amount": 11664401.8324
+              },
+              {
+                "ref": "c",
+                "description": "Fire detection system including mezzanine & toilets",
+                "amount": 2102328.1428
+              },
+              {
+                "ref": "d",
+                "description": "Fire extinguishers",
+                "amount": 210154.26
+              }
+            ]
+          },
+          {
+            "tradeNo": 3,
+            "trade": "Electrical / Lighting works",
+            "rate": 54.5042,
+            "amount": 11454281.9164,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Internal warehouse lighting including below mezzanine lighting of 200 Lux and canopy lighting 100 Lux - including light fixtures & cables.",
+                "amount": 4623393.72
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Toilets lighting including light fixtures & cables.",
+                "amount": 213373.6956
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Inside warehouse LT Work - Sub-distribution Panel with incomer of EB and Outgoing Feeder 4 nos feeding to Dock leveler and Motorised Rolling Shutter DB's, Toilet DB's, Lighting DB's, Power DB, ELB DB,fire door electrical point and fire door exit outside light.(The sub-distribution panel of warehouse will feed lighting,dock levellers, motorised rolling shutters-the main LT panel of warehouse is not in D&B Scope)",
+                "amount": 3782776.68
+              },
+              {
+                "ref": "d",
+                "description": "SITC of Building earthing grid and lightening protection system",
+                "amount": 2311696.86
+              },
+              {
+                "ref": "e",
+                "description": "Dock pits - conduits, electrical industrial socket ,DB's and cables.",
+                "amount": 271260.0
+              },
+              {
+                "ref": "f",
+                "description": "SITC of Mechanical Ventilation- SITC of Industrial type 12 inch, 1400 rpm. fan in each cubicle i.e. W/C ,Janitor, bath cubicle etc. \nFor common urinal area - a minumum of 2 nos. of exhaust fan with 18 inch 2550 CFM industrial type is required.",
+                "amount": 251780.9608
+              }
+            ]
+          },
+          {
+            "tradeNo": 4,
+            "trade": "Plumbing Works",
+            "rate": 10.3258,
+            "amount": 2170010.4843,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Toilet Plumbing Work",
+                "amount": 2170010.4843
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "block": "Land area of WH (Block 3)",
+        "plinthArea": 388098.92712,
+        "mezzArea": 20919.51101,
+        "totalBUA": 0,
+        "trades": [
+          {
+            "tradeNo": 1,
+            "trade": "Civil Works PEB/SHED Area incl. flooring",
+            "rate": 458.6915,
+            "amount": 178017690.241,
+            "items": [
+              {
+                "ref": "a",
+                "description": "Building foundation,pedastal, anchor bolts fixing, plinth beam,periphrial retaining wall , GP2, ATT, etc.",
+                "amount": 43855178.7645
+              },
+              {
+                "ref": "b",
+                "description": "Earthwork for plinth upto 1.2 mtr i.e. cutting or filling from inside premises soil or filling from bought-out soil as per contour and proposed levels - cost considered already in entire park land development cost item no. 1 O in infra cost sheet.",
+                "amount": 0
+              },
+              {
+                "ref": "c",
+                "description": "Brick /CC Block wall including tie beam ,stub columns, lintel beam, plastering, painting , openable/sliding aluminium windows with fixed mesh and pinhead glass,etc.",
+                "amount": 9314374.2509
+              },
+              {
+                "ref": "d",
+                "description": "Grade slab \n(GSB, Vapour barrier, concrete, reinforcement, Hardner, FM-2, Groove cutting & filling, armour joints, dowels,etc.)",
+                "amount": 97024731.7799
+              },
+              {
+                "ref": "e",
+                "description": "Mezzanine civil work (Including mezzanine foundations & 150mm grade slab)",
+                "amount": 6024836.3688
+              },
+              {
+                "ref": "f",
+                "description": "Fire Door Exit staircase with/without canopy ,MHE Ramp Civil work 5mx14.4m & dock opening angle",
+                "amount": 3331392.943
+              },
+              {
+                "ref": "g",
+                "description": "SITC of Fire door ,MHE Manual Rolling shutter & Dock Motorized rolling shutter with dock bumpers",
+                "amount": 4657187.1254
+              },
+              {
+                "ref": "h",
+                "description": "Toilets Civil Work (Including 2 Handicap Toilet)",
+                "amount": 8851697.361
+              },
+              {
+                "ref": "i",
+                "description": "Dock pits civil work including angle fixing -  to be filled with sand and FM2 floor (7 T capacity) to be casted. (without equipment)",
+                "amount": 694800.0
+              },
+              {
+                "ref": "j",
+                "description": "Warehouse entrance platform , steps, glass door and handicap ramp (Civil work, granite, SS railing , Facade 8m.x6.5m. with glass canopy)",
+                "amount": 2311047.5281
+              },
+              {
+                "ref": "k",
+                "description": "Entry-2 - Warehouse entrance platform 5 mtr wide ,steps, glass panel door 1.5mX2.1m- 2 Nos and handicap ramp (Civil work, granite, SS railing)\nIt should be covered with glass canopy 5mx1.5m",
+                "amount": 1952444.1194
+              }
+            ]
+          },
+          {
+            "tradeNo": 2,
+            "trade": "Fire fighting works ",
+            "rate": 88.0092,
+            "amount": 34156281.816,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Hydrant system - External Ring Main + Internal works including mezzanine",
+                "amount": 8926275.3238
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Sprinkler System - External Ring Main + Internal works including mezzanine",
+                "amount": 21345440.9916
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Fire detection system including mezzanine & toilets",
+                "amount": 3496466.5735
+              },
+              {
+                "ref": "d",
+                "description": "SIT of Fire extinguishers",
+                "amount": 388098.9271
+              }
+            ]
+          },
+          {
+            "tradeNo": 3,
+            "trade": "Electrical / Lighting works",
+            "rate": 50.9987,
+            "amount": 19792524.9696,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Internal warehouse lighting including below mezzanine lighting of 200 Lux and canopy lighting 100 Lux - including light fixtures & cables.",
+                "amount": 7761978.5424
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Toilets lighting including light fixtures & cables.",
+                "amount": 371771.2892
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Inside warehouse LT Work - Sub-distribution Panel with incomer of EB and Outgoing Feeder 4 nos feeding to Dock leveler and Motorised Rolling Shutter DB's, Toilet DB's, Lighting DB's, Power DB, ELB DB,fire door electrical point and fire door exit outside light.(The sub-distribution panel of warehouse will feed lighting,dock levellers, motorised rolling shutters-the main LT panel of warehouse is not in D&B Scope)",
+                "amount": 6985780.6882
+              },
+              {
+                "ref": "d",
+                "description": "SITC of Building earthing grid and lightening protection system",
+                "amount": 3880989.2712
+              },
+              {
+                "ref": "e",
+                "description": "Dock pits - conduits, electrical industrial socket ,DB's and cables.",
+                "amount": 452100.0
+              },
+              {
+                "ref": "f",
+                "description": "SITC of Mechanical Ventilation- SITC of Industrial type 12 inch, 1400 rpm. fan in each cubicle i.e. W/C ,Janitor, bath cubicle etc. \nFor common urinal area - a minumum of 2 nos. of exhaust fan with 18 inch 2550 CFM industrial type is required.",
+                "amount": 339905.1787
+              }
+            ]
+          },
+          {
+            "tradeNo": 4,
+            "trade": "Plumbing Works",
+            "rate": 9.0417,
+            "amount": 3509058.9286,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Toilet Plumbing Work",
+                "amount": 3509058.9286
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "block": "Land area of WH (Block 4)",
+        "plinthArea": 139378.4069,
+        "mezzArea": 7899.26904,
+        "totalBUA": 0,
+        "trades": [
+          {
+            "tradeNo": 1,
+            "trade": "Civil Works PEB/SHED Area incl. flooring",
+            "rate": 548.6307,
+            "amount": 76467278.4418,
+            "items": [
+              {
+                "ref": "a",
+                "description": "Building foundation,pedastal, anchor bolts fixing, plinth beam,periphrial retaining wall , GP2, ATT, etc.",
+                "amount": 23694329.1728
+              },
+              {
+                "ref": "b",
+                "description": "Earthwork for plinth upto 1.2 mtr i.e. cutting or filling from inside premises soil or filling from bought-out soil as per contour and proposed levels - cost considered already in entire park land development cost item no. 1 O in infra cost sheet.",
+                "amount": 0
+              },
+              {
+                "ref": "c",
+                "description": "Brick /CC Block wall including tie beam ,stub columns, lintel beam, plastering, painting , openable/sliding aluminium windows with fixed mesh and pinhead glass,etc.",
+                "amount": 6132649.9035
+              },
+              {
+                "ref": "d",
+                "description": "Grade slab \n(GSB, Vapour barrier, concrete, reinforcement, Hardner, FM-2, Groove cutting & filling, armour joints, dowels,etc.)",
+                "amount": 34844601.7247
+              },
+              {
+                "ref": "e",
+                "description": "Mezzanine civil work (Including mezzanine foundations & 150mm grade slab)",
+                "amount": 2385637.3308
+              },
+              {
+                "ref": "f",
+                "description": "Fire Door Exit staircase with/without canopy ,MHE Ramp Civil work 5mx14.4m & dock opening angle",
+                "amount": 1255512.0258
+              },
+              {
+                "ref": "g",
+                "description": "SITC of Fire door ,MHE Manual Rolling shutter & Dock Motorized rolling shutter with dock bumpers",
+                "amount": 1811919.2897
+              },
+              {
+                "ref": "h",
+                "description": "Toilets Civil Work (Including 1 Handicap Toilet)",
+                "amount": 3834150.255
+              },
+              {
+                "ref": "i",
+                "description": "Dock pits civil work including angle fixing -  to be filled with sand and FM2 floor (7 T capacity) to be casted. (without equipment)",
+                "amount": 277920.0
+              },
+              {
+                "ref": "j",
+                "description": "Warehouse entrance platform , steps, glass door and handicap ramp (Civil work, granite, SS railing , Facade 8m.x6.5m. with glass canopy)",
+                "amount": 2230558.7395
+              }
+            ]
+          },
+          {
+            "tradeNo": 2,
+            "trade": "Fire fighting works ",
+            "rate": 93.3855,
+            "amount": 13015927.58,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Hydrant system - External Ring Main + Internal works including mezzanine",
+                "amount": 3816180.7809
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Sprinkler System - External Ring Main + Internal works including mezzanine",
+                "amount": 7665812.3794
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Fire detection system including mezzanine & toilets",
+                "amount": 1394556.0128
+              },
+              {
+                "ref": "d",
+                "description": "SIT of Fire extinguishers",
+                "amount": 139378.4069
+              }
+            ]
+          },
+          {
+            "tradeNo": 3,
+            "trade": "Electrical / Lighting works",
+            "rate": 61.2671,
+            "amount": 8539312.7584,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Internal warehouse lighting including below mezzanine lighting of 200 Lux and canopy lighting 100 Lux - including light fixtures & cables.",
+                "amount": 2787568.138
+              },
+              {
+                "ref": "b",
+                "description": "SITC of Toilets lighting including light fixtures & cables.",
+                "amount": 161034.3107
+              },
+              {
+                "ref": "c",
+                "description": "SITC of Inside warehouse LT Work - Sub-distribution Panel with incomer of EB and Outgoing Feeder 4 nos feeding to Dock leveler and Motorised Rolling Shutter DB's, Toilet DB's, Lighting DB's, Power DB, ELB DB,fire door electrical point and fire door exit outside light.(The sub-distribution panel of warehouse will feed lighting,dock levellers, motorised rolling shutters-the main LT panel of warehouse is not in D&B Scope)",
+                "amount": 3484460.1725
+              },
+              {
+                "ref": "d",
+                "description": "SITC of Building earthing grid and lightening protection system",
+                "amount": 1811919.2897
+              },
+              {
+                "ref": "e",
+                "description": "Dock pits - conduits, electrical industrial socket ,DB's and cables.",
+                "amount": 180840.0
+              },
+              {
+                "ref": "f",
+                "description": "SITC of Mechanical Ventilation- SITC of Industrial type 12 inch, 1400 rpm. fan in each cubicle i.e. W/C ,Janitor, bath cubicle etc. \nFor common urinal area - a minumum of 2 nos. of exhaust fan with 18 inch 2550 CFM industrial type is required.",
+                "amount": 113490.8475
+              }
+            ]
+          },
+          {
+            "tradeNo": 4,
+            "trade": "Plumbing Works",
+            "rate": 12.313,
+            "amount": 1716165.6541,
+            "items": [
+              {
+                "ref": "a",
+                "description": "SITC of Toilet Plumbing Work",
+                "amount": 1716165.6541
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "infraCostSheet": {
+    "sections": [
+      {
+        "sno": 1,
+        "section": "Civil - Infra works",
+        "rate": 198.2618,
+        "amount": 158145891.636,
+        "items": [
+          {
+            "ref": "a",
+            "description": "Truck Parking - Pavers 80 mm",
+            "unit": "Sqft.",
+            "qty": 25941.24,
+            "rate": 196.0,
+            "amount": 5084483.04
+          },
+          {
+            "ref": "b",
+            "description": "Car Parking Pavers -Open -60mm",
+            "unit": "Sqft.",
+            "qty": 8503.56,
+            "rate": 180.0,
+            "amount": 1530640.8
+          },
+          {
+            "ref": "c",
+            "description": "Pathway - Pavers 60 mm - lvl to match with finished road level (FRL)",
+            "unit": "Sqft.",
+            "qty": 6350.76,
+            "rate": 144.0,
+            "amount": 914509.44
+          },
+          {
+            "ref": "d",
+            "description": "Pathway - Pavers 60 mm - lvl+150mm",
+            "unit": "Sqft.",
+            "qty": 43056.0,
+            "rate": 146.0,
+            "amount": 6286176.0
+          },
+          {
+            "ref": "e",
+            "description": "Non Movement Pathway- 40mm gravel of 100mm thickness to be laid",
+            "unit": "Sqft.",
+            "qty": 27168.336,
+            "rate": 30.0,
+            "amount": 815050.08
+          },
+          {
+            "ref": "f",
+            "description": "Kerb Stone with paint",
+            "unit": "Rmt.",
+            "qty": 4937.55,
+            "rate": 1020.0,
+            "amount": 5036301.0
+          },
+          {
+            "ref": "g",
+            "description": "Road & Apron-PQC-M40 -RCC Road with 40 MT Axial load.",
+            "unit": "Sqft.",
+            "qty": 286968.24,
+            "rate": 240.0,
+            "amount": 68872377.6
+          },
+          {
+            "ref": "h",
+            "description": "Road- FIRE TENDER MOVEMENT - Pavers 80 mm",
+            "unit": "Sqft.",
+            "qty": 112591.44,
+            "rate": 197.4,
+            "amount": 22225550.256
+          },
+          {
+            "ref": "i",
+            "description": "Barricading for Operation of Phase-1 and Construction of Phase 2.\n10 feet height GI sheet with MS Structure barrication.",
+            "unit": "Rmt.",
+            "qty": 501.0,
+            "rate": 4200.0,
+            "amount": 2104200.0
+          },
+          {
+            "ref": "j",
+            "description": "MS Fencing with retaining wall and foundation 1.8 mtr height from ground level",
+            "unit": "Rmt.",
+            "qty": 35.0,
+            "rate": 12000.0,
+            "amount": 420000.0
+          },
+          {
+            "ref": "k",
+            "description": "5 Feet Height Barbed Wire Fencing outside boundary wall with concrete poles, including civil work for grouting.",
+            "unit": "Rmt.",
+            "qty": 250.0,
+            "rate": 1020.0,
+            "amount": 255000.0
+          },
+          {
+            "ref": "l",
+            "description": "Retaining Wall (Near Ramp at front & OSR 2) as per the proposed layout",
+            "unit": "Rmt.",
+            "qty": 165.0,
+            "rate": 26800.0,
+            "amount": 4422000.0
+          },
+          {
+            "ref": "m",
+            "description": "Green Area with lawn and trees with irigation system ",
+            "unit": "Sqft.",
+            "qty": 142407.72,
+            "rate": 20.0,
+            "amount": 2848154.4
+          },
+          {
+            "ref": "n",
+            "description": "OSR Green Area with Tress only and irrigation system",
+            "unit": "Sqft.",
+            "qty": 40763.268,
+            "rate": 15.0,
+            "amount": 611449.02
+          },
+          {
+            "ref": "o",
+            "description": "Land Development- Cleaning, Cutting, filling , Backfilling, soil filling bought-out from outside & compaction of Soil for Warehouses upto plinth level (+1.2), external infra, ancillary buildings, green area, OSR, etc. \nCutting & Filling to be done as per NGL & Proposed Finished Levels.",
+            "unit": "Acre",
+            "qty": 36.0,
+            "rate": 1020000.0,
+            "amount": 36720000.0
+          }
+        ]
+      },
+      {
+        "sno": 2,
+        "section": "Plumbing Works ",
+        "rate": 108.4484,
+        "amount": 86505179.0443,
+        "items": [
+          {
+            "ref": "a",
+            "description": "External water Supply system - Domestic & flushing water-CPVC -SCH 80",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 6.75,
+            "amount": 5676262.7907
+          },
+          {
+            "ref": "b",
+            "description": "Hydro pneumatic pumps with Electrical work",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 3.0,
+            "amount": 2522783.4625
+          },
+          {
+            "ref": "c",
+            "description": "External Sewer Line with Brick/RCC Chambers by gravity or by pumping",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 9.0,
+            "amount": 7568350.3876
+          },
+          {
+            "ref": "d",
+            "description": "Sump pit minimum 2.5x2.5x2.5 meter and with pumps with GI C-Class line from sump to STP",
+            "unit": "No.",
+            "qty": 2.0,
+            "rate": 403500.0,
+            "amount": 807000.0
+          },
+          {
+            "ref": "e",
+            "description": "Irrigation water supply system for Green Area & OSR Area",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 1.2736,
+            "amount": 1071000.0
+          },
+          {
+            "ref": "f",
+            "description": "Pond of required effective capacity with clear 1200 mm wide brickwork Staircase with MS railing,No bores and no filter media.\nPond will have tapered walls at 45 degree with Stone pitching on sides & bottom of pond and 1800mm chain fencing with inlet RCC hume pipe of storm water and overflow discharge RCC hume pipe towards nearby water body.\nAlso, a cleaning sump is to be provided at the bottom of Pond  along with Pump for Cleaning Purpose. Pond to be covered with mosquito net.\n",
+            "unit": "KL",
+            "qty": 500.0,
+            "rate": 4500.0,
+            "amount": 2250000.0
+          },
+          {
+            "ref": "",
+            "description": "Pond of required effective capacity with clear 1200 mm wide brickwork Staircase with MS railing,No bores and no filter media.\nPond will have tapered walls at 45 degree with Stone pitching on sides & bottom of pond and 1800mm chain fencing with inlet RCC hume pipe of storm water and overflow discharge RCC hume pipe towards nearby water body.\nAlso, a cleaning sump is to be provided at the bottom of Pond  along with Pump for Cleaning Purpose. Pond to be covered with mosquito net.\n",
+            "unit": "KL",
+            "qty": 1500.0,
+            "rate": 3100.0,
+            "amount": 4650000.0
+          },
+          {
+            "ref": "g",
+            "description": "Storm Water Drain will be U-Type RCC Drain of Open & Covered Type both as per design and road movement with Brick/RCC Chambers with Heavy duty/light duty covers as per requirement. No any drain will be open in docking area side.All road site/vehicular movement area chambers should be RCC Chambers and rest can be of brickwork.",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 54.0,
+            "amount": 45410102.3258
+          },
+          {
+            "ref": "h",
+            "description": "SITC of Raw water tank, 1 no with Civil Foundation (effective capacity)",
+            "unit": "KL",
+            "qty": 85.0,
+            "rate": 10440.0,
+            "amount": 887400.0
+          },
+          {
+            "ref": "i",
+            "description": "SITC of Treated water tank , 1no. with Civil Foundation (effective capacity)",
+            "unit": "KL",
+            "qty": 120.0,
+            "rate": 12600.0,
+            "amount": 1512000.0
+          },
+          {
+            "ref": "j",
+            "description": "SITC of Non modular STP -MBBR (Mechanical) (effective capacity)",
+            "unit": "kLd",
+            "qty": 155.0,
+            "rate": 47750.0,
+            "amount": 7401250.0
+          },
+          {
+            "ref": "k",
+            "description": "STP Civil works including equalisation tank for 155 KLD STP and shed on roof and walls on all four sides with complete fire works.",
+            "unit": "LS",
+            "qty": 1.0,
+            "rate": 4500000.0,
+            "amount": 4500000.0
+          },
+          {
+            "ref": "l",
+            "description": "Plumbing works of Utility Buildings (Pump Room, Driver rest room, guard room, RO Chiller ,FMO Container,OWC, etc.)",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 1.8,
+            "amount": 1513670.0775
+          },
+          {
+            "ref": "m",
+            "description": "Borewell - 1 No. borewell of up to 200 feet depth and 200mm dia bore with pump.\nPlumbing connection from Borewell to Raw water tank and automation for borewell functioning .",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 735360.0,
+            "amount": 735360.0
+          }
+        ]
+      },
+      {
+        "sno": 3,
+        "section": "Ancillary Buildings & Services",
+        "rate": 49.1396,
+        "amount": 39196810.9057,
+        "items": [
+          {
+            "ref": "a",
+            "description": "LT Room -Civil -Complete Work ",
+            "unit": "Sqft.",
+            "qty": 751.0,
+            "rate": 2580.0,
+            "amount": 1937580.0
+          },
+          {
+            "ref": "b",
+            "description": "Pump Room-Civil including Trench & Pump foundations -Complete Work ",
+            "unit": "Sqft.",
+            "qty": 2260.44,
+            "rate": 2000.0,
+            "amount": 4520880.0
+          },
+          {
+            "ref": "c",
+            "description": "Driver rest Room with toilets facility-Civil-Complete room ",
+            "unit": "Sqft.",
+            "qty": 1937.52,
+            "rate": 2100.0,
+            "amount": 4068792.0
+          },
+          {
+            "ref": "d",
+            "description": "Guard Room with Toilet - Site entry-Civil -Complete Work  ",
+            "unit": "Sqft.",
+            "qty": 258.336,
+            "rate": 2820.0,
+            "amount": 728507.52
+          },
+          {
+            "ref": "e",
+            "description": "HT Meter/RMU Area with 1.8 mtr MS fencing and gravel",
+            "unit": "Sqft.",
+            "qty": 538.2,
+            "rate": 720.0,
+            "amount": 387504.0
+          },
+          {
+            "ref": "f",
+            "description": "DG foundations (5mx2m)",
+            "unit": "No.",
+            "qty": 1.0,
+            "rate": 120000.0,
+            "amount": 120000.0
+          },
+          {
+            "ref": "g",
+            "description": "DG's stack Structure of 18M height from FRL including Insulation and GI Cladding on smoke pipes and smoke pipe will connect to DG set considering smoke pipe dia. for 200KVA DG as  200 mm. NB & 250 mm. NB  considering back pressure. Including Civil Work.",
+            "unit": "No.",
+            "qty": 1.0,
+            "rate": 1500000.0,
+            "amount": 1500000.0
+          },
+          {
+            "ref": "h",
+            "description": "Electrical Substation including foundation of Transformer, HT VCB, RCC Trench and respective panels foundations. The yard includes gravel and 1.8 m height peripharal Chain Link Fencing as well.",
+            "unit": "Sqft.",
+            "qty": 1748.0736,
+            "rate": 650.0,
+            "amount": 1136247.84
+          },
+          {
+            "ref": "i",
+            "description": "Separate Road crossing for tenant (Hume pipe for utilities) with Chambers,  45 meter per lac (3-4 location ) of each warehouse  200 mm dia Np3 pipe ",
+            "unit": "Rmt.",
+            "qty": 360.0,
+            "rate": 2802.0,
+            "amount": 1008720.0
+          },
+          {
+            "ref": "j",
+            "description": "Underground Crossings for Proposed Substation to warehouses.This shall be done with laying of 2 No’s NP3 Hume pipes of 300mm dia with chambers at every 25 meters below to road level with proper encasing as per design.\n2 No's of Hume pipe laying will be considered for per rmt length.",
+            "unit": "Rmt.",
+            "qty": 145.0,
+            "rate": 7008.0,
+            "amount": 1016160.0
+          },
+          {
+            "ref": "k",
+            "description": "Underground RCC Trench with pre-cast slab along Boundary Wall. RCC Drain 0.8m clear Wide x 1-meter clear depth for Proposed Route for tenant Substation. Every 20 meters service opening of 1mx1m with heavy duty removable cover will be provided as per design. Refer reference drawing.",
+            "unit": "Rmt.",
+            "qty": 330.0,
+            "rate": 18450.29,
+            "amount": 6088595.7
+          },
+          {
+            "ref": "l",
+            "description": "Over Ground MS Structure (Clear 600mm wide) for Proposed Route for Tenant Substation-MS Channel anchored on RCC retaining wall of boundary wall from one end and supported on vertical MS channel on the other end. Refer reference drawing.",
+            "unit": "Rmt.",
+            "qty": 387.0,
+            "rate": 5500.0,
+            "amount": 2128500.0
+          },
+          {
+            "ref": "m",
+            "description": "10,000 Ltr effective capacity of underground RCC water tank with pump (One working + One Standby) to fill the Fire & Domestic Modular Tanks of 12 mtr height.",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 300000.0,
+            "amount": 300000.0
+          },
+          {
+            "ref": "n",
+            "description": "OHT will be placed on PEB Structure of Block-1 on gable end site at a height of 12 meters from FFL.\nSeparate MS Structure not to be considered for OHT.\nBooster pumps, pipelines, modular tank to be considered.\nOver Head Tank of 20,000 liters effective capacity in 3 Modular Tanks, all boxes-common header to be connected with this OHT for fire (consider pipeline accordingly)",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 510000.0,
+            "amount": 510000.0
+          },
+          {
+            "ref": "o",
+            "description": "SITC of RO + Water Cooler with dispenser with foundation and cover shed - 100 LPH ion-exchange",
+            "unit": "No.",
+            "qty": 1.0,
+            "rate": 330000.0,
+            "amount": 330000.0
+          },
+          {
+            "ref": "p",
+            "description": "Openable motorised Gate at Main Entry and Exit of 2 meter height",
+            "unit": "No.",
+            "qty": 2.0,
+            "rate": 180000.0,
+            "amount": 360000.0
+          },
+          {
+            "ref": "q",
+            "description": "Wicket gates for entry and exit of 2 meter height",
+            "unit": "No.",
+            "qty": 4.0,
+            "rate": 90000.0,
+            "amount": 360000.0
+          },
+          {
+            "ref": "r",
+            "description": "SITC of Boom barrier - Arm length should not be more than 3.5 meters for single boom barrier.Total Arm length should be of road width.",
+            "unit": "No.",
+            "qty": 2.0,
+            "rate": 150000.0,
+            "amount": 300000.0
+          },
+          {
+            "ref": "s",
+            "description": "SITC of FMO (40feet porta container) with TOILET + AC + Furniture including foundation",
+            "unit": "No.",
+            "qty": 1.0,
+            "rate": 960000.0,
+            "amount": 960000.0
+          },
+          {
+            "ref": "t",
+            "description": "SIT of Park level Signage(speed, helmet, bear seat belt ,drinking water ,block name and number utility name , entry and exit gate, parking, Toilets,Road marking,divider including zebra crossing with yellow line with THERMOPLASTIC paint 4-inch,3-4mm thickness, Parking marking ,Assembly area marking ,Plastic speed breaker at every 30 meter ,convex mirror ,Movable Cross Barricades , Size-10x4feet with wheels, Material- MS, cone etc. \nSignages to be written in English ,Hindi & Tamil. \nMaterial: \nRoad Side Signages : ACP Board of 4mm thickness with highly reflective vinyl tape mounted on MS pipe 75mm dia and 3mm thick painted with enamil and anti-rust coating.3 strips of Retro reflective vinyl on pipe. Height of pipe should me 2100mm from pathway finished level.\nOther signages: ACP Board of 4mm thickness with highly reflective vinyl tape.\n(Detailed Sheet Provided Separately as a part of Civil DBR)",
+            "unit": "Acre",
+            "qty": 36.0,
+            "rate": 55000.0,
+            "amount": 1980000.0
+          },
+          {
+            "ref": "u",
+            "description": "18 Meter Height, 3 sided LED display of 6.38mtrX1.8mtr on the top of pole including Civil Foundation, Structural & Electrical work (See Photo\nattached in specs sheet)",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 2000000.0,
+            "amount": 2000000.0
+          },
+          {
+            "ref": "v",
+            "description": "Enterance Portal as per 3D view in specs sheet and masterlayout plan",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 4900000.0,
+            "amount": 4900000.0
+          },
+          {
+            "ref": "w",
+            "description": "Client Name Vertical Pylon as per 3D view in specs sheet",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 960000.0,
+            "amount": 960000.0
+          },
+          {
+            "ref": "x",
+            "description": "Organic Waste Converter (OWC) with civil work including all around covered shed, electrical & plubming work a - Waste capacity per day of 300 Kg.",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 1595323.8457,
+            "amount": 1595323.8457
+          }
+        ]
+      },
+      {
+        "sno": 4,
+        "section": "Fire fighting works ",
+        "rate": 24.6138,
+        "amount": 19633523.531,
+        "items": [
+          {
+            "ref": "a",
+            "description": "SITC of Hydrant system - pump room equipment such as electrical & diesel pumps,  & external piping ",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 10.0,
+            "amount": 8409278.2085
+          },
+          {
+            "ref": "b",
+            "description": "SITC of Sprinkler System - pump room equipment such as electrical & diesel pumps & external piping ",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 6.5113,
+            "amount": 5475575.245
+          },
+          {
+            "ref": "c",
+            "description": "SITC of Fire Detection in all utility buildings and Fire Protection System in Pump Room and fire extinguishers in all utility buildings and infra. ",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 1.8,
+            "amount": 1513670.0775
+          },
+          {
+            "ref": "d",
+            "description": "SITC of Fire Modular tank with Civil Foundation -As per moderate hazard",
+            "unit": "KL",
+            "qty": 550.0,
+            "rate": 7700.0,
+            "amount": 4235000.0
+          }
+        ]
+      },
+      {
+        "sno": 5,
+        "section": "Electrical works ",
+        "rate": 43.6323,
+        "amount": 34803804.4287,
+        "items": [
+          {
+            "ref": "a",
+            "description": "SITC of HT infra including HT RMU.\nSITC of HT Cable from HT meter to  RMU and then RMU to HT Panel of Infra inside premises, HT Panel of Infra to Transformer HT Box,Earthing.",
+            "unit": "LS",
+            "qty": 1.0,
+            "rate": 4800000.0,
+            "amount": 4800000.0
+          },
+          {
+            "ref": "b",
+            "description": "SITC of LT Infra including LT Breaker,LT Cable from main LT Breaker to Warehouse sub distribution Panel including Infra Main Panel, Bus Bar, Earthing, APFC Panel , Distribution Panel for Warehouses Utility and Pump Room. ",
+            "unit": "LS",
+            "qty": 1.0,
+            "rate": 4502231.5,
+            "amount": 4502231.5
+          },
+          {
+            "ref": "c",
+            "description": "SITC of 630 kVA transformer for common utility instruments/machines+ Pump Rooms. \nTransformer shall be provided along with OLTC & shall be energy efficiency class 2 as per IS 1180 (Part-1): 2010 and latest amendment 2024.",
+            "unit": "LS",
+            "qty": 1.0,
+            "rate": 3900680.0,
+            "amount": 3900680.0
+          },
+          {
+            "ref": "d",
+            "description": "SITC of CAM DG -200 KVA -CPCB-4 for infra with all required accessories such as AMF and ATS in panels, complete for operations.",
+            "unit": "Nos",
+            "qty": 1.0,
+            "rate": 3100480.87,
+            "amount": 3100480.87
+          },
+          {
+            "ref": "f",
+            "description": "SITC of Internal  Electrical wiring, light fixtures, cabling and panels & mechanical Ventilation for utility building, Drivers room,LT Room,  Meter room, security room, Pump room ,FMO, Chiller, Boom Barrier, Main Gate , pond, underground tank, DG stack aviation light, transformer area, two pole area,OSR and green area ,signage electrical provision ,STP, etc.",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 7.0,
+            "amount": 5886494.7459
+          },
+          {
+            "ref": "g",
+            "description": "SITC of External lighting (roads & parking)",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 6.0,
+            "amount": 5045566.9251
+          },
+          {
+            "ref": "h",
+            "description": "SITC of Flood lighting 150w in apron areas",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 4.0,
+            "amount": 3363711.2834
+          },
+          {
+            "ref": "i",
+            "description": "SITC of CCTV System for surveillance of complete park excuding inside warehouses with control room setup in Security Room / FMO container with HD picture quality and clear night vision.",
+            "unit": "Sqft.",
+            "qty": 840927.8208,
+            "rate": 5.0,
+            "amount": 4204639.1042
+          },
+          {
+            "ref": "",
+            "description": "TOTAL PROJECT COST (Excluding GST )",
+            "unit": null,
+            "qty": 0,
+            "rate": 424.096,
+            "amount": 338285209.5457
+          }
+        ]
+      }
+    ]
+  },
+  "milestoneInfra": {
+    "totalInfraAmount": 339880533.3914,
+    "milestones": [
+      {
+        "sno": "",
+        "category": "",
+        "description": "Total Infra Amount",
+        "pct": 1.0,
+        "amount": 339880533.3914
+      },
+      {
+        "sno": "1",
+        "category": "Infra Civil Works",
+        "description": "On completion of Land Development- Cleaning, Cutting, filling , Backfilling, soil filling bought-out from outside & compaction of Soil for Warehouses upto plinth level (+1.2), external infra, ancillary buildings, green area, OSR, etc. \nCutting & Filling to be done as per NGL & Proposed Finished Levels in 4 installments.",
+        "pct": 0.10803796,
+        "amount": 36720000.0
+      },
+      {
+        "sno": "2",
+        "category": "Infra Civil Works",
+        "description": "On completion of Road work (Incl. plot access ramp/road), Aprons, Non-Movement Road - complete in all respect in 10 Installments",
+        "pct": 0.26802926,
+        "amount": 91097927.856
+      },
+      {
+        "sno": "3",
+        "category": "Infra Civil Works",
+        "description": "On completion of all type of Pathway/Walkway including Kerb Stone in 4 Installments",
+        "pct": 0.03840184,
+        "amount": 13052036.52
+      },
+      {
+        "sno": "4",
+        "category": "Infra Civil Works",
+        "description": "On completion of Open Parking (Car & Truck Parking) in 3 Installments",
+        "pct": 0.01946309,
+        "amount": 6615123.84
+      },
+      {
+        "sno": "5",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Barricading for Operation of Block 1 & 2 and Construction of Block 3 & 4.\n10 feet height GI sheet with MS Structure barrication.",
+        "pct": 0.006191,
+        "amount": 2104200.0
+      },
+      {
+        "sno": "6",
+        "category": "Infra Civil Works",
+        "description": "On Completion of MS Fencing with retaining wall, 5 Feet Height Barbed Wire Fencing outside boundary wall,Retaining Wall (Near Ramp at front & OSR 2) in 2 Installments.",
+        "pct": 0.01499645,
+        "amount": 5097000.0
+      },
+      {
+        "sno": "7",
+        "category": "Infra Civil Works",
+        "description": "On completion of Landscaping work (OSR & Green Area with Lawn & Trees including irrigation system 2 Installments",
+        "pct": 0.01332999,
+        "amount": 4530603.42
+      },
+      {
+        "sno": "9",
+        "category": "Infra Civil Works",
+        "description": "On completion of LT Room Civil Complete Work - in 2 Installments",
+        "pct": 0.00570077,
+        "amount": 1937580.0
+      },
+      {
+        "sno": "10",
+        "category": "Infra Civil Works",
+        "description": "On completion of Pump Room-Civil including Trench & Pump foundations - in 2 Installments",
+        "pct": 0.01330138,
+        "amount": 4520880.0
+      },
+      {
+        "sno": "11",
+        "category": "Infra Civil Works",
+        "description": "On completion of Driver rest Room with toilets facility-Civil-Complete room - in 2 Installments",
+        "pct": 0.01197124,
+        "amount": 4068792.0
+      },
+      {
+        "sno": "12",
+        "category": "Infra Civil Works",
+        "description": "On completion of Guard Room with Toilet - Site entry-Civil -Complete Work , Openable motorised Gate at Main Entry and Exit of 2 meter height,Wicket gates for entry and exit of 2 meter height, SITC of Boom barrier - Arm length of road width (Arm length should not be more than 3.5 meters for single boom barrier) and SITC of FMO (40feet porta container) with TOILET + AC + Furniture including foundation. -in 2 Installments",
+        "pct": 0.007969,
+        "amount": 2708507.52
+      },
+      {
+        "sno": "13",
+        "category": "Infra Civil Works",
+        "description": "On completion of HT Meter/RMU Area with 1.8 mtr MS fencing and gravel",
+        "pct": 0.00114012,
+        "amount": 387504.0
+      },
+      {
+        "sno": "14",
+        "category": "Infra Civil Works",
+        "description": "On completion of DG Foundations & DG's stack Structure of 18M height from FRL including Insulation and GI Cladding on smoke pipes and smoke pipe will connect to DG set considering smoke pipe dia. for 200KVA DG as  200 mm. NB & 250 mm. NB  considering back pressure. Including Civil Work..",
+        "pct": 0.00476638,
+        "amount": 1620000.0
+      },
+      {
+        "sno": "15",
+        "category": "Infra Civil Works",
+        "description": "On completion of Electrical Substation including foundation of Transformer, HT VCB, RCC Trench and respective panels foundations. The yard includes gravel and 1.8 m height peripharal Chain Link Fencing as well.",
+        "pct": 0.00334308,
+        "amount": 1136247.84
+      },
+      {
+        "sno": "16",
+        "category": "Infra Civil Works",
+        "description": "On completion of Separate Road crossing for tanent (Hume pipe for utilities) 45 meter per lac (3-4 location ) of each warehouse  200 mm dia Np3 pipe 2 Installments.\nUnderground Crossings for Proposed Substation to warehouses.\nUnderground RCC Trench with pre-cast slab along Boundary Wall.\nOver Ground MS Structure (Clear 600mm wide) for Proposed Route for Tenant Substation. \n: 2 Installments",
+        "pct": 0.03013405,
+        "amount": 10241975.7
+      },
+      {
+        "sno": "17",
+        "category": "Infra Civil Works",
+        "description": "On completion of 10,000 Ltr effective capacity of underground RCC water tank with pump (One working + One Standby) to fill the Fire & Domestic Modular Tanks of 12 mtr height",
+        "pct": 0.00088266,
+        "amount": 300000.0
+      },
+      {
+        "sno": "18",
+        "category": "Infra Civil Works",
+        "description": "On completion of OHT will be placed on PEB Structure of Block-1 on gable end site at a height of 12 meters from FFL.\nSeparate MS Structure not to be considered for OHT.\nBooster pumps, pipelines, modular tank to be considered.\nOver Head Tank of 20,000 liters effective capacity in 3 Modular Tanks, all boxes-common header to be connected with this OHT for fire (consider pipeline accordingly)",
+        "pct": 0.00150053,
+        "amount": 510000.0
+      },
+      {
+        "sno": "19",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Sump pit min. 2.5x2.5x2.5and with pumps with GI line from sump to STP:  2 Installments",
+        "pct": 0.00237436,
+        "amount": 807000.0
+      },
+      {
+        "sno": "20",
+        "category": "Infra Civil Works",
+        "description": "SITC of RO + Chiller/water coller with dispenser with foundation and cover shed - 100 LPH- ion exchange.",
+        "pct": 0.00097093,
+        "amount": 330000.0
+      },
+      {
+        "sno": "21",
+        "category": "Infra Civil Works",
+        "description": "On completion of 18 Meter Height, 3 sided LED display of 6.38mtrX1.8mtr on the top of pole including Civil Foundation, Structural & Electrical work & conceptual drawing\nOn completion of Enterance Portal as per 3D view in specs sheet and masterlayout plan & conceptual drawing\nOn completion of Client Vertical Pylon as per 3D view in specs sheet & conceptual drawing.\n:In 3 Installments",
+        "pct": 0.02312577,
+        "amount": 7860000.0
+      },
+      {
+        "sno": "22",
+        "category": "Infra Civil Works",
+        "description": "On completion of External Signage & Bollard in 2 Installments",
+        "pct": 0.00582558,
+        "amount": 1980000.0
+      },
+      {
+        "sno": "23",
+        "category": "Infra Civil Works",
+        "description": "On completion of Storm Water Drain will be U-Type RCC Drain of Open & Covered Type both as per design and road movement with Brick/RCC Chambers with Heavy duty/light duty covers as per requirement. No any drain will be open in docking area side.\n:In 5 Installments",
+        "pct": 0.13360607,
+        "amount": 45410102.3258
+      },
+      {
+        "sno": "24",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Sewage line with chambers in 3 Installments",
+        "pct": 0.02226768,
+        "amount": 7568350.3876
+      },
+      {
+        "sno": "25",
+        "category": "Infra Civil Works",
+        "description": "On completion of Plumbing Work-Internal Plumbing Works , external water supply and Hydropneumatic pumps 6 Installments",
+        "pct": 0.02412332,
+        "amount": 8199046.2533
+      },
+      {
+        "sno": "26",
+        "category": "Infra Civil Works",
+        "description": "On completion of STP Work (Civil) in 3 Installments",
+        "pct": 0.01323995,
+        "amount": 4500000.0
+      },
+      {
+        "sno": "27",
+        "category": "Infra Civil Works",
+        "description": "On completion of STP Work (Mechanical) :In 2 Installments",
+        "pct": 0.02177603,
+        "amount": 7401250.0
+      },
+      {
+        "sno": "29",
+        "category": "Infra Civil Works",
+        "description": "On completion of Organic Waste Converter (OWC) with Shed - Waste capacity per day of 300 Kg",
+        "pct": 0.00469378,
+        "amount": 1595323.8457
+      },
+      {
+        "sno": "30",
+        "category": "Infra Civil Works",
+        "description": "On SITC of Raw Water Tank, Treated Water Tank and Fire Tank work including Civil Work- 4 Installments",
+        "pct": 0.0195198,
+        "amount": 6634400.0
+      },
+      {
+        "sno": "31",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Plumbing works of Utility Buildings (Pump Room, Driver rest room, guard room, RO Chiller ,FMO Container, etc.) & \nBorewell - 1 No. borewell of up to 200 feet depth and 200mm dia bore with pump.\nPlumbing connection from Borewell to Raw water tank and automation for borewell functioning. In 2 Installments",
+        "pct": 0.00661712,
+        "amount": 2249030.0775
+      },
+      {
+        "sno": "32",
+        "category": "Infra Civil Works",
+        "description": "On completion of Pond of required effective capacity with clear 1200 mm wide brickwork Staircase with MS railing,No bores and no filter media.\nPond will have tapered walls at 45 degree with Stone pitching on sides & bottom of pond and 1800mm chain fencing with inlet RCC hume pipe of storm water and overflow discharge RCC hume pipe towards nearby water body.\nAlso, a cleaning sump is to be provided at the bottom of Pond  along with Pump for Cleaning Purpose. Pond to be covered with mosquito net in 2 installments.",
+        "pct": 0.02030125,
+        "amount": 6900000.0
+      },
+      {
+        "sno": "",
+        "category": "Infra Civil Works",
+        "description": "On Completion of PEB Roof Profile Machine Foundation as per drawing for all blocks- 4 Installments",
+        "pct": 0.00469378,
+        "amount": 1595323.8457
+      },
+      {
+        "sno": "32",
+        "category": "External Electrical Works",
+        "description": "SITC of HT infra including HT RMU.\nSITC of HT Cable from HT meter to  RMU and then RMU to HT Panel of Infra inside premises, HT Panel of Infra to Transformer HT Box,Earthing: In 2 Installments",
+        "pct": 0.01412261,
+        "amount": 4800000.0
+      },
+      {
+        "sno": "33",
+        "category": "External Electrical Works",
+        "description": "SITC of LT Infra including LT Breaker,LT Cable from main LT Breaker to Warehouse sub distribution Panel including Infra Main Panel, Bus Bar, Earthing, APFC Panel , Distribution Panel for Warehouses Utility and Pump Room. In 2 Installments",
+        "pct": 0.01324651,
+        "amount": 4502231.5
+      },
+      {
+        "sno": "34",
+        "category": "External Electrical Works",
+        "description": "SITC of 630 kVA transformer for common utility instruments/machines+ Pump Rooms. \nTransformer shall be provided along with OLTC & shall be energy efficiency class 2 as per IS 1180 (Part-1): 2010 and latest amendment 2024.",
+        "pct": 0.01147662,
+        "amount": 3900680.0
+      },
+      {
+        "sno": "35",
+        "category": "External Electrical Works",
+        "description": "SITC of CAM DG -200 KVA -CPCB-4 for infra with all required accessories such as AMF and ATS in panels, complete for operations.",
+        "pct": 0.00912227,
+        "amount": 3100480.87
+      },
+      {
+        "sno": "",
+        "category": "External Electrical Works",
+        "description": "SITC of Internal  Electrical wiring, light fixtures, cabling and panels & mechanical Ventilation for utility building, Drivers room,LT Room,  Meter room, security room, Pump room ,FMO, Chiller, Boom Barrier, Main Gate , pond, underground tank, DG stack aviation light, transformer area, two pole area,OSR and green area ,signage electrical provision ,STP, etc. In 2 Installments",
+        "pct": 0.01731931,
+        "amount": 5886494.7459
+      },
+      {
+        "sno": "",
+        "category": "External Electrical Works",
+        "description": "SITC of External lighting (roads & parking) In 2 Installments",
+        "pct": 0.01484512,
+        "amount": 5045566.9251
+      },
+      {
+        "sno": "36",
+        "category": "External Electrical Works",
+        "description": "SITC of Flood lighting 150w in apron areas In 2 Installments",
+        "pct": 0.00989675,
+        "amount": 3363711.2834
+      },
+      {
+        "sno": "37",
+        "category": "External Electrical Works",
+        "description": "SITC of CCTV System for surveillance of complete park excuding inside warehouses with control room setup in Security Room / FMO container with HD picture quality and clear night vision. In 2 Installments",
+        "pct": 0.01237093,
+        "amount": 4204639.1042
+      },
+      {
+        "sno": "38",
+        "category": "External Fire Works",
+        "description": "SITC of Hydrant system - pump room equipment such as electrical & diesel pumps,  & external piping - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "pct": 0.02474186,
+        "amount": 8409278.2085
+      },
+      {
+        "sno": "39",
+        "category": "External Fire Works",
+        "description": "SITC of Sprinkler System - pump room equipment such as electrical & diesel pumps & external piping - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "pct": 0.01611029,
+        "amount": 5475575.245
+      },
+      {
+        "sno": "40",
+        "category": "External Fire Works",
+        "description": "SITC of Fire Detection in all utility buildings and Fire Protection System in Pump Room and fire extinguishers in all utility buildings and infra. In 2 Installments",
+        "pct": 0.00445354,
+        "amount": 1513670.0775
+      }
+    ]
+  },
+  "milestonesBldg": {
+    "blockTotals": {
+      "block1": 52235372.6831,
+      "block2": 131763979.9692,
+      "block3": 235475555.9551,
+      "block4": 99738684.4343
+    },
+    "milestones": [
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Building foundation,pedastal, anchor bolts fixing, plinth beam,periphrial retaining wall , GP2, ATT, etc in 2 Installments for Block 1 ,2 & 4 and 4 Inslallments for Block 3.",
+        "pct": 0.7835945,
+        "b1": 14047096.9463,
+        "b2": 23747431.38,
+        "b3": 43855178.7645,
+        "b4": 23694329.1728
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On completion of Brick /CC Block wall including tie beam ,stub columns, lintel beam, plastering, painting , openable/sliding aluminium windows with fixed mesh and pinhead glass,etc. in 2 installments.",
+        "pct": 0,
+        "b1": 4202123.0181,
+        "b2": 6724936.32,
+        "b3": 9314374.2509,
+        "b4": 6132649.9035
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Grade slab (GSB, Vapour barrier, concrete, reinforcement, Hardner, FM-2, Groove cutting & filling, armour joints, dowels,etc.) -in 3 Installments for Block 1 & 4, 4-Installments in  Block-2 and 10 Inslallments for Block 3",
+        "pct": 0,
+        "b1": 15007582.2076,
+        "b2": 52538565.0,
+        "b3": 97024731.7799,
+        "b4": 34844601.7247
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Mezzanine civil work (Including mezzanine foundations & 150mm grade slab).",
+        "pct": 0,
+        "b1": 693275.4232,
+        "b2": 3000490.5276,
+        "b3": 6024836.3688,
+        "b4": 2385637.3308
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Fire Door Exit staircase with/without canopy ,MHE Ramp Civil work 5mx14.4m & dock opening angle.",
+        "pct": 0,
+        "b1": 1201057.014,
+        "b2": 1893277.7537,
+        "b3": 3331392.943,
+        "b4": 1255512.0258
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "SITC of Fire door ,MHE Manual Rolling shutter & Dock Motorized rolling shutter with dock bumpers",
+        "pct": 0,
+        "b1": 1140576.2478,
+        "b2": 2733266.3056,
+        "b3": 4657187.1254,
+        "b4": 1811919.2897
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Toilets Civil Work (Including 1 Handicap Toilet)",
+        "pct": 0,
+        "b1": 2219375.34,
+        "b2": 5334342.39,
+        "b3": 8851697.361,
+        "b4": 3834150.255
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Warehouse entrance platform , steps, glass door and handicap ramp (Civil work, granite, SS railing , Facade 8m.x 6.5m. with glass canopy)",
+        "pct": 0,
+        "b1": 2281304.3352,
+        "b2": 2309602.8965,
+        "b3": 2311047.5281,
+        "b4": 2230558.7395
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SITC of Hydrant system - External Ring Main + Internal works including mezzanine - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "pct": 0.12247786,
+        "b1": 1981000.8514,
+        "b2": 5464010.76,
+        "b3": 8926275.3238,
+        "b4": 3816180.7809
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SITC of Sprinkler System - External Ring Main + Internal works including mezzanine - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "pct": 0,
+        "b1": 3396160.4741,
+        "b2": 11664401.8324,
+        "b3": 21345440.9916,
+        "b4": 7665812.3794
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SITC of Fire detection system including mezzanine & toilets",
+        "pct": 0,
+        "b1": 960485.2613,
+        "b2": 2102328.1428,
+        "b3": 3496466.5735,
+        "b4": 1394556.0128
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SIT of Fire extinguishers",
+        "pct": 0,
+        "b1": 60030.3288,
+        "b2": 210154.26,
+        "b3": 388098.9271,
+        "b4": 139378.4069
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Internal warehouse lighting including below mezzanine lighting of 200 Lux and canopy lighting 100 Lux - including light fixtures & cables.",
+        "pct": 0.07562382,
+        "b1": 1320667.2343,
+        "b2": 4623393.72,
+        "b3": 7761978.5424,
+        "b4": 2787568.138
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Toilets lighting including light fixtures & cables.",
+        "pct": 0,
+        "b1": 102091.2656,
+        "b2": 213373.6956,
+        "b3": 371771.2892,
+        "b4": 161034.3107
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Inside warehouse LT Work - Sub-distribution Panel with incomer of EB and Outgoing Feeder 4 nos feeding to Dock leveler and Motorised Rolling Shutter DB's, Toilet DB's, Lighting DB's, Power DB, ELB DB,fire door electrical point and fire door exit outside light.(The sub-distribution panel of warehouse will feed lighting,dock levellers, motorised rolling shutters-the main LT panel of warehouse is not in D&B Scope)",
+        "pct": 0,
+        "b1": 1620818.8784,
+        "b2": 3782776.68,
+        "b3": 6985780.6882,
+        "b4": 3484460.1725
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Building earthing grid and lightening protection system",
+        "pct": 0,
+        "b1": 720363.946,
+        "b2": 2311696.86,
+        "b3": 3880989.2712,
+        "b4": 1811919.2897
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Mechanical Ventilation- SITC of Industrial type 12 inch, 1400 rpm. fan in each cubicle i.e. W/C ,Janitor, bath cubicle etc. \nFor common urinal area - a minumum of 2 nos. of exhaust fan with 18 inch 2550 CFM industrial type is required.",
+        "pct": 0,
+        "b1": 95877.0147,
+        "b2": 251780.9608,
+        "b3": 339905.1787,
+        "b4": 113490.8475
+      },
+      {
+        "category": "Internal Plumbing Works",
+        "description": "SITC of Toilet Plumbing Work",
+        "pct": 0.01830382,
+        "b1": 956106.8965,
+        "b2": 2170010.4843,
+        "b3": 3509058.9286,
+        "b4": 1716165.6541
+      },
+      {
+        "category": "Internal Plumbing Works",
+        "description": "Total Project Cost (Basic)",
+        "pct": 0,
+        "b1": 868666069.5073,
+        "b2": 0,
+        "b3": 0,
+        "b4": 0
+      },
+      {
+        "category": "Building Civil Work",
+        "description": "76881966.37821993",
+        "pct": 67318668.4940193,
+        "b1": 173275273.8105,
+        "b2": 8663763.6905,
+        "b3": 0,
+        "b4": 0
+      },
+      {
+        "category": "Building Int. Electerical Work",
+        "description": "6622596.09",
+        "pct": 5378876.67,
+        "b1": 14813828.04,
+        "b2": 740691.402,
+        "b3": 0,
+        "b4": 0
+      },
+      {
+        "category": "Building Int. Fire Work",
+        "description": "16107659.33",
+        "pct": 14049451.79,
+        "b1": 36601447.71,
+        "b2": 1830072.3855,
+        "b3": 0,
+        "b4": 0
+      },
+      {
+        "category": "Building Civil Work",
+        "description": "116885330.5689502",
+        "pct": 45009868.79439595,
+        "b1": 8094759.9682,
+        "b2": 0,
+        "b3": 0,
+        "b4": 0
+      },
+      {
+        "category": "Building Int. Electerical Work",
+        "description": "9875845.36",
+        "pct": 4082272.74,
+        "b1": 697905.905,
+        "b2": 0,
+        "b3": 0,
+        "b4": 0
+      },
+      {
+        "category": "Building Int. Fire Work",
+        "description": "27625236.93",
+        "pct": 10760870.79,
+        "b1": 1919305.386,
+        "b2": 0,
+        "b3": 0,
+        "b4": 0
+      }
+    ]
+  }
+}

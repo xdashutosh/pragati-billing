@@ -1,0 +1,2977 @@
+{
+  "_meta": {
+    "raNumber": 16,
+    "project": "Pragati Echur Project",
+    "contractor": "M/s. Conserve Buildcon LLP",
+    "client": "M/s. LPW Warehousing Private Limited",
+    "woNumber": "LPWWPL/ECHUR/PROJECT/24-25/08",
+    "woDate": "21.08.2024",
+    "note": "Amounts are stored for reference. App computes live amounts from abstract JSON scopes × percentages stored here."
+  },
+  "summary": {
+    "items": [
+      {
+        "sno": "1",
+        "description": "Warehouse building civil works",
+        "orderAmount": 394115111.7882,
+        "prevBillAmount": 186984801.0147,
+        "thisBillAmount": 37733195.2294,
+        "cumulativeAmount": 224717996.2441,
+        "subItems": [
+          {
+            "description": "Block-1 Civil Works",
+            "orderAmount": 40931350.5321,
+            "prevBillAmount": 40931350.5321,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 40931350.5321
+          },
+          {
+            "description": "Block-2 Civil Works",
+            "orderAmount": 98698792.5733,
+            "prevBillAmount": 97365206.9758,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 97365206.9758
+          },
+          {
+            "description": "Block-3 Civil Works",
+            "orderAmount": 178017690.241,
+            "prevBillAmount": 21927589.3823,
+            "thisBillAmount": 22199258.6312,
+            "cumulativeAmount": 44126848.0135
+          },
+          {
+            "description": "Block-4 Civil Works",
+            "orderAmount": 76467278.4418,
+            "prevBillAmount": 26760654.1246,
+            "thisBillAmount": 15533936.5982,
+            "cumulativeAmount": 42294590.7227
+          }
+        ]
+      },
+      {
+        "sno": "2",
+        "description": "Electrical works",
+        "orderAmount": 78540162.412,
+        "prevBillAmount": 38286850.6461,
+        "thisBillAmount": 1423158.5336,
+        "cumulativeAmount": 39710009.1796,
+        "subItems": [
+          {
+            "description": "Block-1 Electrical / Lighting works",
+            "orderAmount": 3950238.339,
+            "prevBillAmount": 3950238.339,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 3950238.339
+          },
+          {
+            "description": "Block-2 Electrical / Lighting works",
+            "orderAmount": 11454281.9164,
+            "prevBillAmount": 11221704.5882,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 11221704.5882
+          },
+          {
+            "description": "Block-3 Electrical / Lighting works",
+            "orderAmount": 19792524.9696,
+            "prevBillAmount": 0,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 0
+          },
+          {
+            "description": "Block-4 Electrical / Lighting works",
+            "orderAmount": 8539312.7584,
+            "prevBillAmount": 0,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 0
+          },
+          {
+            "description": "Infra Electrical works",
+            "orderAmount": 34803804.4287,
+            "prevBillAmount": 23114907.7189,
+            "thisBillAmount": 1423158.5336,
+            "cumulativeAmount": 24538066.2524
+          }
+        ]
+      },
+      {
+        "sno": "3",
+        "description": "Fire fighting works",
+        "orderAmount": 92644304.8378,
+        "prevBillAmount": 46593679.3426,
+        "thisBillAmount": 3066324.9518,
+        "cumulativeAmount": 49660004.2943,
+        "subItems": [
+          {
+            "description": "Block-1 Fire fighting works",
+            "orderAmount": 6397676.9156,
+            "prevBillAmount": 6397676.9156,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 6397676.9156
+          },
+          {
+            "description": "Block-2 Fire fighting works",
+            "orderAmount": 19440894.9952,
+            "prevBillAmount": 19440894.9952,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 19440894.9952
+          },
+          {
+            "description": "Block-3 Fire fighting works",
+            "orderAmount": 34156281.816,
+            "prevBillAmount": 0,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 0
+          },
+          {
+            "description": "Block-4 Fire fighting works",
+            "orderAmount": 13015927.58,
+            "prevBillAmount": 4592797.2641,
+            "thisBillAmount": 3066324.9518,
+            "cumulativeAmount": 7659122.2159
+          },
+          {
+            "description": "Infra Fire fighting works",
+            "orderAmount": 19633523.531,
+            "prevBillAmount": 16162310.1677,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 16162310.1677
+          }
+        ]
+      },
+      {
+        "sno": "4",
+        "description": "Plumbing",
+        "orderAmount": 94856521.0077,
+        "prevBillAmount": 54446479.2617,
+        "thisBillAmount": 0,
+        "cumulativeAmount": 54446479.2617,
+        "subItems": [
+          {
+            "description": "Block-1 Plumbing works",
+            "orderAmount": 956106.8965,
+            "prevBillAmount": 956106.8965,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 956106.8965
+          },
+          {
+            "description": "Block-2 Plumbing works",
+            "orderAmount": 2170010.4843,
+            "prevBillAmount": 1085005.2421,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 1085005.2421
+          },
+          {
+            "description": "Block-3 Plumbing works",
+            "orderAmount": 3509058.9286,
+            "prevBillAmount": 0,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 0
+          },
+          {
+            "description": "Block-4 Plumbing works",
+            "orderAmount": 1716165.6541,
+            "prevBillAmount": 0,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 0
+          },
+          {
+            "description": "Infra Plumbing works",
+            "orderAmount": 86505179.0443,
+            "prevBillAmount": 52405367.1231,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 52405367.1231
+          }
+        ]
+      },
+      {
+        "sno": "5",
+        "description": "Infra civil works",
+        "orderAmount": 158145891.636,
+        "prevBillAmount": 58105248.5,
+        "thisBillAmount": 13980000.0,
+        "cumulativeAmount": 102270570.7311,
+        "subItems": [
+          {
+            "description": "Parking, Pathway, Roads, Infra Earthwork, Boundary & retaining walls, Green area, OSR area, Kerbstone,etc.",
+            "orderAmount": 158145891.636,
+            "prevBillAmount": 88290570.7311,
+            "thisBillAmount": 13980000.0,
+            "cumulativeAmount": 102270570.7311
+          }
+        ]
+      },
+      {
+        "sno": "6",
+        "description": "Ancillary Buildings & Services",
+        "orderAmount": 39196810.9057,
+        "prevBillAmount": 30754165.4427,
+        "thisBillAmount": 0,
+        "cumulativeAmount": 30754165.4427,
+        "subItems": [
+          {
+            "description": "On completion of Pump Room-Civil including Trench & Pump foundations - in 2 Installments",
+            "orderAmount": 39196810.9057,
+            "prevBillAmount": 30754165.4427,
+            "thisBillAmount": 0,
+            "cumulativeAmount": 30754165.4427
+          }
+        ]
+      },
+      {
+        "sno": "7",
+        "description": "Project Design Charges",
+        "orderAmount": 9571943.0742,
+        "prevBillAmount": 4785971.5371,
+        "thisBillAmount": 0,
+        "cumulativeAmount": 4785971.5371,
+        "subItems": []
+      },
+      {
+        "sno": "8",
+        "description": "PEB Roof Profile Machine Foundation as per drawing for all blocks.",
+        "orderAmount": 1595323.8457,
+        "prevBillAmount": 0,
+        "thisBillAmount": 0,
+        "cumulativeAmount": 0,
+        "subItems": []
+      },
+      {
+        "sno": "9",
+        "description": "Non Tender item (Event Planning and Management)",
+        "orderAmount": 1608080.0,
+        "prevBillAmount": 1608080.0,
+        "thisBillAmount": 0,
+        "cumulativeAmount": 1608080.0,
+        "subItems": []
+      },
+      {
+        "sno": "10",
+        "description": "Alteration Item",
+        "orderAmount": 5946927.525,
+        "prevBillAmount": 5946927.525,
+        "thisBillAmount": 0,
+        "cumulativeAmount": 5946927.525,
+        "subItems": [
+          {
+            "description": "Total basic cost (GST Excluding )",
+            "orderAmount": 870274149.5073,
+            "prevBillAmount": 427512203.2699,
+            "thisBillAmount": 56202678.7147,
+            "cumulativeAmount": 513900204.2157
+          }
+        ]
+      }
+    ],
+    "totals": {
+      "orderAmount": 870274149.5073,
+      "prevBillAmount": 427512203.2699,
+      "thisBillAmount": 56202678.7147,
+      "cumulativeAmount": 513900204.2157
+    }
+  },
+  "buildingMilestones": {
+    "note": "Per-block billing data for RA-16. thisPct × scope from abstract = thisAmt.",
+    "milestones": [
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Building foundation,pedastal, anchor bolts fixing, plinth beam,periphrial retaining wall , GP2, ATT, etc in 2 Installments for Block 1 ,2 & 4 and 4 Inslallments for Block 3.",
+        "block1": {
+          "scope": 14047096.9463,
+          "prevPct": 1.0,
+          "prevAmt": 14047096.9463,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 14047096.9463
+        },
+        "block2": {
+          "scope": 23747431.38,
+          "prevPct": 1.0,
+          "prevAmt": 23747431.38,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 23747431.38
+        },
+        "block3": {
+          "scope": 43855178.7645,
+          "prevPct": 0.5,
+          "prevAmt": 21927589.3823,
+          "thisPct": 0,
+          "thisAmt": 17542071.5058,
+          "cumPct": 0.5,
+          "cumAmt": 39469660.8881
+        },
+        "block4": {
+          "scope": 23694329.1728,
+          "prevPct": 1.0,
+          "prevAmt": 23694329.1728,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 23694329.1728
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of  Earthwork for plinth (1.2 mtr) i.e. cutting or filling from inside premises soil or filling from bought-out soil as per contour and proposed levels.",
+        "block1": {
+          "scope": 0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        },
+        "block2": {
+          "scope": 0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        },
+        "block3": {
+          "scope": 0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On completion of Brick /CC Block wall including tie beam ,stub columns, lintel beam, plastering, painting , openable/sliding aluminium windows with fixed mesh and pinhead glass,etc. in 2 installments.",
+        "block1": {
+          "scope": 4202123.0181,
+          "prevPct": 1.0,
+          "prevAmt": 4202123.0181,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 4202123.0181
+        },
+        "block2": {
+          "scope": 6724936.32,
+          "prevPct": 1.0,
+          "prevAmt": 6724936.32,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 6724936.32
+        },
+        "block3": {
+          "scope": 9314374.2509,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 4657187.1254,
+          "cumPct": 0.0,
+          "cumAmt": 4657187.1254
+        },
+        "block4": {
+          "scope": 6132649.9035,
+          "prevPct": 0.5,
+          "prevAmt": 3066324.9518,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.5,
+          "cumAmt": 3066324.9518
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Grade slab (GSB, Vapour barrier, concrete, reinforcement, Hardner, FM-2, Groove cutting & filling, armour joints, dowels,etc.) -in 3 Installments for Block 1 & 4, 4-Installments in  Block-2 and 10 Inslallments for Block 3",
+        "block1": {
+          "scope": 15007582.2076,
+          "prevPct": 1.0,
+          "prevAmt": 15007582.2076,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 15007582.2076
+        },
+        "block2": {
+          "scope": 52538565.0,
+          "prevPct": 1.0,
+          "prevAmt": 52538565.0,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 52538565.0
+        },
+        "block3": {
+          "scope": 97024731.7799,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 34844601.7247,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 11614867.2416,
+          "cumPct": 0,
+          "cumAmt": 11614867.2416
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Mezzanine civil work (Including mezzanine foundations & 150mm grade slab).",
+        "block1": {
+          "scope": 693275.4232,
+          "prevPct": 1.0,
+          "prevAmt": 693275.4232,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 693275.4232
+        },
+        "block2": {
+          "scope": 3000490.5276,
+          "prevPct": 1.0,
+          "prevAmt": 3000490.5276,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 3000490.5276
+        },
+        "block3": {
+          "scope": 6024836.3688,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 2385637.3308,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 2385637.3308,
+          "cumPct": 0,
+          "cumAmt": 2385637.3308
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Fire Door Exit staircase with/without canopy ,MHE Ramp Civil work 5mx14.4m & dock opening angle.",
+        "block1": {
+          "scope": 1201057.014,
+          "prevPct": 1.0,
+          "prevAmt": 1201057.014,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 1201057.014
+        },
+        "block2": {
+          "scope": 1893277.7537,
+          "prevPct": 1.0,
+          "prevAmt": 1893277.7537,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 1893277.7537
+        },
+        "block3": {
+          "scope": 3331392.943,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 1255512.0258,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 1255512.0258,
+          "cumPct": 0,
+          "cumAmt": 1255512.0258
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "SITC of Fire door ,MHE Manual Rolling shutter & Dock Motorized rolling shutter with dock bumpers",
+        "block1": {
+          "scope": 1140576.2478,
+          "prevPct": 1.0,
+          "prevAmt": 1140576.2478,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 1140576.2478
+        },
+        "block2": {
+          "scope": 2733266.3056,
+          "prevPct": 1.0,
+          "prevAmt": 2733266.3056,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 2733266.3056
+        },
+        "block3": {
+          "scope": 4657187.1254,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 1811919.2897,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Toilets Civil Work (Including 1 Handicap Toilet)",
+        "block1": {
+          "scope": 2219375.34,
+          "prevPct": 1.0,
+          "prevAmt": 2219375.34,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 2219375.34
+        },
+        "block2": {
+          "scope": 5334342.39,
+          "prevPct": 0.75,
+          "prevAmt": 4000756.7925,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 0.75,
+          "cumAmt": 4000756.7925
+        },
+        "block3": {
+          "scope": 8851697.361,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 3834150.255,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Dock pits civil work including angle fixing -  to be filled with sand and FM2 floor (7 T capacity) to be casted. (without equipment)",
+        "block1": {
+          "scope": 138960.0,
+          "prevPct": 1.0,
+          "prevAmt": 138960.0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 138960.0
+        },
+        "block2": {
+          "scope": 416880.0,
+          "prevPct": 1.0,
+          "prevAmt": 416880.0,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 416880.0
+        },
+        "block3": {
+          "scope": 694800.0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 277920.0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 277920.0,
+          "cumPct": 0,
+          "cumAmt": 277920.0
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Warehouse entrance platform , steps, glass door and handicap ramp (Civil work, granite, SS railing , Facade 8m.x 6.5m. with glass canopy)",
+        "block1": {
+          "scope": 2281304.3352,
+          "prevPct": 1.0,
+          "prevAmt": 2281304.3352,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 2281304.3352
+        },
+        "block2": {
+          "scope": 2309602.8965,
+          "prevPct": 1.0,
+          "prevAmt": 2309602.8965,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 2309602.8965
+        },
+        "block3": {
+          "scope": 2311047.5281,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 2230558.7395,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Building Civil Works",
+        "description": "On Completion of Entry-2 - Warehouse entrance platform 5 mtr wide ,steps, glass panel door 1.5mX2.1m- 2 Nos and handicap ramp (Civil work, granite, SS railing)\nIt should be covered with glass canopy 5mx1.5m",
+        "block1": {
+          "scope": 0,
+          "prevPct": 1.0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        },
+        "block2": {
+          "scope": 0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        },
+        "block3": {
+          "scope": 1952444.1194,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SITC of Hydrant system - External Ring Main + Internal works including mezzanine - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "block1": {
+          "scope": 1981000.8514,
+          "prevPct": 1.0,
+          "prevAmt": 1981000.8514,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 1981000.8514
+        },
+        "block2": {
+          "scope": 5464010.76,
+          "prevPct": 1.0,
+          "prevAmt": 5464010.76,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 5464010.76
+        },
+        "block3": {
+          "scope": 8926275.3238,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 3816180.7809,
+          "prevPct": 0.4,
+          "prevAmt": 1526472.3124,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.4,
+          "cumAmt": 1526472.3124
+        }
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SITC of Sprinkler System - External Ring Main + Internal works including mezzanine - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "block1": {
+          "scope": 3396160.4741,
+          "prevPct": 1.0,
+          "prevAmt": 3396160.4741,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 3396160.4741
+        },
+        "block2": {
+          "scope": 11664401.8324,
+          "prevPct": 1.0,
+          "prevAmt": 11664401.8324,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 11664401.8324
+        },
+        "block3": {
+          "scope": 21345440.9916,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 7665812.3794,
+          "prevPct": 0.4,
+          "prevAmt": 3066324.9518,
+          "thisPct": 0,
+          "thisAmt": 3066324.9518,
+          "cumPct": 0.8,
+          "cumAmt": 6132649.9035
+        }
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SITC of Fire detection system including mezzanine & toilets",
+        "block1": {
+          "scope": 960485.2613,
+          "prevPct": 1.0,
+          "prevAmt": 960485.2613,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 960485.2613
+        },
+        "block2": {
+          "scope": 2102328.1428,
+          "prevPct": 1.0,
+          "prevAmt": 2102328.1428,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 2102328.1428
+        },
+        "block3": {
+          "scope": 3496466.5735,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 1394556.0128,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Fire Works",
+        "description": "SIT of Fire extinguishers",
+        "block1": {
+          "scope": 60030.3288,
+          "prevPct": 1.0,
+          "prevAmt": 60030.3288,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 60030.3288
+        },
+        "block2": {
+          "scope": 210154.26,
+          "prevPct": 1.0,
+          "prevAmt": 210154.26,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 210154.26
+        },
+        "block3": {
+          "scope": 388098.9271,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 139378.4069,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Internal warehouse lighting including below mezzanine lighting of 200 Lux and canopy lighting 100 Lux - including light fixtures & cables.",
+        "block1": {
+          "scope": 1320667.2343,
+          "prevPct": 1.0,
+          "prevAmt": 1320667.2343,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 1320667.2343
+        },
+        "block2": {
+          "scope": 4623393.72,
+          "prevPct": 1.0,
+          "prevAmt": 4623393.72,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 4623393.72
+        },
+        "block3": {
+          "scope": 7761978.5424,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 2787568.138,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Toilets lighting including light fixtures & cables.",
+        "block1": {
+          "scope": 102091.2656,
+          "prevPct": 0.0,
+          "prevAmt": 102091.2656,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 102091.2656
+        },
+        "block2": {
+          "scope": 213373.6956,
+          "prevPct": 0.5,
+          "prevAmt": 106686.8478,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.5,
+          "cumAmt": 106686.8478
+        },
+        "block3": {
+          "scope": 371771.2892,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 161034.3107,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Inside warehouse LT Work - Sub-distribution Panel with incomer of EB and Outgoing Feeder 4 nos feeding to Dock leveler and Motorised Rolling Shutter DB's, Toilet DB's, Lighting DB's, Power DB, ELB DB,fire door electrical point and fire door exit outside light.(The sub-distribution panel of warehouse will feed lighting,dock levellers, motorised rolling shutters-the main LT panel of warehouse is not in D&B Scope)",
+        "block1": {
+          "scope": 1620818.8784,
+          "prevPct": 0.8,
+          "prevAmt": 1620818.8784,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.8,
+          "cumAmt": 1620818.8784
+        },
+        "block2": {
+          "scope": 3782776.68,
+          "prevPct": 1.0,
+          "prevAmt": 3782776.68,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 3782776.68
+        },
+        "block3": {
+          "scope": 6985780.6882,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 3484460.1725,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Building earthing grid and lightening protection system",
+        "block1": {
+          "scope": 720363.946,
+          "prevPct": 1.0,
+          "prevAmt": 720363.946,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 720363.946
+        },
+        "block2": {
+          "scope": 2311696.86,
+          "prevPct": 1.0,
+          "prevAmt": 2311696.86,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 2311696.86
+        },
+        "block3": {
+          "scope": 3880989.2712,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 1811919.2897,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SIT of Dock pits - conduits, electrical industrial socket ,DB's and cables.",
+        "block1": {
+          "scope": 90420.0,
+          "prevPct": 1.0,
+          "prevAmt": 90420.0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 90420.0
+        },
+        "block2": {
+          "scope": 271260.0,
+          "prevPct": 1.0,
+          "prevAmt": 271260.0,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 1.0,
+          "cumAmt": 271260.0
+        },
+        "block3": {
+          "scope": 452100.0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 180840.0,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Electrical Fighting Works",
+        "description": "SITC of Mechanical Ventilation- SITC of Industrial type 12 inch, 1400 rpm. fan in each cubicle i.e. W/C ,Janitor, bath cubicle etc. \nFor common urinal area - a minumum of 2 nos. of exhaust fan with 18 inch 2550 CFM industrial type is required.",
+        "block1": {
+          "scope": 95877.0147,
+          "prevPct": 0.0,
+          "prevAmt": 95877.0147,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 95877.0147
+        },
+        "block2": {
+          "scope": 251780.9608,
+          "prevPct": 0.5,
+          "prevAmt": 125890.4804,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 0.5,
+          "cumAmt": 125890.4804
+        },
+        "block3": {
+          "scope": 339905.1787,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 113490.8475,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      },
+      {
+        "category": "Internal Plumbing Works",
+        "description": "SITC of Toilet Plumbing Work",
+        "block1": {
+          "scope": 956106.8965,
+          "prevPct": 0.0,
+          "prevAmt": 956106.8965,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 956106.8965
+        },
+        "block2": {
+          "scope": 2170010.4843,
+          "prevPct": 0.5,
+          "prevAmt": 1085005.2421,
+          "thisPct": 0.0,
+          "thisAmt": 0,
+          "cumPct": 0.5,
+          "cumAmt": 1085005.2421
+        },
+        "block3": {
+          "scope": 3509058.9286,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0.0,
+          "cumAmt": 0
+        },
+        "block4": {
+          "scope": 1716165.6541,
+          "prevPct": 0,
+          "prevAmt": 0,
+          "thisPct": 0,
+          "thisAmt": 0,
+          "cumPct": 0,
+          "cumAmt": 0
+        }
+      }
+    ]
+  },
+  "infraRA": {
+    "note": "Full RA history per infra milestone from RA-02 to RA-16.",
+    "totalInfraScope": 339880533.3914,
+    "milestones": [
+      {
+        "sno": "1",
+        "category": "Infra Civil Works",
+        "description": "On completion of Land Development- Cleaning, Cutting, filling , Backfilling, soil filling bought-out from outside & compaction of Soil for Warehouses upto plinth level (+1.2), external infra, ancillary buildings, green area, OSR, etc. \nCutting & Filling to be done as per NGL & Proposed Finished Levels in 4 installments.",
+        "pctOfTotal": 0.10803796,
+        "scopeAmount": 36720000.0,
+        "prevPct": 0.850218,
+        "prevAmt": 31219998.5,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.850218,
+        "cumAmt": 31219998.5,
+        "raHistory": {
+          "RA Bill - 02": {
+            "pct": 0.15102,
+            "amt": 5545462.1849
+          },
+          "RA Bill - 03": {
+            "pct": 0.277778,
+            "amt": 10200000.0
+          },
+          "RA Bill - 05": {
+            "pct": 0.2,
+            "amt": 7344000.0
+          },
+          "RA Bill - 09": {
+            "pct": 0.139721,
+            "amt": 5130537.032
+          },
+          "RA Bill - 10": {
+            "pct": 0.081699,
+            "amt": 2999998.5
+          }
+        }
+      },
+      {
+        "sno": "2",
+        "category": "Infra Civil Works",
+        "description": "On completion of Road work (Incl. plot access ramp/road), Aprons, Non-Movement Road - complete in all respect in 10 Installments",
+        "pctOfTotal": 0.26802926,
+        "scopeAmount": 91097927.856,
+        "prevPct": 0.433074,
+        "prevAmt": 39452145.1968,
+        "thisPct": 0.153461,
+        "thisAmt": 13980000.0,
+        "cumPct": 0.586535,
+        "cumAmt": 53432145.1968,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.032934,
+            "amt": 3000240.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.079036,
+            "amt": 7200000.0
+          },
+          "RA Bill - 09": {
+            "pct": 0.046291,
+            "amt": 4217010.0
+          },
+          "RA Bill - 10": {
+            "pct": 0.081524,
+            "amt": 7426689.84
+          },
+          "RA Bill - 12": {
+            "pct": 0.067391,
+            "amt": 6139222.7568
+          },
+          "RA Bill - 13": {
+            "pct": 0.078293,
+            "amt": 7132297.6
+          },
+          "RA Bill - 14": {
+            "pct": 0.047605,
+            "amt": 4336685.0
+          },
+          "RA Bill - 15": {
+            "pct": 0.0,
+            "amt": 11760000.0
+          }
+        }
+      },
+      {
+        "sno": "3",
+        "category": "Infra Civil Works",
+        "description": "On completion of all type of Pathway/Walkway including Kerb Stone in 4 Installments",
+        "pctOfTotal": 0.03840184,
+        "scopeAmount": 13052036.52,
+        "prevPct": 0.444881,
+        "prevAmt": 5806600.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.444881,
+        "cumAmt": 5806600.0,
+        "raHistory": {
+          "RA Bill - 07": {
+            "pct": 0.031259,
+            "amt": 408000.0
+          },
+          "RA Bill - 09": {
+            "pct": 0.033558,
+            "amt": 438000.0
+          }
+        }
+      },
+      {
+        "sno": "4",
+        "category": "Infra Civil Works",
+        "description": "On completion of Open Parking (Car & Truck Parking) in 3 Installments",
+        "pctOfTotal": 0.01946309,
+        "scopeAmount": 6615123.84,
+        "prevPct": 0.920592,
+        "prevAmt": 6089827.0343,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.920592,
+        "cumAmt": 6089827.0343,
+        "raHistory": {
+          "RA Bill - 14": {
+            "pct": 0.142053,
+            "amt": 939697.2
+          }
+        }
+      },
+      {
+        "sno": "5",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Barricading for Operation of Block 1 & 2 and Construction of Block 3 & 4.\n10 feet height GI sheet with MS Structure barrication.",
+        "pctOfTotal": 0.006191,
+        "scopeAmount": 2104200.0,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "raHistory": {}
+      },
+      {
+        "sno": "6",
+        "category": "Infra Civil Works",
+        "description": "On Completion of MS Fencing with retaining wall, 5 Feet Height Barbed Wire Fencing outside boundary wall,Retaining Wall (Near Ramp at front & OSR 2) in 2 Installments.",
+        "pctOfTotal": 0.01499645,
+        "scopeAmount": 5097000.0,
+        "prevPct": 0.867569,
+        "prevAmt": 4422000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.867569,
+        "cumAmt": 4422000.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.657249,
+            "amt": 3350000.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.21032,
+            "amt": 1072000.0
+          }
+        }
+      },
+      {
+        "sno": "7",
+        "category": "Infra Civil Works",
+        "description": "On completion of Landscaping work (OSR & Green Area with Lawn & Trees including irrigation system 2 Installments",
+        "pctOfTotal": 0.01332999,
+        "scopeAmount": 4530603.42,
+        "prevPct": 0.362837,
+        "prevAmt": 1643870.1787,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.362837,
+        "cumAmt": 1643870.1787,
+        "raHistory": {
+          "RA Bill - 14": {
+            "pct": 0.362837,
+            "amt": 1643870.1787
+          }
+        }
+      },
+      {
+        "sno": "8",
+        "category": "Infra Civil Works",
+        "description": "On completion of following Utility Buildings :-",
+        "pctOfTotal": 0,
+        "scopeAmount": 0,
+        "prevPct": 0,
+        "prevAmt": 0,
+        "thisPct": 0,
+        "thisAmt": 0,
+        "cumPct": 0,
+        "cumAmt": 0,
+        "raHistory": {}
+      },
+      {
+        "sno": "9",
+        "category": "Infra Civil Works",
+        "description": "On completion of LT Room Civil Complete Work - in 2 Installments",
+        "pctOfTotal": 0.00570077,
+        "scopeAmount": 1937580.0,
+        "prevPct": 1.0,
+        "prevAmt": 1937580.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1937580.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.5,
+            "amt": 968790.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.5,
+            "amt": 968790.0
+          }
+        }
+      },
+      {
+        "sno": "10",
+        "category": "Infra Civil Works",
+        "description": "On completion of Pump Room-Civil including Trench & Pump foundations - in 2 Installments",
+        "pctOfTotal": 0.01330138,
+        "scopeAmount": 4520880.0,
+        "prevPct": 1.0,
+        "prevAmt": 4520880.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4520880.0,
+        "raHistory": {
+          "RA Bill - 05": {
+            "pct": 0.5,
+            "amt": 2260440.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.5,
+            "amt": 2260440.0
+          }
+        }
+      },
+      {
+        "sno": "11",
+        "category": "Infra Civil Works",
+        "description": "On completion of Driver rest Room with toilets facility-Civil-Complete room - in 2 Installments",
+        "pctOfTotal": 0.01197124,
+        "scopeAmount": 4068792.0,
+        "prevPct": 1.0,
+        "prevAmt": 4068792.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4068792.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.5,
+            "amt": 2034396.0
+          },
+          "RA Bill - 10": {
+            "pct": 0.5,
+            "amt": 2034396.0
+          }
+        }
+      },
+      {
+        "sno": "12",
+        "category": "Infra Civil Works",
+        "description": "On completion of Guard Room with Toilet - Site entry-Civil -Complete Work , Openable motorised Gate at Main Entry and Exit of 2 meter height,Wicket gates for entry and exit of 2 meter height, SITC of Boom barrier - Arm length of road width (Arm length should not be more than 3.5 meters for single boom barrier) and SITC of FMO (40feet porta container) with TOILET + AC + Furniture including foundation. -in 2 Installments",
+        "pctOfTotal": 0.007969,
+        "scopeAmount": 2708507.52,
+        "prevPct": 0.645561,
+        "prevAmt": 1748507.52,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.645561,
+        "cumAmt": 1748507.52,
+        "raHistory": {
+          "RA Bill - 09": {
+            "pct": 0.516449,
+            "amt": 1398806.016
+          },
+          "RA Bill - 12": {
+            "pct": 0.129112,
+            "amt": 349701.504
+          }
+        }
+      },
+      {
+        "sno": "13",
+        "category": "Infra Civil Works",
+        "description": "On completion of HT Meter/RMU Area with 1.8 mtr MS fencing and gravel",
+        "pctOfTotal": 0.00114012,
+        "scopeAmount": 387504.0,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "raHistory": {}
+      },
+      {
+        "sno": "14",
+        "category": "Infra Civil Works",
+        "description": "On completion of DG Foundations & DG's stack Structure of 18M height from FRL including Insulation and GI Cladding on smoke pipes and smoke pipe will connect to DG set considering smoke pipe dia. for 200KVA DG as  200 mm. NB & 250 mm. NB  considering back pressure. Including Civil Work..",
+        "pctOfTotal": 0.00476638,
+        "scopeAmount": 1620000.0,
+        "prevPct": 1.0,
+        "prevAmt": 1620000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1620000.0,
+        "raHistory": {
+          "RA Bill - 07": {
+            "pct": 0.537037,
+            "amt": 870000.0
+          },
+          "RA Bill - 10": {
+            "pct": 0.462963,
+            "amt": 750000.0
+          }
+        }
+      },
+      {
+        "sno": "15",
+        "category": "Infra Civil Works",
+        "description": "On completion of Electrical Substation including foundation of Transformer, HT VCB, RCC Trench and respective panels foundations. The yard includes gravel and 1.8 m height peripharal Chain Link Fencing as well.",
+        "pctOfTotal": 0.00334308,
+        "scopeAmount": 1136247.84,
+        "prevPct": 0.800493,
+        "prevAmt": 909558.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.800493,
+        "cumAmt": 909558.0,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.800493,
+            "amt": 909558.0
+          }
+        }
+      },
+      {
+        "sno": "16",
+        "category": "Infra Civil Works",
+        "description": "On completion of Separate Road crossing for tanent (Hume pipe for utilities) 45 meter per lac (3-4 location ) of each warehouse  200 mm dia Np3 pipe 2 Installments.\nUnderground Crossings for Proposed Substation to warehouses.\nUnderground RCC Trench with pre-cast slab along Boundary Wall.\nOver Ground MS Structure (Clear 600mm wide) for Proposed Route for Tenant Substation. \n: 2 Installments",
+        "pctOfTotal": 0.03013405,
+        "scopeAmount": 10241975.7,
+        "prevPct": 0.463081,
+        "prevAmt": 4742863.077,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.463081,
+        "cumAmt": 4742863.077,
+        "raHistory": {
+          "RA Bill - 07": {
+            "pct": 0.134251,
+            "amt": 1375000.0
+          },
+          "RA Bill - 09": {
+            "pct": 0.328829,
+            "amt": 3367863.077
+          }
+        }
+      },
+      {
+        "sno": "17",
+        "category": "Infra Civil Works",
+        "description": "On completion of 10,000 Ltr effective capacity of underground RCC water tank with pump (One working + One Standby) to fill the Fire & Domestic Modular Tanks of 12 mtr height",
+        "pctOfTotal": 0.00088266,
+        "scopeAmount": 300000.0,
+        "prevPct": 1.0,
+        "prevAmt": 300000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 300000.0,
+        "raHistory": {
+          "RA Bill - 12": {
+            "pct": 1.0,
+            "amt": 300000.0
+          }
+        }
+      },
+      {
+        "sno": "18",
+        "category": "Infra Civil Works",
+        "description": "On completion of OHT will be placed on PEB Structure of Block-1 on gable end site at a height of 12 meters from FFL.\nSeparate MS Structure not to be considered for OHT.\nBooster pumps, pipelines, modular tank to be considered.\nOver Head Tank of 20,000 liters effective capacity in 3 Modular Tanks, all boxes-common header to be connected with this OHT for fire (consider pipeline accordingly)",
+        "pctOfTotal": 0.00150053,
+        "scopeAmount": 510000.0,
+        "prevPct": 1.0,
+        "prevAmt": 510000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 510000.0,
+        "raHistory": {
+          "RA Bill - 11": {
+            "pct": 1.0,
+            "amt": 510000.0
+          }
+        }
+      },
+      {
+        "sno": "19",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Sump pit min. 2.5x2.5x2.5and with pumps with GI line from sump to STP:  2 Installments",
+        "pctOfTotal": 0.00237436,
+        "scopeAmount": 807000.0,
+        "prevPct": 1.0,
+        "prevAmt": 807000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 807000.0,
+        "raHistory": {
+          "RA Bill - 11": {
+            "pct": 0.5,
+            "amt": 403500.0
+          }
+        }
+      },
+      {
+        "sno": "20",
+        "category": "Infra Civil Works",
+        "description": "SITC of RO + Chiller/water coller with dispenser with foundation and cover shed - 100 LPH- ion exchange.",
+        "pctOfTotal": 0.00097093,
+        "scopeAmount": 330000.0,
+        "prevPct": 0.450488,
+        "prevAmt": 148661.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.450488,
+        "cumAmt": 148661.0,
+        "raHistory": {
+          "RA Bill - 13": {
+            "pct": 0.450488,
+            "amt": 148661.0
+          }
+        }
+      },
+      {
+        "sno": "21",
+        "category": "Infra Civil Works",
+        "description": "On completion of 18 Meter Height, 3 sided LED display of 6.38mtrX1.8mtr on the top of pole including Civil Foundation, Structural & Electrical work & conceptual drawing\nOn completion of Enterance Portal as per 3D view in specs sheet and masterlayout plan & conceptual drawing\nOn completion of Client Vertical Pylon as per 3D view in specs sheet & conceptual drawing.\n:In 3 Installments",
+        "pctOfTotal": 0.02312577,
+        "scopeAmount": 7860000.0,
+        "prevPct": 1.0,
+        "prevAmt": 7860000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 7860000.0,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.372774,
+            "amt": 2930000.0
+          },
+          "RA Bill - 11": {
+            "pct": 0.311705,
+            "amt": 2450000.0
+          },
+          "RA Bill - 14": {
+            "pct": 0.315522,
+            "amt": 2480000.0
+          }
+        }
+      },
+      {
+        "sno": "22",
+        "category": "Infra Civil Works",
+        "description": "On completion of External Signage & Bollard in 2 Installments",
+        "pctOfTotal": 0.00582558,
+        "scopeAmount": 1980000.0,
+        "prevPct": 0.4,
+        "prevAmt": 792000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.4,
+        "cumAmt": 792000.0,
+        "raHistory": {
+          "RA Bill - 13": {
+            "pct": 0.4,
+            "amt": 792000.0
+          }
+        }
+      },
+      {
+        "sno": "23",
+        "category": "Infra Civil Works",
+        "description": "On completion of Storm Water Drain will be U-Type RCC Drain of Open & Covered Type both as per design and road movement with Brick/RCC Chambers with Heavy duty/light duty covers as per requirement. No any drain will be open in docking area side.\n:In 5 Installments",
+        "pctOfTotal": 0.13360607,
+        "scopeAmount": 45410102.3258,
+        "prevPct": 0.671948,
+        "prevAmt": 30513240.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.671948,
+        "cumAmt": 30513240.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.065544,
+            "amt": 2976372.0
+          },
+          "RA Bill - 10": {
+            "pct": 0.178374,
+            "amt": 8100000.0
+          },
+          "RA Bill - 12": {
+            "pct": 0.059458,
+            "amt": 2700000.0
+          },
+          "RA Bill - 13": {
+            "pct": 0.017768,
+            "amt": 806868.0
+          },
+          "RA Bill - 14": {
+            "pct": 0.350803,
+            "amt": 15930000.0
+          }
+        }
+      },
+      {
+        "sno": "24",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Sewage line with chambers in 3 Installments",
+        "pctOfTotal": 0.02226768,
+        "scopeAmount": 7568350.3876,
+        "prevPct": 0.428374,
+        "prevAmt": 3242087.5969,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.428374,
+        "cumAmt": 3242087.5969,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.25,
+            "amt": 1892087.5969
+          },
+          "RA Bill - 11": {
+            "pct": 0.178374,
+            "amt": 1350000.0
+          }
+        }
+      },
+      {
+        "sno": "25",
+        "category": "Infra Civil Works",
+        "description": "On completion of Plumbing Work-Internal Plumbing Works , external water supply and Hydropneumatic pumps 6 Installments",
+        "pctOfTotal": 0.02412332,
+        "scopeAmount": 8199046.2533,
+        "prevPct": 0.501391,
+        "prevAmt": 4110929.27,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.501391,
+        "cumAmt": 4110929.27,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.049421,
+            "amt": 405202.5
+          },
+          "RA Bill - 11": {
+            "pct": 0.172886,
+            "amt": 1417500.0
+          },
+          "RA Bill - 13": {
+            "pct": 0.246154,
+            "amt": 2018226.77
+          }
+        }
+      },
+      {
+        "sno": "26",
+        "category": "Infra Civil Works",
+        "description": "On completion of STP Work (Civil) in 3 Installments",
+        "pctOfTotal": 0.01323995,
+        "scopeAmount": 4500000.0,
+        "prevPct": 1.0,
+        "prevAmt": 4500000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4500000.0,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.3,
+            "amt": 1350000.0
+          },
+          "RA Bill - 14": {
+            "pct": 0.6,
+            "amt": 2700000.0
+          }
+        }
+      },
+      {
+        "sno": "27",
+        "category": "Infra Civil Works",
+        "description": "On completion of STP Work (Mechanical) :In 2 Installments",
+        "pctOfTotal": 0.02177603,
+        "scopeAmount": 7401250.0,
+        "prevPct": 0.672206,
+        "prevAmt": 4975164.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.672206,
+        "cumAmt": 4975164.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.297436,
+            "amt": 2201400.0
+          },
+          "RA Bill - 11": {
+            "pct": 0.37477,
+            "amt": 2773764.0
+          }
+        }
+      },
+      {
+        "sno": "29",
+        "category": "Infra Civil Works",
+        "description": "On completion of Organic Waste Converter (OWC) with Shed - Waste capacity per day of 300 Kg",
+        "pctOfTotal": 0.00469378,
+        "scopeAmount": 1595323.8457,
+        "prevPct": 1.0,
+        "prevAmt": 1595323.8457,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1595323.8457,
+        "raHistory": {
+          "RA Bill - 13": {
+            "pct": 0.491436,
+            "amt": 784000.0
+          },
+          "RA Bill - 14": {
+            "pct": 0.508564,
+            "amt": 811323.8457
+          }
+        }
+      },
+      {
+        "sno": "30",
+        "category": "Infra Civil Works",
+        "description": "On SITC of Raw Water Tank, Treated Water Tank and Fire Tank work including Civil Work- 4 Installments",
+        "pctOfTotal": 0.0195198,
+        "scopeAmount": 6634400.0,
+        "prevPct": 1.000001,
+        "prevAmt": 6634406.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.000001,
+        "cumAmt": 6634406.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.197485,
+            "amt": 1310192.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.203797,
+            "amt": 1352073.87
+          },
+          "RA Bill - 09": {
+            "pct": 0.311199,
+            "amt": 2064620.13
+          },
+          "RA Bill - 10": {
+            "pct": 0.28752,
+            "amt": 1907520.0
+          }
+        }
+      },
+      {
+        "sno": "31",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Plumbing works of Utility Buildings (Pump Room, Driver rest room, guard room, RO Chiller ,FMO Container, etc.) & \nBorewell - 1 No. borewell of up to 200 feet depth and 200mm dia bore with pump.\nPlumbing connection from Borewell to Raw water tank and automation for borewell functioning. In 2 Installments",
+        "pctOfTotal": 0.00661712,
+        "scopeAmount": 2249030.0775,
+        "prevPct": 0.673032,
+        "prevAmt": 1513670.0775,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.673032,
+        "cumAmt": 1513670.0775,
+        "raHistory": {
+          "RA Bill - 11": {
+            "pct": 0.471123,
+            "amt": 1059569.0543
+          },
+          "RA Bill - 14": {
+            "pct": 0.20191,
+            "amt": 454101.0233
+          }
+        }
+      },
+      {
+        "sno": "32",
+        "category": "Infra Civil Works",
+        "description": "On completion of Pond of required effective capacity with clear 1200 mm wide brickwork Staircase with MS railing,No bores and no filter media.\nPond will have tapered walls at 45 degree with Stone pitching on sides & bottom of pond and 1800mm chain fencing with inlet RCC hume pipe of storm water and overflow discharge RCC hume pipe towards nearby water body.\nAlso, a cleaning sump is to be provided at the bottom of Pond  along with Pump for Cleaning Purpose. Pond to be covered with mosquito net in 2 installments.",
+        "pctOfTotal": 0.02030125,
+        "scopeAmount": 6900000.0,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "raHistory": {}
+      },
+      {
+        "sno": "",
+        "category": "Infra Civil Works",
+        "description": "On Completion of PEB Roof Profile Machine Foundation as per drawing for all blocks- 4 Installments",
+        "pctOfTotal": 0.00469378,
+        "scopeAmount": 1595323.8457,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "raHistory": {}
+      },
+      {
+        "sno": "32",
+        "category": "External Electrical Works",
+        "description": "SITC of HT infra including HT RMU.\nSITC of HT Cable from HT meter to  RMU and then RMU to HT Panel of Infra inside premises, HT Panel of Infra to Transformer HT Box,Earthing: In 2 Installments",
+        "pctOfTotal": 0.01412261,
+        "scopeAmount": 4800000.0,
+        "prevPct": 1.0,
+        "prevAmt": 4800000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4800000.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.32,
+            "amt": 1536000.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.0565,
+            "amt": 271200.0
+          },
+          "RA Bill - 10": {
+            "pct": 0.6235,
+            "amt": 2992800.0
+          }
+        }
+      },
+      {
+        "sno": "33",
+        "category": "External Electrical Works",
+        "description": "SITC of LT Infra including LT Breaker,LT Cable from main LT Breaker to Warehouse sub distribution Panel including Infra Main Panel, Bus Bar, Earthing, APFC Panel , Distribution Panel for Warehouses Utility and Pump Room. In 2 Installments",
+        "pctOfTotal": 0.01324651,
+        "scopeAmount": 4502231.5,
+        "prevPct": 1.0,
+        "prevAmt": 4502231.5,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4502231.5,
+        "raHistory": {
+          "RA Bill - 07": {
+            "pct": 0.03998,
+            "amt": 180000.0
+          },
+          "RA Bill - 09": {
+            "pct": 0.71002,
+            "amt": 3196673.625
+          },
+          "RA Bill - 10": {
+            "pct": 0.15,
+            "amt": 675334.725
+          },
+          "RA Bill - 11": {
+            "pct": 0.1,
+            "amt": 450223.15
+          }
+        }
+      },
+      {
+        "sno": "34",
+        "category": "External Electrical Works",
+        "description": "SITC of 630 kVA transformer for common utility instruments/machines+ Pump Rooms. \nTransformer shall be provided along with OLTC & shall be energy efficiency class 2 as per IS 1180 (Part-1): 2010 and latest amendment 2024.",
+        "pctOfTotal": 0.01147662,
+        "scopeAmount": 3900680.0,
+        "prevPct": 1.0,
+        "prevAmt": 3900680.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 3900680.0,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.323021,
+            "amt": 1260000.0
+          },
+          "RA Bill - 09": {
+            "pct": 0.48,
+            "amt": 1872326.4
+          },
+          "RA Bill - 10": {
+            "pct": 0.15,
+            "amt": 585102.0
+          },
+          "RA Bill - 11": {
+            "pct": 0.046979,
+            "amt": 183251.6
+          }
+        }
+      },
+      {
+        "sno": "35",
+        "category": "External Electrical Works",
+        "description": "SITC of CAM DG -200 KVA -CPCB-4 for infra with all required accessories such as AMF and ATS in panels, complete for operations.",
+        "pctOfTotal": 0.00912227,
+        "scopeAmount": 3100480.87,
+        "prevPct": 1.0,
+        "prevAmt": 3100480.87,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 3100480.87,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.301566,
+            "amt": 935000.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.498434,
+            "amt": 1545384.696
+          },
+          "RA Bill - 10": {
+            "pct": 0.15,
+            "amt": 465072.1305
+          },
+          "RA Bill - 11": {
+            "pct": 0.05,
+            "amt": 155024.0435
+          }
+        }
+      },
+      {
+        "sno": "",
+        "category": "External Electrical Works",
+        "description": "SITC of Internal  Electrical wiring, light fixtures, cabling and panels & mechanical Ventilation for utility building, Drivers room,LT Room,  Meter room, security room, Pump room ,FMO, Chiller, Boom Barrier, Main Gate , pond, underground tank, DG stack aviation light, transformer area, two pole area,OSR and green area ,signage electrical provision ,STP, etc. In 2 Installments",
+        "pctOfTotal": 0.01731931,
+        "scopeAmount": 5886494.7459,
+        "prevPct": 0.8,
+        "prevAmt": 4709195.7968,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.8,
+        "cumAmt": 4709195.7968,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.356749,
+            "amt": 2100000.0
+          },
+          "RA Bill - 11": {
+            "pct": 0.443251,
+            "amt": 2609195.7968
+          }
+        }
+      },
+      {
+        "sno": "",
+        "category": "External Electrical Works",
+        "description": "SITC of External lighting (roads & parking) In 2 Installments",
+        "pctOfTotal": 0.01484512,
+        "scopeAmount": 5045566.9251,
+        "prevPct": 0.25,
+        "prevAmt": 1261391.7313,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.25,
+        "cumAmt": 1261391.7313,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.25,
+            "amt": 1261391.7313
+          }
+        }
+      },
+      {
+        "sno": "36",
+        "category": "External Electrical Works",
+        "description": "SITC of Flood lighting 150w in apron areas In 2 Installments",
+        "pctOfTotal": 0.00989675,
+        "scopeAmount": 3363711.2834,
+        "prevPct": 0.25,
+        "prevAmt": 840927.8208,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.25,
+        "cumAmt": 840927.8208,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.25,
+            "amt": 840927.8208
+          }
+        }
+      },
+      {
+        "sno": "37",
+        "category": "External Electrical Works",
+        "description": "SITC of CCTV System for surveillance of complete park excuding inside warehouses with control room setup in Security Room / FMO container with HD picture quality and clear night vision. In 2 Installments",
+        "pctOfTotal": 0.01237093,
+        "scopeAmount": 4204639.1042,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.338473,
+        "thisAmt": 1423158.5336,
+        "cumPct": 0.338473,
+        "cumAmt": 1423158.5336,
+        "raHistory": {
+          "RA Bill - 15": {
+            "pct": 0.0,
+            "amt": 1423158.5336
+          }
+        }
+      },
+      {
+        "sno": "38",
+        "category": "External Fire Works",
+        "description": "SITC of Hydrant system - pump room equipment such as electrical & diesel pumps,  & external piping - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "pctOfTotal": 0.02474186,
+        "scopeAmount": 8409278.2085,
+        "prevPct": 0.75,
+        "prevAmt": 6306958.6564,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.75,
+        "cumAmt": 6306958.6564,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.05708,
+            "amt": 480000.0
+          },
+          "RA Bill - 07": {
+            "pct": 0.341377,
+            "amt": 2870738.08
+          },
+          "RA Bill - 09": {
+            "pct": 0.118916,
+            "amt": 1000000.0
+          },
+          "RA Bill - 10": {
+            "pct": 0.232626,
+            "amt": 1956220.5764
+          }
+        }
+      },
+      {
+        "sno": "39",
+        "category": "External Fire Works",
+        "description": "SITC of Sprinkler System - pump room equipment such as electrical & diesel pumps & external piping - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "pctOfTotal": 0.01611029,
+        "scopeAmount": 5475575.245,
+        "prevPct": 0.75,
+        "prevAmt": 4106681.4338,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.75,
+        "cumAmt": 4106681.4338,
+        "raHistory": {
+          "RA Bill - 06": {
+            "pct": 0.05708,
+            "amt": 312544.7931
+          },
+          "RA Bill - 07": {
+            "pct": 0.340837,
+            "amt": 1866278.05
+          },
+          "RA Bill - 09": {
+            "pct": 0.118916,
+            "amt": 651134.9856
+          },
+          "RA Bill - 10": {
+            "pct": 0.233167,
+            "amt": 1276723.6051
+          }
+        }
+      },
+      {
+        "sno": "40",
+        "category": "External Fire Works",
+        "description": "SITC of Fire Detection in all utility buildings and Fire Protection System in Pump Room and fire extinguishers in all utility buildings and infra. In 2 Installments",
+        "pctOfTotal": 0.00445354,
+        "scopeAmount": 1513670.0775,
+        "prevPct": 1.0,
+        "prevAmt": 1513670.0775,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1513670.0775,
+        "raHistory": {
+          "RA Bill - 10": {
+            "pct": 0.6,
+            "amt": 908202.0465
+          },
+          "RA Bill - 11": {
+            "pct": 0.4,
+            "amt": 605468.031
+          }
+        }
+      },
+      {
+        "sno": "",
+        "category": "External Fire Works",
+        "description": "Sub Total",
+        "pctOfTotal": 1.0,
+        "scopeAmount": 339880533.3914,
+        "prevPct": 0.500757,
+        "prevAmt": 210727321.1835,
+        "thisPct": 0.045319,
+        "thisAmt": 15403158.5336,
+        "cumPct": 0.665323,
+        "cumAmt": 226130479.717,
+        "raHistory": {
+          "RA Bill - 02": {
+            "pct": 0.016316,
+            "amt": 5545462.1849
+          },
+          "RA Bill - 03": {
+            "pct": 0.030011,
+            "amt": 10200000.0
+          },
+          "RA Bill - 05": {
+            "pct": 0.028258,
+            "amt": 9604440.0
+          },
+          "RA Bill - 06": {
+            "pct": 0.059918,
+            "amt": 20364934.7931
+          },
+          "RA Bill - 07": {
+            "pct": 0.065434,
+            "amt": 22239904.696
+          },
+          "RA Bill - 09": {
+            "pct": 0.068662,
+            "amt": 23336971.2656
+          },
+          "RA Bill - 10": {
+            "pct": 0.128772,
+            "amt": 43767227.0725
+          },
+          "RA Bill - 11": {
+            "pct": 0.041095,
+            "amt": 13967495.6755
+          },
+          "RA Bill - 12": {
+            "pct": 0.027918,
+            "amt": 9488924.2608
+          },
+          "RA Bill - 13": {
+            "pct": 0.034371,
+            "amt": 11682053.37
+          },
+          "RA Bill - 14": {
+            "pct": 0.086194,
+            "amt": 29295677.2476
+          },
+          "RA Bill - 15": {
+            "pct": 0,
+            "amt": 13183158.5336
+          }
+        }
+      },
+      {
+        "sno": "41",
+        "category": "Consultant Fees for Complete Park",
+        "description": "Consultant Fees-Design Cost on prorata rate",
+        "pctOfTotal": 1.0,
+        "scopeAmount": 9571943.0742,
+        "prevPct": 0.5,
+        "prevAmt": 4785971.5371,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.5,
+        "cumAmt": 4785971.5371,
+        "raHistory": {
+          "RA Bill - 05": {
+            "pct": 0.355785,
+            "amt": 3405557.6706
+          },
+          "RA Bill - 12": {
+            "pct": 0.144215,
+            "amt": 1380413.8665
+          }
+        }
+      },
+      {
+        "sno": "",
+        "category": "Consultant Fees for Complete Park",
+        "description": "Total",
+        "pctOfTotal": 0,
+        "scopeAmount": 349452476.4655,
+        "prevPct": 0.500736,
+        "prevAmt": 215513292.7206,
+        "thisPct": 0,
+        "thisAmt": 15403158.5336,
+        "cumPct": 0.660795,
+        "cumAmt": 230916451.2541,
+        "raHistory": {
+          "RA Bill - 02": {
+            "pct": 0,
+            "amt": 5545462.1849
+          },
+          "RA Bill - 03": {
+            "pct": 0,
+            "amt": 10200000.0
+          },
+          "RA Bill - 05": {
+            "pct": 0.03723,
+            "amt": 13009997.6706
+          },
+          "RA Bill - 06": {
+            "pct": 0.058277,
+            "amt": 20364934.7931
+          },
+          "RA Bill - 07": {
+            "pct": 0.063642,
+            "amt": 22239904.696
+          },
+          "RA Bill - 09": {
+            "pct": 0.066782,
+            "amt": 23336971.2656
+          },
+          "RA Bill - 10": {
+            "pct": 0.125245,
+            "amt": 43767227.0725
+          },
+          "RA Bill - 11": {
+            "pct": 0.03997,
+            "amt": 13967495.6755
+          },
+          "RA Bill - 12": {
+            "pct": 0.031104,
+            "amt": 10869338.1273
+          },
+          "RA Bill - 13": {
+            "pct": 0.03343,
+            "amt": 11682053.37
+          },
+          "RA Bill - 14": {
+            "pct": 0.083833,
+            "amt": 29295677.2476
+          },
+          "RA Bill - 15": {
+            "pct": 0,
+            "amt": 13183158.5336
+          }
+        }
+      },
+      {
+        "sno": "42",
+        "category": "Alteration Item",
+        "description": "Alteration Item",
+        "pctOfTotal": 1.0,
+        "scopeAmount": 5946927.525,
+        "prevPct": 1.0,
+        "prevAmt": 5946927.525,
+        "thisPct": 0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 5946927.525,
+        "raHistory": {
+          "RA Bill - 03": {
+            "pct": 0,
+            "amt": 15745462.1849
+          },
+          "RA Bill - 04": {
+            "pct": 0,
+            "amt": 15745462.1849
+          },
+          "RA Bill - 05": {
+            "pct": 0,
+            "amt": 28755459.8555
+          },
+          "RA Bill - 06": {
+            "pct": 0,
+            "amt": 49120394.6486
+          },
+          "RA Bill - 07": {
+            "pct": 0,
+            "amt": 71360299.3446
+          },
+          "RA Bill - 08": {
+            "pct": 0,
+            "amt": 71360299.3446
+          },
+          "RA Bill - 09": {
+            "pct": 0,
+            "amt": 94697270.6101
+          },
+          "RA Bill - 10": {
+            "pct": 0,
+            "amt": 138464497.6827
+          },
+          "RA Bill - 11": {
+            "pct": 0,
+            "amt": 152431993.3582
+          },
+          "RA Bill - 12": {
+            "pct": 0,
+            "amt": 163301331.4855
+          },
+          "RA Bill - 13": {
+            "pct": 0,
+            "amt": 174983384.8555
+          },
+          "RA Bill - 14": {
+            "pct": 0,
+            "amt": 204279062.1031
+          }
+        }
+      }
+    ]
+  },
+  "infraBilling": {
+    "note": "RA-16 infra billing summary with installment tracking.",
+    "milestones": [
+      {
+        "sno": "1",
+        "category": "Infra Civil Works",
+        "description": "On completion of Land Development- Cleaning, Cutting, filling , Backfilling, soil filling bought-out from outside & compaction of Soil for Warehouses upto plinth level (+1.2), external infra, ancillary buildings, green area, OSR, etc. \nCutting & Filling to be done as per NGL & Proposed Finished Levels in 4 installments.",
+        "scopeAmount": 36720000.0,
+        "prevPct": 0.850218,
+        "prevAmt": 31219998.5,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.850218,
+        "cumAmt": 31219998.5,
+        "installmentsCompleted": 5
+      },
+      {
+        "sno": "2",
+        "category": "Infra Civil Works",
+        "description": "On completion of Road work (Incl. plot access ramp/road), Aprons, Non-Movement Road - complete in all respect in 10 Installments",
+        "scopeAmount": 91097927.856,
+        "prevPct": 0.433074,
+        "prevAmt": 39452145.1968,
+        "thisPct": 0.153461,
+        "thisAmt": 13980000.0,
+        "cumPct": 0.586535,
+        "cumAmt": 53432145.1968,
+        "installmentsCompleted": 8
+      },
+      {
+        "sno": "3",
+        "category": "Infra Civil Works",
+        "description": "On completion of all type of Pathway/Walkway including Kerb Stone in 4 Installments",
+        "scopeAmount": 13052036.52,
+        "prevPct": 0.444881,
+        "prevAmt": 5806600.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.444881,
+        "cumAmt": 5806600.0,
+        "installmentsCompleted": 3
+      },
+      {
+        "sno": "4",
+        "category": "Infra Civil Works",
+        "description": "On completion of Open Parking (Car & Truck Parking) in 3 Installments",
+        "scopeAmount": 6615123.84,
+        "prevPct": 0.920592,
+        "prevAmt": 6089827.0343,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.920592,
+        "cumAmt": 6089827.0343,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "5",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Barricading for Operation of Block 1 & 2 and Construction of Block 3 & 4.\n10 feet height GI sheet with MS Structure barrication.",
+        "scopeAmount": 2104200.0,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "installmentsCompleted": 0
+      },
+      {
+        "sno": "6",
+        "category": "Infra Civil Works",
+        "description": "On Completion of MS Fencing with retaining wall, 5 Feet Height Barbed Wire Fencing outside boundary wall,Retaining Wall (Near Ramp at front & OSR 2) in 2 Installments.",
+        "scopeAmount": 5097000.0,
+        "prevPct": 0.867569,
+        "prevAmt": 4422000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.867569,
+        "cumAmt": 4422000.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "7",
+        "category": "Infra Civil Works",
+        "description": "On completion of Landscaping work (OSR & Green Area with Lawn & Trees including irrigation system 2 Installments",
+        "scopeAmount": 4530603.42,
+        "prevPct": 0.362837,
+        "prevAmt": 1643870.1787,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.362837,
+        "cumAmt": 1643870.1787,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "8",
+        "category": "Infra Civil Works",
+        "description": "On completion of following Utility Buildings :-",
+        "scopeAmount": 0,
+        "prevPct": 0,
+        "prevAmt": 0,
+        "thisPct": 0,
+        "thisAmt": 0,
+        "cumPct": 0,
+        "cumAmt": 0,
+        "installmentsCompleted": 0
+      },
+      {
+        "sno": "9",
+        "category": "Infra Civil Works",
+        "description": "On completion of LT Room Civil Complete Work - in 2 Installments",
+        "scopeAmount": 1937580.0,
+        "prevPct": 1.0,
+        "prevAmt": 1937580.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1937580.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "10",
+        "category": "Infra Civil Works",
+        "description": "On completion of Pump Room-Civil including Trench & Pump foundations - in 2 Installments",
+        "scopeAmount": 4520880.0,
+        "prevPct": 1.0,
+        "prevAmt": 4520880.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4520880.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "11",
+        "category": "Infra Civil Works",
+        "description": "On completion of Driver rest Room with toilets facility-Civil-Complete room - in 2 Installments",
+        "scopeAmount": 4068792.0,
+        "prevPct": 1.0,
+        "prevAmt": 4068792.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4068792.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "12",
+        "category": "Infra Civil Works",
+        "description": "On completion of Guard Room with Toilet - Site entry-Civil -Complete Work , Openable motorised Gate at Main Entry and Exit of 2 meter height,Wicket gates for entry and exit of 2 meter height, SITC of Boom barrier - Arm length of road width (Arm length should not be more than 3.5 meters for single boom barrier) and SITC of FMO (40feet porta container) with TOILET + AC + Furniture including foundation. -in 2 Installments",
+        "scopeAmount": 2708507.52,
+        "prevPct": 0.645561,
+        "prevAmt": 1748507.52,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.645561,
+        "cumAmt": 1748507.52,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "13",
+        "category": "Infra Civil Works",
+        "description": "On completion of HT Meter/RMU Area with 1.8 mtr MS fencing and gravel",
+        "scopeAmount": 387504.0,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "installmentsCompleted": 0
+      },
+      {
+        "sno": "14",
+        "category": "Infra Civil Works",
+        "description": "On completion of DG Foundations & DG's stack Structure of 18M height from FRL including Insulation and GI Cladding on smoke pipes and smoke pipe will connect to DG set considering smoke pipe dia. for 200KVA DG as  200 mm. NB & 250 mm. NB  considering back pressure. Including Civil Work..",
+        "scopeAmount": 1620000.0,
+        "prevPct": 1.0,
+        "prevAmt": 1620000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1620000.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "15",
+        "category": "Infra Civil Works",
+        "description": "On completion of Electrical Substation including foundation of Transformer, HT VCB, RCC Trench and respective panels foundations. The yard includes gravel and 1.8 m height peripharal Chain Link Fencing as well.",
+        "scopeAmount": 1136247.84,
+        "prevPct": 0.800493,
+        "prevAmt": 909558.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.800493,
+        "cumAmt": 909558.0,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "16",
+        "category": "Infra Civil Works",
+        "description": "On completion of Separate Road crossing for tanent (Hume pipe for utilities) 45 meter per lac (3-4 location ) of each warehouse  200 mm dia Np3 pipe 2 Installments.\nUnderground Crossings for Proposed Substation to warehouses.\nUnderground RCC Trench with pre-cast slab along Boundary Wall.\nOver Ground MS Structure (Clear 600mm wide) for Proposed Route for Tenant Substation. \n: 2 Installments",
+        "scopeAmount": 10241975.7,
+        "prevPct": 0.463081,
+        "prevAmt": 4742863.077,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.463081,
+        "cumAmt": 4742863.077,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "17",
+        "category": "Infra Civil Works",
+        "description": "On completion of 10,000 Ltr effective capacity of underground RCC water tank with pump (One working + One Standby) to fill the Fire & Domestic Modular Tanks of 12 mtr height",
+        "scopeAmount": 300000.0,
+        "prevPct": 1.0,
+        "prevAmt": 300000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 300000.0,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "18",
+        "category": "Infra Civil Works",
+        "description": "On completion of OHT will be placed on PEB Structure of Block-1 on gable end site at a height of 12 meters from FFL.\nSeparate MS Structure not to be considered for OHT.\nBooster pumps, pipelines, modular tank to be considered.\nOver Head Tank of 20,000 liters effective capacity in 3 Modular Tanks, all boxes-common header to be connected with this OHT for fire (consider pipeline accordingly)",
+        "scopeAmount": 510000.0,
+        "prevPct": 1.0,
+        "prevAmt": 510000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 510000.0,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "19",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Sump pit min. 2.5x2.5x2.5and with pumps with GI line from sump to STP:  2 Installments",
+        "scopeAmount": 807000.0,
+        "prevPct": 1.0,
+        "prevAmt": 807000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 807000.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "20",
+        "category": "Infra Civil Works",
+        "description": "SITC of RO + Chiller/water coller with dispenser with foundation and cover shed - 100 LPH- ion exchange.",
+        "scopeAmount": 330000.0,
+        "prevPct": 0.450488,
+        "prevAmt": 148661.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.450488,
+        "cumAmt": 148661.0,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "21",
+        "category": "Infra Civil Works",
+        "description": "On completion of 18 Meter Height, 3 sided LED display of 6.38mtrX1.8mtr on the top of pole including Civil Foundation, Structural & Electrical work & conceptual drawing\nOn completion of Enterance Portal as per 3D view in specs sheet and masterlayout plan & conceptual drawing\nOn completion of Client Vertical Pylon as per 3D view in specs sheet & conceptual drawing.\n:In 3 Installments",
+        "scopeAmount": 7860000.0,
+        "prevPct": 1.0,
+        "prevAmt": 7860000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 7860000.0,
+        "installmentsCompleted": 3
+      },
+      {
+        "sno": "22",
+        "category": "Infra Civil Works",
+        "description": "On completion of External Signage & Bollard in 2 Installments",
+        "scopeAmount": 1980000.0,
+        "prevPct": 0.4,
+        "prevAmt": 792000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.4,
+        "cumAmt": 792000.0,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "23",
+        "category": "Infra Civil Works",
+        "description": "On completion of Storm Water Drain will be U-Type RCC Drain of Open & Covered Type both as per design and road movement with Brick/RCC Chambers with Heavy duty/light duty covers as per requirement. No any drain will be open in docking area side.\n:In 5 Installments",
+        "scopeAmount": 45410102.3258,
+        "prevPct": 0.671948,
+        "prevAmt": 30513240.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.671948,
+        "cumAmt": 30513240.0,
+        "installmentsCompleted": 5
+      },
+      {
+        "sno": "24",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Sewage line with chambers in 3 Installments",
+        "scopeAmount": 7568350.3876,
+        "prevPct": 0.428374,
+        "prevAmt": 3242087.5969,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.428374,
+        "cumAmt": 3242087.5969,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "25",
+        "category": "Infra Civil Works",
+        "description": "On completion of Plumbing Work-Internal Plumbing Works , external water supply and Hydropneumatic pumps 6 Installments",
+        "scopeAmount": 8199046.2533,
+        "prevPct": 0.501391,
+        "prevAmt": 4110929.27,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.501391,
+        "cumAmt": 4110929.27,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "26",
+        "category": "Infra Civil Works",
+        "description": "On completion of STP Work (Civil) in 3 Installments",
+        "scopeAmount": 4500000.0,
+        "prevPct": 1.0,
+        "prevAmt": 4500000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4500000.0,
+        "installmentsCompleted": 3
+      },
+      {
+        "sno": "27",
+        "category": "Infra Civil Works",
+        "description": "On completion of STP Work (Mechanical) :In 2 Installments",
+        "scopeAmount": 7401250.0,
+        "prevPct": 0.672206,
+        "prevAmt": 4975164.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.672206,
+        "cumAmt": 4975164.0,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "29",
+        "category": "Infra Civil Works",
+        "description": "On completion of Organic Waste Converter (OWC) with Shed - Waste capacity per day of 300 Kg",
+        "scopeAmount": 1595323.8457,
+        "prevPct": 1.0,
+        "prevAmt": 1595323.8457,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1595323.8457,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "30",
+        "category": "Infra Civil Works",
+        "description": "On SITC of Raw Water Tank, Treated Water Tank and Fire Tank work including Civil Work- 4 Installments",
+        "scopeAmount": 6634400.0,
+        "prevPct": 1.000001,
+        "prevAmt": 6634406.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.000001,
+        "cumAmt": 6634406.0,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "31",
+        "category": "Infra Civil Works",
+        "description": "On Completion of Plumbing works of Utility Buildings (Pump Room, Driver rest room, guard room, RO Chiller ,FMO Container, etc.) & \nBorewell - 1 No. borewell of up to 200 feet depth and 200mm dia bore with pump.\nPlumbing connection from Borewell to Raw water tank and automation for borewell functioning. In 2 Installments",
+        "scopeAmount": 2249030.0775,
+        "prevPct": 0.673032,
+        "prevAmt": 1513670.0775,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.673032,
+        "cumAmt": 1513670.0775,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "32",
+        "category": "Infra Civil Works",
+        "description": "On completion of Pond of required effective capacity with clear 1200 mm wide brickwork Staircase with MS railing,No bores and no filter media.\nPond will have tapered walls at 45 degree with Stone pitching on sides & bottom of pond and 1800mm chain fencing with inlet RCC hume pipe of storm water and overflow discharge RCC hume pipe towards nearby water body.\nAlso, a cleaning sump is to be provided at the bottom of Pond  along with Pump for Cleaning Purpose. Pond to be covered with mosquito net in 2 installments.",
+        "scopeAmount": 6900000.0,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "installmentsCompleted": 0
+      },
+      {
+        "sno": "",
+        "category": "Infra Civil Works",
+        "description": "On Completion of PEB Roof Profile Machine Foundation as per drawing for all blocks- 4 Installments",
+        "scopeAmount": 1595323.8457,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.0,
+        "cumAmt": 0,
+        "installmentsCompleted": 0
+      },
+      {
+        "sno": "32",
+        "category": "External Electrical Works",
+        "description": "SITC of HT infra including HT RMU.\nSITC of HT Cable from HT meter to  RMU and then RMU to HT Panel of Infra inside premises, HT Panel of Infra to Transformer HT Box,Earthing: In 2 Installments",
+        "scopeAmount": 4800000.0,
+        "prevPct": 1.0,
+        "prevAmt": 4800000.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4800000.0,
+        "installmentsCompleted": 3
+      },
+      {
+        "sno": "33",
+        "category": "External Electrical Works",
+        "description": "SITC of LT Infra including LT Breaker,LT Cable from main LT Breaker to Warehouse sub distribution Panel including Infra Main Panel, Bus Bar, Earthing, APFC Panel , Distribution Panel for Warehouses Utility and Pump Room. In 2 Installments",
+        "scopeAmount": 4502231.5,
+        "prevPct": 1.0,
+        "prevAmt": 4502231.5,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 4502231.5,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "34",
+        "category": "External Electrical Works",
+        "description": "SITC of 630 kVA transformer for common utility instruments/machines+ Pump Rooms. \nTransformer shall be provided along with OLTC & shall be energy efficiency class 2 as per IS 1180 (Part-1): 2010 and latest amendment 2024.",
+        "scopeAmount": 3900680.0,
+        "prevPct": 1.0,
+        "prevAmt": 3900680.0,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 3900680.0,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "35",
+        "category": "External Electrical Works",
+        "description": "SITC of CAM DG -200 KVA -CPCB-4 for infra with all required accessories such as AMF and ATS in panels, complete for operations.",
+        "scopeAmount": 3100480.87,
+        "prevPct": 1.0,
+        "prevAmt": 3100480.87,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 3100480.87,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "",
+        "category": "External Electrical Works",
+        "description": "SITC of Internal  Electrical wiring, light fixtures, cabling and panels & mechanical Ventilation for utility building, Drivers room,LT Room,  Meter room, security room, Pump room ,FMO, Chiller, Boom Barrier, Main Gate , pond, underground tank, DG stack aviation light, transformer area, two pole area,OSR and green area ,signage electrical provision ,STP, etc. In 2 Installments",
+        "scopeAmount": 5886494.7459,
+        "prevPct": 0.8,
+        "prevAmt": 4709195.7968,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.8,
+        "cumAmt": 4709195.7968,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "",
+        "category": "External Electrical Works",
+        "description": "SITC of External lighting (roads & parking) In 2 Installments",
+        "scopeAmount": 5045566.9251,
+        "prevPct": 0.25,
+        "prevAmt": 1261391.7313,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.25,
+        "cumAmt": 1261391.7313,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "36",
+        "category": "External Electrical Works",
+        "description": "SITC of Flood lighting 150w in apron areas In 2 Installments",
+        "scopeAmount": 3363711.2834,
+        "prevPct": 0.25,
+        "prevAmt": 840927.8208,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.25,
+        "cumAmt": 840927.8208,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "37",
+        "category": "External Electrical Works",
+        "description": "SITC of CCTV System for surveillance of complete park excuding inside warehouses with control room setup in Security Room / FMO container with HD picture quality and clear night vision. In 2 Installments",
+        "scopeAmount": 4204639.1042,
+        "prevPct": 0.0,
+        "prevAmt": 0,
+        "thisPct": 0.338473,
+        "thisAmt": 1423158.5336,
+        "cumPct": 0.338473,
+        "cumAmt": 1423158.5336,
+        "installmentsCompleted": 1
+      },
+      {
+        "sno": "38",
+        "category": "External Fire Works",
+        "description": "SITC of Hydrant system - pump room equipment such as electrical & diesel pumps,  & external piping - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "scopeAmount": 8409278.2085,
+        "prevPct": 0.75,
+        "prevAmt": 6306958.6564,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.75,
+        "cumAmt": 6306958.6564,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "39",
+        "category": "External Fire Works",
+        "description": "SITC of Sprinkler System - pump room equipment such as electrical & diesel pumps & external piping - 80% Payment against supply & installation & 20% against testing & commissioning.",
+        "scopeAmount": 5475575.245,
+        "prevPct": 0.75,
+        "prevAmt": 4106681.4338,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.75,
+        "cumAmt": 4106681.4338,
+        "installmentsCompleted": 4
+      },
+      {
+        "sno": "40",
+        "category": "External Fire Works",
+        "description": "SITC of Fire Detection in all utility buildings and Fire Protection System in Pump Room and fire extinguishers in all utility buildings and infra. In 2 Installments",
+        "scopeAmount": 1513670.0775,
+        "prevPct": 1.0,
+        "prevAmt": 1513670.0775,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 1513670.0775,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "41",
+        "category": "Consultant Fees for Complete Park",
+        "description": "Consultant Fees-Design Cost on prorata rate",
+        "scopeAmount": 9571943.0742,
+        "prevPct": 0.5,
+        "prevAmt": 4785971.5371,
+        "thisPct": 0.0,
+        "thisAmt": 0,
+        "cumPct": 0.5,
+        "cumAmt": 4785971.5371,
+        "installmentsCompleted": 2
+      },
+      {
+        "sno": "42",
+        "category": "Alteration Item",
+        "description": "Alteration Item",
+        "scopeAmount": 5946927.525,
+        "prevPct": 1.0,
+        "prevAmt": 5946927.525,
+        "thisPct": 0,
+        "thisAmt": 0,
+        "cumPct": 1.0,
+        "cumAmt": 5946927.525,
+        "installmentsCompleted": 0
+      }
+    ]
+  },
+  "raBuildingMilestone": {
+    "note": "Placeholder — no data yet. Structure mirrors buildingMilestones. Upload data to populate.",
+    "milestones": []
+  }
+}
