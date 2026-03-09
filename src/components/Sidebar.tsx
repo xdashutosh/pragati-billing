@@ -1,8 +1,10 @@
 'use client';
 
+import React from 'react';
 import { RABillData, COPData } from '@/lib/raStore';
 import { NavPage } from '@/app/page';
 import { VendorConfig } from '@/data/vendorRegistry';
+import { useVendor } from '@/lib/VendorContext';
 
 interface SidebarProps {
   activePage: NavPage;
@@ -25,7 +27,8 @@ const STATUS_BG: Record<string, string> = {
 };
 
 export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, activeRA, onSelectRA, onNewRA, vendors, activeVendorId, onSwitchVendor }: SidebarProps) {
-  const activeVendor = vendors.find(v => v.id === activeVendorId) ?? vendors[0];
+  const { boqs } = useVendor();
+  const activeVendor = (vendors.find(v => v.id === activeVendorId) ?? vendors[0]) || { currentRA: 1, billingSummaryTotals: { orderAmount: 0 } } as any;
   return (
     <aside style={{
       width: 232, background: '#0f2044', color: '#fff',
@@ -37,8 +40,9 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {vendors.map(v => {
             const isActive = v.id === activeVendorId;
-            const pct = v.billingSummaryTotals.orderAmount > 0
-              ? ((v.billingSummaryTotals.cumulativeAmount / v.billingSummaryTotals.orderAmount) * 100).toFixed(0)
+            const totals = (v as any).billingSummaryTotals || (v as any).billingSummary?.totals || { orderAmount: 0, cumulativeAmount: 0 };
+            const pct = totals.orderAmount > 0
+              ? ((totals.cumulativeAmount / totals.orderAmount) * 100).toFixed(0)
               : '0';
             return (
               <button key={v.id} onClick={() => onSwitchVendor(v.id)} style={{
@@ -55,7 +59,7 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
                     {v.shortName}
                   </div>
                   <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', marginTop: 1 }}>
-                    RA-{v.currentRA} · ₹{(v.billingSummaryTotals.orderAmount / 1e7).toFixed(1)} Cr
+                    RA-{v.currentRA} · ₹{(totals.orderAmount / 1e7).toFixed(1)} Cr
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
@@ -81,26 +85,14 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
         {/* RA BILLS */}
         <SLabel>RA Bills</SLabel>
 
-        {/* RA-16 baseline */}
-        <div
-          onClick={() => { onSelectRA(null); onNavigate('building'); }}
-          style={raBtnStyle(!activeRA)}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <BillIcon />
-            <span style={{ fontSize: 12, color: !activeRA ? '#fff' : 'rgba(255,255,255,0.6)' }}>
-              RA-{activeVendor.currentRA} <span style={{ fontSize: 9, opacity: 0.4 }}>(baseline)</span>
-            </span>
-          </div>
-          {!activeRA && <Dot color="#86efac" />}
-        </div>
+
 
         {/* Saved RAs */}
         {savedRAs.map(ra => {
           const cop = allCOPs.find(c => c.raNumber === ra.raNumber);
           const isActive = activeRA?.raNumber === ra.raNumber;
           return (
-            <div key={ra.raNumber} onClick={() => { onSelectRA(ra); onNavigate('building'); }} style={raBtnStyle(isActive, true)}>
+            <div key={ra.raNumber} onClick={() => { onSelectRA(ra); onNavigate('ra-details'); }} style={raBtnStyle(isActive, true)}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <BillIcon />
                 <div>
@@ -142,32 +134,13 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
         <NavBtn id="cop-status" active={activePage} onClick={() => onNavigate('cop-status')} icon={<HistIcon />} highlight="#86efac">
           COP Status Tracker
         </NavBtn>
-        <NavBtn id="approvals" active={activePage} onClick={() => onNavigate('approvals')} icon={<PlusIcon />} highlight="#86efac">
-          Pending Approvals
-          {allCOPs.filter(c => !['approved', 'draft', 'rejected'].includes(c.status)).length > 0 && (
-            <span style={{
-              background: '#ef4444', color: '#fff', fontSize: 9, padding: '1px 5px',
-              borderRadius: 10, marginLeft: 'auto', fontWeight: 700
-            }}>
-              {allCOPs.filter(c => !['approved', 'draft', 'rejected'].includes(c.status)).length}
-            </span>
-          )}
-        </NavBtn>
+
 
         {/* VIEW DETAILS */}
         <SLabel>View Details</SLabel>
-        <NavBtn id="building" active={activePage} onClick={() => onNavigate('building')} icon={<BuildingIcon />}>Building Milestones</NavBtn>
-        <NavBtn id="infra" active={activePage} onClick={() => onNavigate('infra')} icon={<MapIcon />}>Infra Milestones</NavBtn>
+        <NavBtn id="ra-details" active={activePage} onClick={() => onNavigate('ra-details')} icon={<DocIcon />}>RA Details & BOQs</NavBtn>
+        <NavBtn id="adjustments" active={activePage} onClick={() => onNavigate('adjustments')} icon={<HistIcon />} highlight="#86efac">Adjustment History</NavBtn>
 
-        {/* HISTORY */}
-        <SLabel>History</SLabel>
-        <NavBtn id="ra-history-building" active={activePage} onClick={() => onNavigate('ra-history-building')} icon={<HistIcon />}>Building History</NavBtn>
-        <NavBtn id="ra-history-infra" active={activePage} onClick={() => onNavigate('ra-history-infra')} icon={<HistIcon />}>Infra History</NavBtn>
-
-        {/* DEDUCTIONS */}
-        <SLabel>Deductions</SLabel>
-        <NavBtn id="materials" active={activePage} onClick={() => onNavigate('materials')} icon={<BoxIcon />}>Material Deductions</NavBtn>
-        <NavBtn id="holds" active={activePage} onClick={() => onNavigate('holds')} icon={<LockIcon />}>Hold & Release</NavBtn>
       </nav>
 
       {/* Footer */}
@@ -175,7 +148,7 @@ export default function Sidebar({ activePage, onNavigate, savedRAs, allCOPs, act
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Active</span>
           <span style={{ background: activeRA ? '#1a56b0' : '#374151', color: '#fff', padding: '2px 8px', borderRadius: 20, fontSize: 10, fontWeight: 700 }}>
-            RA-{activeRA?.raNumber ?? activeVendor.currentRA}
+            {activeRA ? `RA-${activeRA.raNumber}` : 'Project'}
           </span>
         </div>
         <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 4 }}>{activeVendor.contractor}</div>

@@ -36,7 +36,7 @@ const C = {
     gold: '#ca8a04',
 };
 
-const BLOCK_COLORS = [C.navy, C.blue, C.teal, C.violet];
+const BLOCK_COLORS = ['#1e40af', '#166534', '#9a3412', '#6b21a8', '#0e7490', '#b45309', '#dc2626', '#4338ca'];
 
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -244,20 +244,24 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
     const vendor = useVendor();
     const {
         billingSummaryItems, billingSummaryTotals,
-        billingMilestones, infraRAMilestones,
         defaultMaterialRows: MATERIAL_DATA, defaultHoldItems: HOLD_DATA,
-        currentRA,
+        currentRA, tabs, getRATotals, getCombinedBoqState, approvedRANumbers
     } = vendor;
 
-    const [allRAs, setAllRAs] = useState<RABillData[]>([]);
-    const [allCOPs, setAllCOPs] = useState<COPData[]>([]);
+    // Use a very high RA number to aggregate ALL approved RAs into cumulative totals
+    const DASH_RA_SENTINEL = 1000000;
+    const totals = getRATotals(DASH_RA_SENTINEL);
+    const combinedState = getCombinedBoqState(DASH_RA_SENTINEL);
+
+    const allRAs = vendor.allRAs;
+    const allCOPs = vendor.allCOPs;
     const [drill, setDrill] = useState<DrillState>(DRILL_CLOSED);
     const closeDrill = useCallback(() => setDrill(DRILL_CLOSED), []);
 
+    // Refresh context data when dashboard mounts (picks up new approvals, etc.)
     useEffect(() => {
-        setAllRAs(loadAllRAs(vendor.id));
-        setAllCOPs(loadAllCOPs(vendor.id));
-    }, [vendor.id]);
+        vendor.refreshRAs();
+    }, []);
 
     // helper: open drill-down for a billingSummaryItem
     const openCategoryDrill = useCallback((item: typeof billingSummaryItems[0]) => {
@@ -285,102 +289,95 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
         });
     }, [onNavigate]);
 
-    // helper: open drill-down for an infraRAMilestone
-    const openInfraDrill = useCallback((m: typeof infraRAMilestones[0]) => {
-        setDrill({
-            open: true,
-            title: m.description,
-            subtitle: `${m.category} — Sno ${m.sno}`,
-            cols: [
-                { key: 'label', label: 'Field', align: 'left' },
-                { key: 'value', label: 'Value', mono: true },
-            ],
-            rows: [
-                { label: 'Scope Amount', value: fmtCr(m.scopeAmount) },
-                { label: '% of Total Infra', value: fmtPct(m.pctOfTotal * 100) },
-                { label: 'Prev Billed %', value: fmtPct(m.prevPct * 100) },
-                { label: 'Prev Billed Amt', value: fmtCr(m.prevAmt) },
-                { label: 'This Bill %', value: m.thisPct > 0 ? fmtPct(m.thisPct * 100) : '—' },
-                { label: 'This Bill Amt', value: m.thisAmt > 0 ? fmtCr(m.thisAmt) : '—' },
-                { label: 'Cumulative %', value: fmtPct(m.cumPct * 100) },
-                { label: 'Cumulative Amt', value: fmtCr(m.cumAmt) },
-                { label: 'Balance', value: fmtCr(m.scopeAmount - m.cumAmt) },
-            ],
-        });
-    }, []);
-
     // ── Derived financials ──────────────────────────────────────────────────────
-    const orderAmt = billingSummaryTotals.orderAmount;
-    const prevAmt = billingSummaryTotals.prevBillAmount;
-    const thisAmt = billingSummaryTotals.thisBillAmount;
-    const cumAmt = billingSummaryTotals.cumulativeAmount;
+    // Use abstractSummary items as the source of truth for scope breakdown
+    const abstractItems = vendor.abstractSummary?.items || [];
+    const totalBasicCost = vendor.abstractSummary?.totalBasicCost || 0;
+
+    // Compute dynamic scope from BOQs (total of all BOQ item amounts)
+    const boqList = vendor.tabs || [];
+    const dynamicScope = boqList.reduce((sum, boq) => {
+        return sum + (boq.items || []).reduce((s: number, item: any) => s + (item.amount || 0), 0);
+    }, 0);
+
+    // Order amount: prefer abstractSummary, then billing baseline, then dynamic BOQ scope
+    const orderAmt = totalBasicCost > 0 ? totalBasicCost
+        : billingSummaryTotals.orderAmount > 0 ? billingSummaryTotals.orderAmount
+            : dynamicScope;
+
+    // Cumulative billed: sum of all BOQ cumulative amounts from getRATotals (approved only)
+    const cumFromTotals = totals.bldg.cum + totals.infra.cum
+        + Object.values(totals.boqs).reduce((s, b) => s + b.cum, 0);
+    // Use the RA-derived cumulative if any RAs exist, else fall back to baseline
+    const cumAmt = cumFromTotals > 0 ? cumFromTotals : billingSummaryTotals.cumulativeAmount;
+    const prevAmt = totals.bldg.prev + totals.infra.prev
+        + Object.values(totals.boqs).reduce((s, b) => s + b.prev, 0);
+    const thisAmt = totals.bldg.this + totals.infra.this
+        + Object.values(totals.boqs).reduce((s, b) => s + b.this, 0);
+
     const remaining = orderAmt - cumAmt;
     const progressPct = orderAmt > 0 ? (cumAmt / orderAmt) * 100 : 0;
 
     const activeHolds = HOLD_DATA.filter(h => h.active).reduce((s, h) => s + h.amt, 0);
     const materialTotal = MATERIAL_DATA.reduce((s, m) => s + m.total, 0);
 
-    // ── Building scope sub-totals from abstract ─────────────────────────────────
-    const buildingScope = billingSummaryItems
-        .filter(i => ['1', '2', '3', '4'].includes(i.sno))
-        .reduce((s, i) => s + i.orderAmount, 0);
-    const buildingCum = billingSummaryItems
-        .filter(i => ['1', '2', '3', '4'].includes(i.sno))
-        .reduce((s, i) => s + i.cumulativeAmount, 0);
-    const buildingThis = billingSummaryItems
-        .filter(i => ['1', '2', '3', '4'].includes(i.sno))
-        .reduce((s, i) => s + i.thisBillAmount, 0);
+    // ── Dynamic Sub-section & Category Progress from combinedState ─────────────────
+    // Instead of forcing Building/Infra splits, we can group all items dynamically
+    const categoryDataMap: Record<string, { scope: number; cumulative: number; thisBill: number }> = {};
+    const boqDataMap: Record<string, { scope: number; cumulative: number; thisBill: number }> = {};
 
-    const infraScope = billingSummaryItems
-        .filter(i => ['5', '6', '7', '8', '9'].includes(i.sno))
-        .reduce((s, i) => s + i.orderAmount, 0);
-    const infraCum = billingSummaryItems
-        .filter(i => ['5', '6', '7', '8', '9'].includes(i.sno))
-        .reduce((s, i) => s + i.cumulativeAmount, 0);
-    const infraThis = billingSummaryItems
-        .filter(i => ['5', '6', '7', '8', '9'].includes(i.sno))
-        .reduce((s, i) => s + i.thisBillAmount, 0);
+    let totalMilestones = 0;
+    let completedMilestones = 0;
+    let partialMilestones = 0;
 
-    // ── Block-wise scope and billing ────────────────────────────────────────────
-    type BlockKey = 'block1' | 'block2' | 'block3' | 'block4';
-    const blockKeys: BlockKey[] = ['block1', 'block2', 'block3', 'block4'];
-    const blockLabels = ['Block-1', 'Block-2', 'Block-3', 'Block-4'];
-    const blockData = blockLabels.map((name, i) => {
-        const bk = blockKeys[i];
-        // Pull from billing milestones for accurate per-block data
-        const blockScope = billingMilestones.reduce((s, m) => s + (m[bk]?.scope ?? 0), 0);
-        const blockCum = billingMilestones.reduce((s, m) => s + (m[bk]?.cumAmt ?? 0), 0);
-        const blockThis = billingMilestones.reduce((s, m) => s + (m[bk]?.thisAmt ?? 0), 0);
-        return { name, scope: blockScope, cumulative: blockCum, thisBill: blockThis };
+    // Aggregate from combinedState
+    Object.entries(combinedState).forEach(([boqId, stateList]) => {
+        let boqScope = 0;
+        let boqCum = 0;
+        let boqThis = 0;
+
+        (stateList as any[]).forEach(item => {
+            const scopeVal = item.scopeAmount ?? item.amount ?? item.orderAmount ?? 0;
+            const cumVal = item.cumAmt ?? item.cumulativeAmount ?? 0;
+            const thisVal = item.thisAmt ?? item.thisBillAmount ?? 0;
+
+            boqScope += scopeVal;
+            boqCum += cumVal;
+            boqThis += thisVal;
+
+            totalMilestones++;
+            if (scopeVal > 0 && cumVal >= scopeVal) completedMilestones++;
+            else if (cumVal > 0) partialMilestones++;
+
+            // Group by category for the bar chart
+            const cat = item.category || item.section || 'Uncategorized';
+            if (!categoryDataMap[cat]) categoryDataMap[cat] = { scope: 0, cumulative: 0, thisBill: 0 };
+            categoryDataMap[cat].scope += scopeVal;
+            categoryDataMap[cat].cumulative += cumVal;
+            categoryDataMap[cat].thisBill += thisVal;
+        });
+
+        boqDataMap[boqId] = { scope: boqScope, cumulative: boqCum, thisBill: boqThis };
     });
 
-    // ── RA Bills accumulated total ───────────────────────────────────────────────
-    const raTotalBilled = allRAs.reduce((s, r) => s + r.grandTotal, 0);
+    const blockData = Object.entries(categoryDataMap).map(([name, data]) => ({
+        name,
+        ...data
+    })).sort((a, b) => b.scope - a.scope);
 
-    // ── Milestone stats ──────────────────────────────────────────────────────────
-    // Building milestones: a block is "complete" for a category when cumPct = 1
-    const totalBuildingEntries = billingMilestones.length * 4; // 4 blocks each
-    const completedBuilding = billingMilestones.reduce((s, m) =>
-        s + blockKeys.filter(bk => m[bk]?.cumPct >= 1 && m[bk]?.scope > 0).length, 0);
-    const partialBuilding = billingMilestones.reduce((s, m) =>
-        s + blockKeys.filter(bk => {
-            const d = m[bk]; return d?.cumPct > 0 && d.cumPct < 1 && d.scope > 0;
-        }).length, 0);
+    // ── RA Bills accumulated total (only approved RAs) ───────────────────────────
+    const raTotalBilled = allRAs
+        .filter((r: any) => approvedRANumbers.has(r.raNumber))
+        .reduce((s: number, r: any) => s + r.grandTotal, 0);
 
-    const totalInfra = infraRAMilestones.length;
-    const completedInfra = infraRAMilestones.filter(m => m.cumPct >= 1).length;
-    const partialInfra = infraRAMilestones.filter(m => m.cumPct > 0 && m.cumPct < 1).length;
+    // ── Trade Pie data — from dynamic blockData (categories) ────────────────────
+    const tradeData = blockData.map(b => ({
+        name: b.name.length > 28 ? b.name.slice(0, 25) + '…' : b.name,
+        fullName: b.name,
+        value: b.scope,
+        pct: orderAmt > 0 ? (b.scope / orderAmt) * 100 : 0,
+    })).sort((a, b) => b.value - a.value);
 
-    // ── Trade Pie data ──────────────────────────────────────────────────────────
-    const tradeData = billingSummaryItems
-        .filter(i => i.orderAmount > 0 && i.sno !== '10')
-        .map(i => ({
-            name: i.description.length > 28 ? i.description.slice(0, 25) + '…' : i.description,
-            fullName: i.description,
-            value: i.orderAmount,
-            pct: (i.orderAmount / orderAmt) * 100,
-        }))
-        .sort((a, b) => b.value - a.value);
 
     // ── Category completion tooltip ──────────────────────────────────────────────
     const CustomBarTip = ({ active, payload, label }: any) => {
@@ -536,46 +533,41 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                 </tr>
                             </thead>
                             <tbody>
-                                {billingSummaryItems
-                                    .filter(i => i.orderAmount > 0 && i.sno !== '10')
-                                    .map((item, idx) => {
-                                        const cumPct = item.orderAmount > 0 ? (item.cumulativeAmount / item.orderAmount) * 100 : 0;
-                                        const isEven = idx % 2 === 0;
-                                        return (
-                                            <tr key={item.sno}
-                                                onClick={() => openCategoryDrill(item)}
-                                                title={item.subItems.length > 0 ? 'Click to view sub-items' : 'Click to view Bill Summary'}
-                                                style={{ background: isEven ? '#fff' : C.gray50, cursor: 'pointer' }}
-                                                onMouseEnter={e => (e.currentTarget.style.background = C.bluePale)}
-                                                onMouseLeave={e => (e.currentTarget.style.background = isEven ? '#fff' : C.gray50)}
-                                            >
-                                                <td style={{ padding: '8px 10px', fontSize: 11, color: C.gray400, textAlign: 'center', width: 28 }}>
-                                                    {item.sno}
-                                                </td>
-                                                <td style={{ padding: '8px 10px', fontSize: 11, color: C.gray800, maxWidth: 180 }}>
-                                                    <div style={{ fontWeight: 600 }}>{item.description}</div>
-                                                    <ProgressBar value={item.cumulativeAmount} max={item.orderAmount} showPct={false} />
-                                                </td>
-                                                <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600, whiteSpace: 'nowrap' }}>
-                                                    {fmtCr(item.orderAmount)}
-                                                </td>
-                                                <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.blue, whiteSpace: 'nowrap' }}>
-                                                    {fmtCr(item.cumulativeAmount)}
-                                                </td>
-                                                <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.teal, whiteSpace: 'nowrap' }}>
-                                                    {item.thisBillAmount > 0 ? fmtCr(item.thisBillAmount) : <span style={{ color: C.gray400 }}>—</span>}
-                                                </td>
-                                                <td style={{ padding: '8px 10px', textAlign: 'right', width: 60 }}>
-                                                    <span style={{
-                                                        fontSize: 10, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700,
-                                                        color: cumPct >= 100 ? C.green : cumPct >= 50 ? C.blue : C.orange,
-                                                    }}>
-                                                        {fmtPct(cumPct)}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
+                                {blockData.map((data, idx) => {
+                                    const cumPct = data.scope > 0 ? (data.cumulative / data.scope) * 100 : 0;
+                                    const isEven = idx % 2 === 0;
+                                    return (
+                                        <tr key={data.name}
+                                            onClick={() => onNavigate('po-abstract')}
+                                            title="Click to view PO Abstract"
+                                            style={{ background: isEven ? '#fff' : C.gray50, cursor: 'pointer' }}
+                                            onMouseEnter={e => (e.currentTarget.style.background = C.bluePale)}
+                                            onMouseLeave={e => (e.currentTarget.style.background = isEven ? '#fff' : C.gray50)}
+                                        >
+                                            <td style={{ padding: '8px 10px', fontSize: 11, color: C.gray400, textAlign: 'center', width: 28 }}>
+                                                {idx + 1}
+                                            </td>
+                                            <td style={{ padding: '8px 10px', fontSize: 11, color: C.gray800, maxWidth: 180 }}>
+                                                <div style={{ fontWeight: 600 }}>{data.name}</div>
+                                                <ProgressBar value={data.cumulative} max={data.scope} color={BLOCK_COLORS[idx % BLOCK_COLORS.length]} showPct={false} />
+                                            </td>
+                                            <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600, whiteSpace: 'nowrap' }}>
+                                                {fmtCr(data.scope)}
+                                            </td>
+                                            <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.blue, whiteSpace: 'nowrap' }}>
+                                                {data.cumulative > 0 ? fmtCr(data.cumulative) : <span style={{ color: C.gray400 }}>—</span>}
+                                            </td>
+                                            <td style={{ padding: '8px 10px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.teal, whiteSpace: 'nowrap' }}>
+                                                {data.thisBill > 0 ? fmtCr(data.thisBill) : <span style={{ color: C.gray400 }}>—</span>}
+                                            </td>
+                                            <td style={{ padding: '8px 10px', textAlign: 'right', width: 60 }}>
+                                                <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 600, color: cumPct > 0 ? C.blue : C.gray400 }}>
+                                                    {cumPct > 0 ? `${cumPct.toFixed(1)}%` : '—'}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                                 {/* Totals row */}
                                 <tr style={{ background: C.navy }}>
                                     <td colSpan={2} style={{ padding: '9px 10px', fontSize: 11, fontWeight: 700, color: '#fff' }}>
@@ -609,12 +601,12 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                     cx="50%" cy="50%"
                                     innerRadius={60} outerRadius={100}
                                     paddingAngle={3} dataKey="value"
-                                    label={({ name, percent }) => percent !== undefined && percent * 100 > 5 ? `${(percent * 100).toFixed(0)}%` : ''}
+                                    label={({ percent }) => percent !== undefined && percent * 100 > 5 ? `${(percent * 100).toFixed(0)}%` : ''}
                                     labelLine={false}
                                     onClick={() => onNavigate('po-abstract')}
                                     style={{ cursor: 'pointer' }}
                                 >
-                                    {tradeData.map((_, idx) => (
+                                    {tradeData.map((_: any, idx: number) => (
                                         <Cell key={idx} fill={TRADE_COLORS[idx % TRADE_COLORS.length]} stroke="#fff" strokeWidth={2} />
                                     ))}
                                 </Pie>
@@ -623,7 +615,7 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                         </ResponsiveContainer>
                         {/* Legend */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: '0 8px 4px' }}>
-                            {tradeData.map((d, idx) => (
+                            {tradeData.map((d: any, idx: number) => (
                                 <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                     <div style={{
                                         width: 8, height: 8, borderRadius: 2, flexShrink: 0,
@@ -642,38 +634,37 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                 </Section>
             </div>
 
-            {/* ── Building vs Infra Split ──────────────────────────────────────────── */}
-            <Section title="Building vs Infra Financial Split" action={<GoToBtn label="Bill Summary" page="abstract" onNavigate={onNavigate} />}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                    <SegmentCard
-                        label="Warehouse Building (Civil, Electrical, Fire, Plumbing)"
-                        color={C.blue}
-                        scope={buildingScope}
-                        cumulative={buildingCum}
-                        thisBill={buildingThis}
-                        onClick={() => onNavigate('building')}
-                    />
-                    <SegmentCard
-                        label="Infrastructure (Civil, Services, Ancillary, Design)"
-                        color={C.teal}
-                        scope={infraScope}
-                        cumulative={infraCum}
-                        thisBill={infraThis}
-                        onClick={() => onNavigate('infra')}
-                    />
+            {/* ── Dynamic BOQ Financial Split ──────────────────────────────────────────── */}
+            <Section title="BOQ Financial Split" action={<GoToBtn label="Bill Summary" page="abstract" onNavigate={onNavigate} />}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12 }}>
+                    {tabs.map((t, idx) => {
+                        const d = boqDataMap[t.id] || { scope: 0, cumulative: 0, thisBill: 0 };
+                        return (
+                            <SegmentCard
+                                key={t.id}
+                                label={t.name}
+                                color={TRADE_COLORS[idx % TRADE_COLORS.length]}
+                                scope={d.scope}
+                                cumulative={d.cumulative}
+                                thisBill={d.thisBill}
+                                onClick={() => {
+                                    onNavigate('ra-details');
+                                }}
+                            />
+                        );
+                    })}
                 </div>
             </Section>
 
-            {/* ── Block-wise Progress Chart ─────────────────────────────────────────── */}
-            <Section title="Block-wise Milestone Progress (Building)" action={<GoToBtn label="Building Milestones" page="building" onNavigate={onNavigate} />}>
+            <Section title="Category-wise Scope Breakdown" action={<GoToBtn label="PO Abstract" page="po-abstract" onNavigate={onNavigate} />}>
                 <Card style={{ padding: '16px' }}>
-                    <ResponsiveContainer width="100%" height={220}>
-                        <BarChart data={blockData} margin={{ top: 10, right: 20, left: 10, bottom: 5 }} barGap={4}
-                            onClick={() => onNavigate('building')} style={{ cursor: 'pointer' }}>
+                    <ResponsiveContainer width="100%" height={260}>
+                        <BarChart data={blockData} margin={{ top: 10, right: 20, left: 10, bottom: 25 }} barGap={4}
+                            style={{ cursor: 'pointer' }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={C.gray200} />
                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: C.gray600 }} />
                             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: C.gray600 }}
-                                tickFormatter={v => `₹${(v / 1e7).toFixed(0)}Cr`} width={68} />
+                                tickFormatter={v => `₹${(v / 1e5).toFixed(0)}L`} width={68} />
                             <Tooltip content={<CustomBarTip />} />
                             <Bar dataKey="scope" name="Contract Scope" fill={C.navy} radius={[3, 3, 0, 0]}>
                                 {blockData.map((_, i) => <Cell key={i} fill={BLOCK_COLORS[i]} opacity={0.25} />)}
@@ -692,8 +683,6 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                             const p = b.scope > 0 ? (b.cumulative / b.scope) * 100 : 0;
                             return (
                                 <div key={b.name}
-                                    onClick={() => onNavigate('building')}
-                                    title="Click to view Building Milestones"
                                     style={{
                                         flex: 1, minWidth: 100, background: BLOCK_COLORS[i] + '12',
                                         border: `1px solid ${BLOCK_COLORS[i]}30`, borderRadius: 8, padding: '10px 12px',
@@ -720,40 +709,30 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
             {/* ── Milestone Completion Status ──────────────────────────────────────── */}
             <Section title="Milestone Completion Status" action={
                 <div style={{ display: 'flex', gap: 6 }}>
-                    <GoToBtn label="Building" page="building" onNavigate={onNavigate} />
-                    <GoToBtn label="Infra" page="infra" onNavigate={onNavigate} />
+                    <GoToBtn label="PO Abstract" page="po-abstract" onNavigate={onNavigate} />
                 </div>
             }>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr)', gap: 12, marginBottom: 12 }}>
                     <MilestoneCard
-                        title="Building Milestones (All Blocks)"
-                        total={totalBuildingEntries}
-                        completed={completedBuilding}
-                        partial={partialBuilding}
+                        title="All Project Milestones"
+                        total={totalMilestones}
+                        completed={completedMilestones}
+                        partial={partialMilestones}
                         color={C.blue}
-                        onClick={() => onNavigate('building')}
-                    />
-                    <MilestoneCard
-                        title="Infra Milestones"
-                        total={totalInfra}
-                        completed={completedInfra}
-                        partial={partialInfra}
-                        color={C.teal}
-                        onClick={() => onNavigate('infra')}
                     />
                 </div>
 
-                {/* Infra milestones mini table (top 10 by value) */}
+                {/* Milestones mini table (top 10 by value) */}
                 <Card>
                     <div style={{
                         padding: '10px 14px', background: C.navy, borderTopLeftRadius: 9, borderTopRightRadius: 9,
                         fontSize: 11, fontWeight: 700, color: '#fff',
-                    }}>Infra Milestone Details (Top by Scope)</div>
+                    }}>Top Milestones (by Scope)</div>
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead>
                                 <tr style={{ background: C.gray50 }}>
-                                    {['Sno', 'Category', 'Description', 'Scope', 'Prev %', 'This %', 'Cum %', 'Status'].map(h => (
+                                    {['BOQ', 'Category', 'Description', 'Scope', 'Cum %', 'Status'].map(h => (
                                         <th key={h} style={{
                                             padding: '7px 10px', fontSize: 10, fontWeight: 700, color: C.gray600,
                                             textAlign: h === 'Description' || h === 'Category' ? 'left' : 'right',
@@ -763,37 +742,33 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                 </tr>
                             </thead>
                             <tbody>
-                                {infraRAMilestones
-                                    .sort((a, b) => b.scopeAmount - a.scopeAmount)
-                                    .slice(0, 12)
+                                {Object.entries(combinedState)
+                                    .flatMap(([bId, items]) => (items as any[]).map(i => ({ ...i, bId })))
+                                    .sort((a, b) => (b.scopeAmount ?? b.amount ?? b.orderAmount ?? 0) - (a.scopeAmount ?? a.amount ?? a.orderAmount ?? 0))
+                                    .slice(0, 10)
                                     .map((m, idx) => {
-                                        const cumPct = m.cumPct * 100;
+                                        const scope = m.scopeAmount ?? m.amount ?? m.orderAmount ?? 0;
+                                        const cum = m.cumAmt ?? m.cumulativeAmount ?? 0;
+                                        const cumPct = scope > 0 ? (cum / scope) * 100 : 0;
                                         const statusColor = cumPct >= 100 ? C.green : cumPct >= 50 ? C.blue : cumPct > 0 ? C.orange : C.gray400;
                                         const statusText = cumPct >= 100 ? 'Complete' : cumPct > 0 ? 'In Progress' : 'Not Started';
                                         const rowBg = idx % 2 === 0 ? '#fff' : C.gray50;
+                                        const boqTabName = tabs.find(t => t.id === m.bId)?.name || 'Unknown BOQ';
                                         return (
-                                            <tr key={m.sno}
-                                                onClick={() => openInfraDrill(m)}
-                                                title="Click to view details"
-                                                style={{ background: rowBg, cursor: 'pointer' }}
+                                            <tr key={`${m.bId}-${m.sno}-${idx}`}
+                                                style={{ background: rowBg }}
                                                 onMouseEnter={e => (e.currentTarget.style.background = C.bluePale)}
                                                 onMouseLeave={e => (e.currentTarget.style.background = rowBg)}
                                             >
-                                                <td style={{ padding: '7px 10px', fontSize: 10, color: C.gray400, textAlign: 'center' }}>{idx + 1}</td>
-                                                <td style={{ padding: '7px 10px', fontSize: 10, color: C.gray600, whiteSpace: 'nowrap' }}>{m.category}</td>
-                                                <td style={{ padding: '7px 10px', fontSize: 10, color: C.gray800, maxWidth: 220 }}>
+                                                <td style={{ padding: '7px 10px', fontSize: 10, color: C.gray600, textAlign: 'center' }}>{boqTabName}</td>
+                                                <td style={{ padding: '7px 10px', fontSize: 10, color: C.gray600, whiteSpace: 'nowrap' }}>{m.category || m.section || '—'}</td>
+                                                <td style={{ padding: '7px 10px', fontSize: 10, color: C.gray800, maxWidth: 300 }}>
                                                     <span title={m.description}>
-                                                        {m.description.length > 60 ? m.description.slice(0, 57) + '…' : m.description}
+                                                        {m.description.length > 70 ? m.description.slice(0, 67) + '…' : m.description}
                                                     </span>
                                                 </td>
                                                 <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600, whiteSpace: 'nowrap' }}>
-                                                    {fmtCr(m.scopeAmount)}
-                                                </td>
-                                                <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray400 }}>
-                                                    {fmtPct(m.prevPct * 100)}
-                                                </td>
-                                                <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.teal }}>
-                                                    {m.thisPct > 0 ? fmtPct(m.thisPct * 100) : '—'}
+                                                    {fmtCr(scope)}
                                                 </td>
                                                 <td style={{ padding: '7px 10px', fontSize: 10, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: statusColor }}>
                                                     {fmtPct(cumPct)}
@@ -832,10 +807,17 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead>
                                 <tr style={{ background: C.navy }}>
-                                    {['RA #', 'Label', 'Building Total', 'Infra Total', 'Grand Total', 'COP Status', 'Net Payable', 'Saved At'].map(h => (
+                                    <th style={{ padding: '8px 12px', fontSize: 10, fontWeight: 700, color: '#fff', textAlign: 'left', whiteSpace: 'nowrap' }}>RA #</th>
+                                    <th style={{ padding: '8px 12px', fontSize: 10, fontWeight: 700, color: '#fff', textAlign: 'left', whiteSpace: 'nowrap' }}>Label</th>
+                                    {tabs.map(t => (
+                                        <th key={t.id} style={{ padding: '8px 12px', fontSize: 10, fontWeight: 700, color: '#fff', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                                            {t.name}
+                                        </th>
+                                    ))}
+                                    {['Grand Total', 'COP Status', 'Net Payable', 'Saved At'].map(h => (
                                         <th key={h} style={{
                                             padding: '8px 12px', fontSize: 10, fontWeight: 700, color: '#fff',
-                                            textAlign: h === 'Label' || h === 'COP Status' || h === 'RA #' ? 'left' : 'right',
+                                            textAlign: h === 'COP Status' ? 'left' : 'right',
                                             whiteSpace: 'nowrap',
                                         }}>{h}</th>
                                     ))}
@@ -845,24 +827,31 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                 {allRAs.map((ra, idx) => {
                                     const cop = allCOPs.find(c => c.raNumber === ra.raNumber);
                                     const ss = cop ? (STATUS_STYLES[cop.status] ?? STATUS_STYLES.draft) : null;
+                                    const isApproved = approvedRANumbers.has(ra.raNumber);
                                     const rowBg = idx % 2 === 0 ? '#fff' : C.gray50;
                                     return (
                                         <tr key={ra.raNumber}
                                             onClick={() => onNavigate('cop')}
                                             title="Click to view COP"
-                                            style={{ background: rowBg, cursor: 'pointer' }}
+                                            style={{ background: rowBg, cursor: 'pointer', opacity: isApproved ? 1 : 0.55 }}
                                             onMouseEnter={e => (e.currentTarget.style.background = C.bluePale)}
                                             onMouseLeave={e => (e.currentTarget.style.background = rowBg)}
                                         >
                                             <td style={{ padding: '8px 12px', fontSize: 12, fontWeight: 700, color: C.navy }}>RA-{ra.raNumber}</td>
                                             <td style={{ padding: '8px 12px', fontSize: 11, color: C.gray600 }}>{ra.label}</td>
-                                            <td style={{ padding: '8px 12px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>
-                                                {fmtCr(ra.buildingTotal)}
-                                            </td>
-                                            <td style={{ padding: '8px 12px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>
-                                                {fmtCr(ra.infraTotal)}
-                                            </td>
-                                            <td style={{ padding: '8px 12px', fontSize: 12, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: C.blue }}>
+                                            {tabs.map(t => {
+                                                let boqTotal = 0;
+                                                if (t.id === 'boq-bldg-legacy') boqTotal = ra.buildingTotal || 0;
+                                                else if (t.id === 'boq-infra-legacy') boqTotal = ra.infraTotal || 0;
+                                                else boqTotal = Object.values(ra.boqEntries?.[t.id] || {}).reduce((s: number, e: any) => s + (e.amt || 0), 0);
+
+                                                return (
+                                                    <td key={t.id} style={{ padding: '8px 12px', fontSize: 11, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', color: C.gray600 }}>
+                                                        {fmtCr(boqTotal)}
+                                                    </td>
+                                                );
+                                            })}
+                                            <td style={{ padding: '8px 12px', fontSize: 12, textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700, color: isApproved ? C.blue : C.gray400 }}>
                                                 {fmtCr(ra.grandTotal)}
                                             </td>
                                             <td style={{ padding: '8px 12px' }}>
@@ -884,8 +873,8 @@ export default function DashboardPage({ onNavigate }: { onNavigate: (page: NavPa
                                 })}
                                 {/* Summary row */}
                                 <tr style={{ background: C.blueLight }}>
-                                    <td colSpan={4} style={{ padding: '8px 12px', fontSize: 11, fontWeight: 700, color: C.navy }}>
-                                        Total — All Additional RAs
+                                    <td colSpan={2 + tabs.length} style={{ padding: '8px 12px', fontSize: 11, fontWeight: 700, color: C.navy }}>
+                                        Total Billed (Approved RAs Only)
                                     </td>
                                     <td style={{ padding: '8px 12px', textAlign: 'right', fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, fontWeight: 700, color: C.blue }}>
                                         {fmtCr(raTotalBilled)}

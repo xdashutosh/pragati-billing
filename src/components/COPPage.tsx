@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  RABillData, COPData, COPStatus, COPAdjustmentLine,
+  RABillData, COPData, COPStatus,
   loadCOP, saveCOP, loadAllCOPs,
 } from '@/lib/raStore';
 import { useVendor } from '@/lib/VendorContext';
@@ -22,6 +22,9 @@ interface ApprovalEntry {
 }
 
 function uid() { return Math.random().toString(36).slice(2, 8); }
+
+const resolveAmt = (item: { mode: 'amount' | 'pct'; amount: number; pct: number }, base: number) =>
+  item.mode === 'pct' ? base * (item.pct / 100) : item.amount;
 
 
 const GST = 0.09;
@@ -55,77 +58,146 @@ const defaultApprovals = (): ApprovalEntry[] =>
 interface Props {
   allRAs: RABillData[];
   onCOPSave: () => void;
-  materialDeductionThis: number;
-  activeHoldsTotal: number;
-  releasedHoldsTotal: number;
   vendorId?: string;
   showApprovalsOnly?: boolean;
+  initialRaNumber?: number | null;
 }
 
-export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, activeHoldsTotal, releasedHoldsTotal, vendorId = 'lpw' }: Props) {
+export default function COPPage({ allRAs, onCOPSave, initialRaNumber = null }: Props) {
   const vendor = useVendor();
-  const { billingSummaryTotals, defaultMaterialRows: MATERIAL_DATA, defaultHoldItems: HOLD_DATA } = vendor;
-  const [raNumber, setRaNumber] = useState<number | null>(null);
+  const vendorId = vendor.id;
+  const {
+    billingSummaryTotals,
+    getRATotalsRaw,
+    boqs,
+  } = vendor;
+  const [raNumber, setRaNumber] = useState<number | null>(initialRaNumber || vendor.activeProject?.currentRA || null);
   const [cop, setCOP] = useState<any | null>(null);
   const [unsaved, setUnsaved] = useState(false);
   const [allCOPs, setAllCOPs] = useState<any[]>([]);
+  const [deductions, setDeductions] = useState<{ id: string; name: string; mode: 'amount' | 'pct'; amount: number; pct: number }[]>([]);
+  const [additions, setAdditions] = useState<{ id: string; name: string; mode: 'amount' | 'pct'; amount: number; pct: number }[]>([]);
   const [retentionPct, setRetentionPct] = useState(5);
-  const [mobAdvance, setMobAdvance] = useState(0);
-  const [advRecovery, setAdvRecovery] = useState(0);
-  const [paymentReceived, setPaymentReceived] = useState(0);
-  const [hLines, setHLines] = useState<COPAdjustmentLine[]>([]);
-  const [adhocPct, setAdhocPct] = useState(0);
   const [activeTab, setActiveTab] = useState<'details' | 'approve'>('details');
   const [sigName, setSigName] = useState('');
+
+  // Sync raNumber with active RA if it changes externally (e.g. from Status Tracker)
+  useEffect(() => {
+    if (initialRaNumber) {
+      setRaNumber(initialRaNumber);
+    } else if (vendor.activeProject?.currentRA && raNumber === null) {
+      setRaNumber(vendor.activeProject.currentRA);
+    }
+  }, [initialRaNumber, vendor.activeProject?.currentRA]);
   const [sigDesig, setSigDesig] = useState('');
   const [sigNote, setSigNote] = useState('');
   const [rejectMode, setRejectMode] = useState(false);
   const [rejectNote, setRejectNote] = useState('');
 
-  useEffect(() => { setAllCOPs(loadAllCOPs(vendorId)); }, [vendorId]);
+  useEffect(() => {
+    const fetchCOPs = async () => {
+      const cops = await loadAllCOPs(vendorId);
+      setAllCOPs(cops);
+    };
+    fetchCOPs();
+  }, [vendorId]);
 
   useEffect(() => {
-    if (raNumber === null) { setCOP(null); return; }
-    const saved = loadCOP(raNumber, vendorId);
-    if (saved) {
-      setRetentionPct((saved as any).retentionPct ?? 5);
-      setMobAdvance((saved as any).mobAdvance ?? 0);
-      setAdvRecovery((saved as any).advanceRecovery ?? 0);
-      setPaymentReceived((saved as any).paymentReceived ?? 0);
-      setHLines((saved as any).hLines ?? []);
-      setAdhocPct((saved as any).adhocPct ?? 0);
-      setCOP(saved);
-    } else {
-      setRetentionPct(5); setMobAdvance(0); setAdvRecovery(0);
-      setPaymentReceived(0); setHLines([]); setAdhocPct(0);
-      setCOP(null);
-    }
-    setUnsaved(false);
-    setSigName(''); setSigDesig(''); setSigNote(''); setRejectMode(false);
+    const fetchCOP = async () => {
+      if (raNumber === null) { setCOP(null); return; }
+      const saved = await loadCOP(raNumber, vendorId);
+      if (saved) {
+        setDeductions((saved as any).deductions ?? []);
+        setAdditions((saved as any).additions ?? []);
+        setRetentionPct((saved as any).retentionPct ?? 5);
+        setCOP(saved);
+      } else {
+        // Carry over from latest previous COP
+        const prevCops = allCOPs.filter(c => c.raNumber < raNumber).sort((a, b) => b.raNumber - a.raNumber);
+        if (prevCops.length > 0) {
+          const last = prevCops[0];
+          // We keep the labels/ids but reset amounts for the new bill
+          setDeductions(last.deductions?.map((d: any) => ({ ...d, amount: 0 })) ?? []);
+          setAdditions(last.additions?.map((a: any) => ({ ...a, amount: 0 })) ?? []);
+          setRetentionPct(last.retentionPct ?? 5);
+        } else {
+          setDeductions([]); setAdditions([]); setRetentionPct(5);
+        }
+        setCOP(null);
+      }
+      setUnsaved(false);
+      setSigName(''); setSigDesig(''); setSigNote(''); setRejectMode(false);
+    };
+    fetchCOP();
   }, [raNumber]);
+
+  // Auto-save COP draft data as user edits
+  useEffect(() => {
+    if (unsaved && raNumber && (!cop || cop.status === 'draft')) {
+      const timer = setTimeout(() => {
+        handleSave();
+      }, 1000); // 1s debounce
+      return () => clearTimeout(timer);
+    }
+  }, [unsaved, deductions, additions, retentionPct, raNumber, cop?.status]);
 
   // ── Calculations ─────────────────────────────────────────────────────────
   const base = billingSummaryTotals;
-  const ra = allRAs.find(r => r.raNumber === raNumber) ?? null;
-  const A_this = ra?.grandTotal ?? 0, A_prev = base.prevBillAmount, A_total = A_prev + A_this;
-  const B_total = mobAdvance, B_prev = mobAdvance, B_this = 0;
+  const totals = getRATotalsRaw(raNumber ?? vendor.currentRA);
+
+  // Sum ALL BOQs (legacy bldg + infra + custom)
+  const boqCustomThis = Object.values(totals.boqs).reduce((s, b) => s + b.this, 0);
+  const boqCustomPrev = Object.values(totals.boqs).reduce((s, b) => s + b.prev, 0);
+  const A_this = totals.bldg.this + totals.infra.this + boqCustomThis;
+  const A_prev = totals.bldg.prev + totals.infra.prev + boqCustomPrev;
+  const A_total = A_prev + A_this;
+
+  // Per-BOQ breakdown for the certificate table
+  const boqBreakdown = boqs.map(boq => {
+    let bThis = 0, bPrev = 0;
+    if (boq.id === 'boq-bldg-legacy') { bThis = totals.bldg.this; bPrev = totals.bldg.prev; }
+    else if (boq.id === 'boq-infra-legacy') { bThis = totals.infra.this; bPrev = totals.infra.prev; }
+    else { const bt = totals.boqs[boq.id]; bThis = bt?.this ?? 0; bPrev = bt?.prev ?? 0; }
+    return { id: boq.id, name: boq.name, this: bThis, prev: bPrev, total: bPrev + bThis };
+  }).filter(b => b.total > 0 || b.this > 0);
   const cgst_this = A_this * GST, cgst_prev = A_prev * GST, cgst_total = A_total * GST;
   const sgst_this = A_this * GST, sgst_prev = A_prev * GST, sgst_total = A_total * GST;
   const C_this = cgst_this + sgst_this, C_prev = cgst_prev + sgst_prev, C_total = cgst_total + sgst_total;
-  const D_this = A_this + B_this + C_this, D_prev = A_prev + B_prev + C_prev, D_total = A_total + B_total + C_total;
-  const E_this = advRecovery, E_prev = 0, E_total = advRecovery;
-  const ret_this = D_this * (retentionPct / 100), ret_prev = D_prev * (retentionPct / 100), ret_total = D_total * (retentionPct / 100);
-  const mat_prev = MATERIAL_DATA.reduce((s, r) => s + r.prev, 0);
-  const mat_this = materialDeductionThis, mat_total = mat_prev + mat_this;
-  const hold_total = activeHoldsTotal, hold_prev = activeHoldsTotal, hold_this = 0;
-  const F_this = ret_this + mat_this + hold_this, F_prev = ret_prev + mat_prev + hold_prev, F_total = ret_total + mat_total + hold_total;
-  const G_this = D_this - E_this - F_this, G_prev = D_prev - E_prev - F_prev, G_total = D_total - E_total - F_total;
-  const adhoc_this = G_this * (adhocPct / 100), adhoc_prev = G_prev * (adhocPct / 100), adhoc_total = G_total * (adhocPct / 100);
-  const custom_this = hLines.reduce((s, l) => s + l.amount, 0);
-  const H_this = adhoc_this + custom_this, H_prev = adhoc_prev, H_total = adhoc_total + custom_this;
-  const I_this = releasedHoldsTotal, I_prev = 0, I_total = releasedHoldsTotal;
-  const J_this = G_this - H_this + I_this, J_prev = G_prev - H_prev + I_prev, J_total = G_total - H_total + I_total;
-  const paymentDue = J_this - paymentReceived;
+  const D_this = A_this + C_this, D_prev = A_prev + C_prev, D_total = A_total + C_total;
+
+  // ── Aggregation Logic for Previous Actuals ──────────────────────────────
+  const prevSaved = allCOPs.filter(c => c.raNumber < (raNumber ?? 0) && c.status !== 'rejected');
+  const act_ret_prev = prevSaved.reduce((s, c) => s + (c.retentionAmt ?? 0), 0);
+
+  // Map to sum up dynamic items by ID
+  const act_ded_prev_map: Record<string, number> = {};
+  const act_add_prev_map: Record<string, number> = {};
+  prevSaved.forEach(c => {
+    (c.deductions ?? []).forEach((d: any) => {
+      const amt = d.mode === 'pct' ? (c.raGrandTotal ?? 0) * (d.pct / 100) : d.amount;
+      act_ded_prev_map[d.id] = (act_ded_prev_map[d.id] ?? 0) + amt;
+    });
+    (c.additions ?? []).forEach((a: any) => {
+      const amt = a.mode === 'pct' ? (c.raGrandTotal ?? 0) * (a.pct / 100) : a.amount;
+      act_add_prev_map[a.id] = (act_add_prev_map[a.id] ?? 0) + amt;
+    });
+  });
+
+  const ret_this = A_this * (retentionPct / 100);
+  const ret_prev = act_ret_prev;
+  const ret_total = ret_prev + ret_this;
+
+  const ded_this = deductions.reduce((s, d) => s + resolveAmt(d, A_this), 0);
+  const ded_prev = Object.values(act_ded_prev_map).reduce((s, v) => s + v, 0);
+  const ded_total = ded_prev + ded_this;
+
+  const add_this = additions.reduce((s, a) => s + resolveAmt(a, A_this), 0);
+  const add_prev = Object.values(act_add_prev_map).reduce((s, v) => s + v, 0);
+  const add_total = add_prev + add_this;
+
+  const J_this = D_this - ret_this - ded_this + add_this;
+  const J_prev = D_prev - ret_prev - ded_prev + add_prev;
+  const J_total = D_total - ret_total - ded_total + add_total;
   const contractBasic = base.orderAmount, contractWithTax = contractBasic * (1 + GST * 2);
   const billedPct = contractBasic > 0 ? (A_total / contractBasic) * 100 : 0;
 
@@ -142,31 +214,34 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
       statusNote: cop?.statusNote ?? '',
       statusUpdatedAt: cop?.statusUpdatedAt ?? new Date().toISOString(),
       raBuildingTotal: ra2?.buildingTotal ?? 0, raInfraTotal: ra2?.infraTotal ?? 0, raGrandTotal: ra2?.grandTotal ?? A_this,
-      materialDeduction: mat_this, retentionPct, retentionAmt: ret_this,
-      advanceRecovery: advRecovery, holdRelease: I_this, customLines: hLines,
-      grossAmount: D_this, totalDeductions: F_this, totalAdditions: I_this, netPayable: J_this,
-      mobAdvance, adhocPct, hLines, paymentReceived, approvals: getApprovals(),
+      grossAmount: D_this, retentionPct, retentionAmt: ret_this, totalDeductions: ded_this, totalAdditions: add_this, netPayable: J_this,
+      deductions, additions, approvals: getApprovals(),
       ...overrides,
     };
   };
 
-  const persist = (data: any) => {
-    saveCOP(data, vendorId); setCOP(data); setUnsaved(false); setAllCOPs(loadAllCOPs(vendorId)); onCOPSave();
+  const persist = async (data: any) => {
+    await saveCOP(data, vendorId);
+    setCOP(data);
+    setUnsaved(false);
+    const cops = await loadAllCOPs(vendorId);
+    setAllCOPs(cops);
+    onCOPSave();
   };
 
-  const handleSave = () => { if (!raNumber) return; persist(buildData()); };
-  const handlePrepare = () => {
+  const handleSave = async () => { if (!raNumber) return; await persist(buildData()); };
+  const handlePrepare = async () => {
     if (!raNumber) return;
-    persist(buildData({ status: 'prepared', approvals: defaultApprovals(), statusUpdatedAt: new Date().toISOString() }));
+    await persist(buildData({ status: 'prepared', approvals: defaultApprovals(), statusUpdatedAt: new Date().toISOString() }));
     setActiveTab('approve');
   };
-  const handleResetDraft = () => {
-    persist(buildData({ status: 'draft', approvals: defaultApprovals(), statusUpdatedAt: new Date().toISOString() }));
+  const handleResetDraft = async () => {
+    await persist(buildData({ status: 'draft', approvals: defaultApprovals(), statusUpdatedAt: new Date().toISOString() }));
     setActiveTab('details'); setRejectMode(false);
   };
 
   // Called by SignatureCanvas "Save Signature"
-  const handleSign = (dataUrl: string) => {
+  const handleSign = async (dataUrl: string) => {
     if (!cop) return;
     const level = pendingLevel(cop.status);
     if (!level) return;
@@ -176,17 +251,17 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
         ? { ...a, status: 'signed' as const, signedBy: sigName || 'Authorized', designation: sigDesig, note: sigNote, signedAt: new Date().toISOString(), signature: dataUrl }
         : a
     );
-    persist(buildData({ approvals, status: stage.nextStatus, statusUpdatedAt: new Date().toISOString() }));
+    await persist(buildData({ approvals, status: stage.nextStatus, statusUpdatedAt: new Date().toISOString() }));
     setSigName(''); setSigDesig(''); setSigNote('');
   };
 
-  const handleReject = () => {
+  const handleReject = async () => {
     if (!cop) return;
     const level = pendingLevel(cop.status);
     const approvals = getApprovals().map(a =>
       a.level === level ? { ...a, status: 'rejected' as const, note: rejectNote, signedBy: sigName || 'Reviewer', signedAt: new Date().toISOString() } : a
     );
-    persist(buildData({ approvals, status: 'rejected', statusNote: rejectNote, statusUpdatedAt: new Date().toISOString() }));
+    await persist(buildData({ approvals, status: 'rejected', statusNote: rejectNote, statusUpdatedAt: new Date().toISOString() }));
     setRejectMode(false); setRejectNote('');
   };
 
@@ -206,9 +281,9 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
     <tr style={{ background: '#fff', borderBottom: '1px solid #f1f5f9' }}>
       <td style={{ padding: '5px 8px', width: 36, fontSize: 10, color: '#94a3b8', fontWeight: 600, whiteSpace: 'nowrap' }}>{rl}</td>
       <td style={{ padding: `5px 8px 5px ${8 + ind * 14}px`, fontSize: 11, color: bold ? '#0f2044' : '#374151', fontWeight: bold ? 700 : 400 }}>{desc}</td>
-      <td style={mc(bold)}>{fc(td)}</td>
       <td style={mc(bold)}>{fc(pv)}</td>
       <td style={{ ...mc(bold), color: bold ? '#0f2044' : '#1e40af', fontWeight: bold ? 800 : 600 }}>{fc(tv)}</td>
+      <td style={mc(bold)}>{fc(td)}</td>
     </tr>
   );
 
@@ -219,23 +294,23 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
     </tr>
   );
 
-  const ST = ({ desc, td, pv, tv }: { desc: string; td: number; pv: number; tv: number }) => (
+  const ST = ({ desc, td, pv, tv }: { desc: string; td: CV; pv: CV; tv: CV }) => (
     <tr style={{ background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '2px solid #e2e8f0' }}>
       <td style={{ padding: '6px 8px', fontSize: 10 }} />
       <td style={{ padding: '6px 8px', fontSize: 11, color: '#0f2044', fontWeight: 700 }}>{desc}</td>
-      <td style={{ ...mc(true), borderLeft: '2px solid #e2e8f0' }}>{fmt(td)}</td>
-      <td style={{ ...mc(true), borderLeft: '2px solid #e2e8f0' }}>{fmt(pv)}</td>
-      <td style={{ ...mc(true), borderLeft: '2px solid #e2e8f0', color: '#0f2044' }}>{fmt(tv)}</td>
+      <td style={{ ...mc(true), borderLeft: '2px solid #e2e8f0' }}>{fc(pv)}</td>
+      <td style={{ ...mc(true), borderLeft: '2px solid #e2e8f0', color: '#0f2044' }}>{fc(tv)}</td>
+      <td style={{ ...mc(true), borderLeft: '2px solid #e2e8f0' }}>{fc(td)}</td>
     </tr>
   );
 
-  const HT = ({ rl = '', desc, td, pv, tv, color }: { rl?: string; desc: string; td: number; pv: number; tv: number; color: string }) => (
+  const HT = ({ rl = '', desc, td, pv, tv, color }: { rl?: string; desc: string; td: CV; pv: CV; tv: CV; color: string }) => (
     <tr style={{ background: '#fff', borderTop: `3px solid ${color}`, borderBottom: `1px solid ${color}20` }}>
       <td style={{ padding: '8px', fontSize: 11, color, fontWeight: 900, borderLeft: `4px solid ${color}` }}>{rl}</td>
       <td style={{ padding: '8px', fontSize: 11, color, fontWeight: 900 }}>{desc}</td>
-      <td style={{ ...mc(true), color }}>{fmt(td)}</td>
-      <td style={{ ...mc(true), color }}>{fmt(pv)}</td>
-      <td style={{ ...mc(true), color, fontWeight: 900, fontSize: 13 }}>{fmt(tv)}</td>
+      <td style={{ ...mc(true), color }}>{fc(pv)}</td>
+      <td style={{ ...mc(true), color, fontWeight: 900, fontSize: 13 }}>{fc(tv)}</td>
+      <td style={{ ...mc(true), color }}>{fc(td)}</td>
     </tr>
   );
 
@@ -249,14 +324,13 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div>
             <div style={{ fontWeight: 700, fontSize: 13, color: '#0f2044' }}>Certificate of Payment</div>
-            <div style={{ fontSize: 11, color: '#94a3b8' }}>Auto-wired · Materials &amp; Holds pull live</div>
+            <div style={{ fontSize: 11, color: '#94a3b8' }}>Deductions &amp; Additions</div>
           </div>
           {cop && <span style={{ padding: '3px 10px', borderRadius: 20, fontSize: 10, fontWeight: 700, background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}>{cfg.label}</span>}
         </div>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-          <Chip label={`Mat: ₹${fmt(materialDeductionThis)}`} bg="#fef2f2" color="#b91c1c" />
-          <Chip label={`Holds: ₹${fmt(activeHoldsTotal)}`} bg="#fff7ed" color="#b45309" />
-          <Chip label={`Released: ₹${fmt(releasedHoldsTotal)}`} bg="#f0fdf4" color="#166534" />
+          {deductions.length > 0 && <Chip label={`Deductions: ₹${fmt(ded_this)}`} bg="#fef2f2" color="#b91c1c" />}
+          {additions.length > 0 && <Chip label={`Additions: ₹${fmt(add_this)}`} bg="#f0fdf4" color="#0e6d41" />}
           {raNumber && <button onClick={() => window.print()} style={bs('#475569', '#fff', '#d1d5db')}>🖨 Print</button>}
           {raNumber && isEditable && (
             <button onClick={handleSave} style={{ padding: '5px 16px', borderRadius: 5, border: 'none', fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', background: unsaved ? '#1a56b0' : '#dcfce7', color: unsaved ? '#fff' : '#166534' }}>
@@ -287,7 +361,7 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
                   border: `1.5px solid ${active ? '#1a56b0' : '#d1d5db'}`,
                   background: active ? '#1a56b0' : '#fff', color: active ? '#fff' : '#0f2044',
                 }}>
-                  <span>RA-{ra2.raNumber}</span>
+                  <span>{ra2.raNumber === 0 ? 'Baseline' : `RA-${ra2.raNumber}`}</span>
                   {cs ? <span style={{ padding: '2px 6px', borderRadius: 3, fontSize: 9, fontWeight: 700, background: active ? 'rgba(255,255,255,0.2)' : cc.bg, color: active ? '#fff' : cc.color }}>{cc.label}</span>
                     : <span style={{ opacity: 0.6, fontSize: 10 }}>+ New</span>}
                 </button>
@@ -314,68 +388,105 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
               {/* ─── DETAILS TAB ─── */}
               {activeTab === 'details' && (
                 <div style={{ flex: 1, overflowY: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {!isEditable && (
+                  {!isEditable && isFullyApproved && (
+                    <div style={{ padding: '8px 10px', background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 6, fontSize: 10, color: '#166534' }}>
+                      ✅ <strong>Fully Approved</strong> — This COP is locked and cannot be edited.
+                    </div>
+                  )}
+                  {!isEditable && !isFullyApproved && (
                     <div style={{ padding: '8px 10px', background: '#fffbeb', border: '1px solid #fcd34d', borderRadius: 6, fontSize: 10, color: '#b45309' }}>
                       ⚠️ Locked in <strong>{cfg.label}</strong>.{' '}
                       <button onClick={handleResetDraft} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#b45309', fontWeight: 700, fontSize: 10, padding: 0, textDecoration: 'underline', fontFamily: 'inherit' }}>Reset to Draft</button>
                     </div>
                   )}
 
-                  <PS title="(B) Mobilisation Advance" color="#1e40af">
-                    <LI label="Amount disbursed (₹)" value={mobAdvance} disabled={!isEditable} onChange={v => { setMobAdvance(v); setUnsaved(true); }} />
-                  </PS>
-                  <PS title="(E) Advance Recovery" color="#b45309">
-                    <LI label="Recovery this bill (₹)" value={advRecovery} disabled={!isEditable} onChange={v => { setAdvRecovery(v); setUnsaved(true); }} />
-                  </PS>
-
-                  <PS title="(F) Retention %" color="#b91c1c">
-                    <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>Retention %</div>
-                    <input type="number" min={0} max={20} step={0.5} value={retentionPct} disabled={!isEditable}
-                      onChange={e => { setRetentionPct(parseFloat(e.target.value) || 0); setUnsaved(true); }}
-                      style={is('#fca5a5', '#b91c1c', !isEditable)} />
-                    <div style={{ fontSize: 10, color: '#b91c1c', marginTop: 4 }}>= ₹{fmt(ret_this)} this bill</div>
-                    <div style={{ fontSize: 10, color: '#94a3b8', marginTop: 6, borderTop: '1px solid #f1f5f9', paddingTop: 6 }}>
-                      Material dedn (auto): <strong style={{ color: '#b91c1c' }}>₹{fmt(mat_this)}</strong><br />
-                      Active holds (auto): <strong style={{ color: '#b45309' }}>₹{fmt(activeHoldsTotal)}</strong>
+                  {/* ── Retention ── */}
+                  <PS title="Retention %" color="#b91c1c">
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                      <input type="number" min={0} max={20} step={0.5} value={retentionPct} disabled={!isEditable}
+                        onChange={e => { setRetentionPct(parseFloat(e.target.value) || 0); setUnsaved(true); }}
+                        style={{ flex: 1, padding: '6px 8px', borderRadius: 5, border: `1px solid ${!isEditable ? '#e2e8f0' : '#fca5a5'}`, fontSize: 12, color: !isEditable ? '#94a3b8' : '#b91c1c', fontFamily: 'monospace', outline: 'none', background: !isEditable ? '#f8fafc' : '#fff' }} />
+                      <span style={{ fontSize: 11, color: '#b91c1c', fontWeight: 700 }}>%</span>
                     </div>
+                    <div style={{ fontSize: 10, color: '#b91c1c', marginTop: 4 }}>= ₹{fmt(ret_this)} this bill</div>
                   </PS>
 
-                  <PS title="(H) Recoveries / Penalties" color="#6b21a8">
-                    <div style={{ fontSize: 11, color: '#64748b', marginBottom: 4 }}>Adhoc % (of net G)</div>
-                    <input type="number" min={0} max={100} step={5} value={adhocPct} disabled={!isEditable}
-                      onChange={e => { setAdhocPct(parseFloat(e.target.value) || 0); setUnsaved(true); }}
-                      style={is('#ddd6fe', '#6b21a8', !isEditable)} />
-                    {adhocPct > 0 && <div style={{ fontSize: 10, color: '#6b21a8', marginTop: 4 }}>= ₹{fmt(adhoc_this)}</div>}
-                    <div style={{ fontSize: 10, color: '#64748b', margin: '8px 0 4px' }}>Custom penalty lines</div>
-                    {hLines.map((line, i) => (
-                      <div key={line.id} style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
-                        <input type="text" value={line.label} placeholder="Description" disabled={!isEditable}
-                          onChange={e => { const n = [...hLines]; n[i] = { ...n[i], label: e.target.value }; setHLines(n); setUnsaved(true); }}
-                          style={{ flex: 2, padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 10, outline: 'none' }} />
-                        <input type="number" value={line.amount || ''} placeholder="₹" disabled={!isEditable}
-                          onChange={e => { const n = [...hLines]; n[i] = { ...n[i], amount: parseFloat(e.target.value) || 0 }; setHLines(n); setUnsaved(true); }}
-                          style={{ flex: 1, padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 10, fontFamily: 'monospace', outline: 'none' }} />
-                        {isEditable && <button onClick={() => { setHLines(hLines.filter((_, j) => j !== i)); setUnsaved(true); }}
-                          style={{ padding: '2px 7px', border: '1px solid #fecaca', borderRadius: 4, background: '#fff5f5', color: '#b91c1c', cursor: 'pointer', fontSize: 12 }}>×</button>}
+                  {/* ── Deductions ── */}
+                  <PS title="Deductions" color="#b91c1c">
+                    {deductions.map((d, i) => (
+                      <div key={d.id} style={{ marginBottom: 8, padding: '8px', background: '#fef2f2', borderRadius: 6, border: '1px solid #fecaca' }}>
+                        <input type="text" value={d.name} placeholder="Deduction name" disabled={!isEditable}
+                          onChange={e => { const n = [...deductions]; n[i] = { ...n[i], name: e.target.value }; setDeductions(n); setUnsaved(true); }}
+                          style={{ width: '100%', padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 11, outline: 'none', marginBottom: 4, boxSizing: 'border-box' as const }} />
+                        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                          <button onClick={() => { if (!isEditable) return; const n = [...deductions]; n[i] = { ...n[i], mode: d.mode === 'amount' ? 'pct' : 'amount' }; setDeductions(n); setUnsaved(true); }}
+                            disabled={!isEditable}
+                            style={{ padding: '3px 8px', borderRadius: 4, border: '1px solid #d1d5db', background: '#fff', fontSize: 10, fontWeight: 700, cursor: isEditable ? 'pointer' : 'default', color: '#b91c1c', flexShrink: 0 }}>
+                            {d.mode === 'pct' ? '%' : '₹'}
+                          </button>
+                          {d.mode === 'amount' ? (
+                            <input type="number" value={d.amount || ''} placeholder="0" disabled={!isEditable}
+                              onChange={e => { const n = [...deductions]; n[i] = { ...n[i], amount: parseFloat(e.target.value) || 0 }; setDeductions(n); setUnsaved(true); }}
+                              style={{ flex: 1, padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', outline: 'none' }} />
+                          ) : (
+                            <input type="number" value={d.pct || ''} placeholder="0" min={0} max={100} step={0.5} disabled={!isEditable}
+                              onChange={e => { const n = [...deductions]; n[i] = { ...n[i], pct: parseFloat(e.target.value) || 0 }; setDeductions(n); setUnsaved(true); }}
+                              style={{ flex: 1, padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', outline: 'none' }} />
+                          )}
+                          {isEditable && <button onClick={() => { setDeductions(deductions.filter((_, j) => j !== i)); setUnsaved(true); }}
+                            style={{ padding: '2px 7px', border: '1px solid #fecaca', borderRadius: 4, background: '#fff5f5', color: '#b91c1c', cursor: 'pointer', fontSize: 12 }}>×</button>}
+                        </div>
+                        <div style={{ fontSize: 9, color: '#b91c1c', marginTop: 3 }}>
+                          = ₹{fmt(resolveAmt(d, A_this))} this bill
+                        </div>
                       </div>
                     ))}
-                    {isEditable && <button onClick={() => { setHLines([...hLines, { id: uid(), label: '', type: 'deduction', amount: 0 }]); setUnsaved(true); }}
-                      style={{ width: '100%', padding: '4px', border: '1px dashed #a78bfa', borderRadius: 4, background: 'transparent', color: '#6b21a8', fontSize: 10, cursor: 'pointer', marginTop: 4, fontFamily: 'inherit' }}>+ Add line</button>}
+                    {isEditable && <button onClick={() => { setDeductions([...deductions, { id: uid(), name: '', mode: 'amount', amount: 0, pct: 0 }]); setUnsaved(true); }}
+                      style={{ width: '100%', padding: '5px', border: '1px dashed #fca5a5', borderRadius: 4, background: 'transparent', color: '#b91c1c', fontSize: 10, cursor: 'pointer', fontFamily: 'inherit' }}>+ Add Deduction</button>}
+                    {deductions.length === 0 && !isEditable && <div style={{ fontSize: 10, color: '#94a3b8' }}>No deductions</div>}
                   </PS>
 
+                  {/* ── Additions ── */}
+                  <PS title="Additions" color="#0e6d41">
+                    {additions.map((a, i) => (
+                      <div key={a.id} style={{ marginBottom: 8, padding: '8px', background: '#f0fdf4', borderRadius: 6, border: '1px solid #bbf7d0' }}>
+                        <input type="text" value={a.name} placeholder="Addition name" disabled={!isEditable}
+                          onChange={e => { const n = [...additions]; n[i] = { ...n[i], name: e.target.value }; setAdditions(n); setUnsaved(true); }}
+                          style={{ width: '100%', padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 11, outline: 'none', marginBottom: 4, boxSizing: 'border-box' as const }} />
+                        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                          <button onClick={() => { if (!isEditable) return; const n = [...additions]; n[i] = { ...n[i], mode: a.mode === 'amount' ? 'pct' : 'amount' }; setAdditions(n); setUnsaved(true); }}
+                            disabled={!isEditable}
+                            style={{ padding: '3px 8px', borderRadius: 4, border: '1px solid #d1d5db', background: '#fff', fontSize: 10, fontWeight: 700, cursor: isEditable ? 'pointer' : 'default', color: '#0e6d41', flexShrink: 0 }}>
+                            {a.mode === 'pct' ? '%' : '₹'}
+                          </button>
+                          {a.mode === 'amount' ? (
+                            <input type="number" value={a.amount || ''} placeholder="0" disabled={!isEditable}
+                              onChange={e => { const n = [...additions]; n[i] = { ...n[i], amount: parseFloat(e.target.value) || 0 }; setAdditions(n); setUnsaved(true); }}
+                              style={{ flex: 1, padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', outline: 'none' }} />
+                          ) : (
+                            <input type="number" value={a.pct || ''} placeholder="0" min={0} max={100} step={0.5} disabled={!isEditable}
+                              onChange={e => { const n = [...additions]; n[i] = { ...n[i], pct: parseFloat(e.target.value) || 0 }; setAdditions(n); setUnsaved(true); }}
+                              style={{ flex: 1, padding: '4px 6px', border: '1px solid #d1d5db', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', outline: 'none' }} />
+                          )}
+                          {isEditable && <button onClick={() => { setAdditions(additions.filter((_, j) => j !== i)); setUnsaved(true); }}
+                            style={{ padding: '2px 7px', border: '1px solid #bbf7d0', borderRadius: 4, background: '#f0fdf4', color: '#0e6d41', cursor: 'pointer', fontSize: 12 }}>×</button>}
+                        </div>
+                        <div style={{ fontSize: 9, color: '#0e6d41', marginTop: 3 }}>
+                          = ₹{fmt(resolveAmt(a, A_this))} this bill
+                        </div>
+                      </div>
+                    ))}
+                    {isEditable && <button onClick={() => { setAdditions([...additions, { id: uid(), name: '', mode: 'amount', amount: 0, pct: 0 }]); setUnsaved(true); }}
+                      style={{ width: '100%', padding: '5px', border: '1px dashed #86efac', borderRadius: 4, background: 'transparent', color: '#0e6d41', fontSize: 10, cursor: 'pointer', fontFamily: 'inherit' }}>+ Add Addition</button>}
+                    {additions.length === 0 && !isEditable && <div style={{ fontSize: 10, color: '#94a3b8' }}>No additions</div>}
+                  </PS>
+
+                  {/* Net Payable Summary */}
                   <div style={{ padding: 10, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: '#166534', marginBottom: 2 }}>(I) Hold Releases — auto-wired</div>
-                    <div style={{ fontFamily: 'monospace', fontSize: 13, fontWeight: 700, color: '#166534' }}>₹{fmt(releasedHoldsTotal)}</div>
-                    <div style={{ fontSize: 9, color: '#94a3b8', marginTop: 2 }}>Toggle in Hold &amp; Release page</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: '#166534', marginBottom: 2 }}>Net Payable Summary</div>
+                    <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: '#166534' }}>₹{fmt(J_this)}</div>
+                    <div style={{ fontSize: 9, color: '#94a3b8', marginTop: 2 }}>D − Deductions + Additions</div>
                   </div>
-
-                  <PS title="Payment Received" color="#0e6d41">
-                    <LI label="Amount received (₹)" value={paymentReceived} disabled={!isEditable} onChange={v => { setPaymentReceived(v); setUnsaved(true); }} />
-                    <div style={{ marginTop: 8, padding: '6px 8px', borderRadius: 5, background: paymentDue > 0 ? '#fef2f2' : '#f0fdf4' }}>
-                      <div style={{ fontSize: 10, color: '#64748b' }}>Net payment due</div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: paymentDue > 0 ? '#b91c1c' : '#0e6d41' }}>₹{fmt(Math.abs(paymentDue))}</div>
-                    </div>
-                  </PS>
 
                   {isEditable && (
                     <button onClick={handlePrepare} style={{ padding: 11, borderRadius: 7, border: 'none', background: '#0f2044', color: '#fff', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginTop: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
@@ -472,7 +583,7 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
                         <div>
                           <div style={{ fontSize: 10, color: '#64748b', marginBottom: 4 }}>Reason for rejection *</div>
                           <textarea value={rejectNote} onChange={e => setRejectNote(e.target.value)}
-                            placeholder="e.g. Retention calc incorrect, material deduction missing..."
+                            placeholder="e.g. Incorrect amounts, deduction missing..."
                             rows={3}
                             style={{ width: '100%', padding: '7px 9px', borderRadius: 5, border: '1px solid #fca5a5', fontSize: 11, outline: 'none', boxSizing: 'border-box' as const, resize: 'none' as const, fontFamily: 'inherit' }} />
                         </div>
@@ -543,7 +654,7 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
                       ['GSTIN (Client)', '–', 'PO Date', vendor.woDate],
                       ['Vendor', vendor.contractor, 'Tax Invoice No & Date', `${cop?.copNumber ?? `COP-${raNumber}`} / ${new Date().toLocaleDateString('en-IN')}`],
                       ['Address', vendor.projectName, 'Payment Certificate No.', cop?.copNumber ?? `COP-${raNumber}`],
-                      ['GST No.', '–', 'This Bill No.', `RA Bill - ${raNumber}`],
+                      ['GST No.', '–', 'This Bill No.', raNumber === 0 ? 'Baseline' : `RA Bill - ${raNumber}`],
                     ] as [string, string, string, string][]).map(([l1, v1, l2, v2], i) => (
                       <tr key={i} style={{ borderBottom: '1px solid #e2e8f0' }}>
                         <td style={{ padding: '4px 8px', color: '#64748b', width: '10%', whiteSpace: 'nowrap' as const }}>{l1}</td>
@@ -576,62 +687,73 @@ export default function COPPage({ allRAs, onCOPSave, materialDeductionThis, acti
                   <tr style={{ background: '#0f2044' }}>
                     <th style={{ padding: '8px', color: '#fff', fontSize: 10, textAlign: 'left' as const, width: 36 }}>Ref</th>
                     <th style={{ padding: '8px', color: '#fff', fontSize: 10, textAlign: 'left' as const }}>DETAILS</th>
-                    <th style={{ padding: '8px 12px', color: '#94a3b8', fontSize: 10, textAlign: 'right' as const, width: 148, borderLeft: '1px solid rgba(255,255,255,0.12)' }}>VALUE TO DATE</th>
                     <th style={{ padding: '8px 12px', color: '#94a3b8', fontSize: 10, textAlign: 'right' as const, width: 148, borderLeft: '1px solid rgba(255,255,255,0.12)' }}>PREVIOUS PAYMENT</th>
                     <th style={{ padding: '8px 12px', color: '#86efac', fontSize: 10, textAlign: 'right' as const, width: 148, borderLeft: '1px solid rgba(255,255,255,0.12)' }}>THIS PAYMENT</th>
+                    <th style={{ padding: '8px 12px', color: '#94a3b8', fontSize: 10, textAlign: 'right' as const, width: 148, borderLeft: '1px solid rgba(255,255,255,0.12)' }}>VALUE TO DATE (Cumulative)</th>
                   </tr>
                 </thead>
                 <tbody>
                   <SH rl="(A)" label="VALUE OF WORK DONE" />
-                  <DR rl="A1" desc="Value of Scheduled Items work" td={A_total} pv={A_prev} tv={A_this} in={1} />
-                  <DR rl="A2" desc="Value of non-scheduled items" td={null} pv={null} tv={null} in={1} />
-                  <DR rl="A3" desc="Payable amount due to difference in basic rate" td={null} pv={null} tv={null} in={1} />
-                  <DR rl="A4" desc="Less: Electricity consumption @ 0% Bill Value (N.A.)" td={null} pv={null} tv={null} in={1} />
+                  {boqBreakdown.length <= 1 ? (
+                    <DR rl="A1" desc="Value of Scheduled Items work" td={A_total} pv={A_prev} tv={A_this} in={1} />
+                  ) : (
+                    boqBreakdown.map((b, i) => (
+                      <DR key={b.id} rl={`A${i + 1}`}
+                        desc={b.id === 'boq-bldg-legacy' ? 'Building Works' : b.id === 'boq-infra-legacy' ? 'Infra Works' : b.name}
+                        td={b.total} pv={b.prev} tv={b.this} in={1} />
+                    ))
+                  )}
                   <ST desc="TOTAL A" td={A_total} pv={A_prev} tv={A_this} />
-                  <SP />
-                  <SH rl="(B)" label="ADD : Advances" />
-                  <DR desc="Mobilization Advance against ABG" td={B_total} pv={B_prev} tv={B_this} in={1} />
-                  <ST desc="TOTAL B" td={B_total} pv={B_prev} tv={B_this} />
                   <SP />
                   <SH rl="(C)" label="ADD : TAXES, C = 18% of A" />
                   <DR desc="CGST @ 09%" td={cgst_total} pv={cgst_prev} tv={cgst_this} in={1} />
                   <DR desc="SGST @ 09%" td={sgst_total} pv={sgst_prev} tv={sgst_this} in={1} />
                   <ST desc="TOTAL C" td={C_total} pv={C_prev} tv={C_this} />
                   <SP />
-                  <HT rl="(D)" desc="GROSS AMOUNT WITH TAX (D = A + B + C)" td={D_total} pv={D_prev} tv={D_this} color="#0f2044" />
+                  <HT rl="(D)" desc="GROSS AMOUNT WITH TAX (D = A + C)" td={D_total} pv={D_prev} tv={D_this} color="#0f2044" />
                   <SP />
-                  <SH rl="(E)" label="LESS — Advance" />
-                  <DR desc="Mobilization Advance — Recovery on Pro-rata Basis" td={E_total} pv={E_prev} tv={E_this} in={1} />
-                  <ST desc="TOTAL E" td={E_total} pv={E_prev} tv={E_this} />
+                  <DR desc={`Retention @ ${retentionPct}% (of A)`} td={ret_total} pv={ret_prev} tv={ret_this} in={1} />
                   <SP />
-                  <SH rl="(F)" label="DEDUCTIONS" colored />
-                  <DR desc={`Retention @ ${retentionPct}%`} td={ret_total} pv={ret_prev} tv={ret_this} in={1} />
-                  <DR desc="Material Deduction (Free Issue — Client Supplied)" td={mat_total} pv={mat_prev} tv={mat_this} in={1} />
-                  {HOLD_DATA.filter(h => h.active && h.amt > 0).map(h => (
-                    <DR key={h.id} desc={`Hold : ${h.desc.replace('Hold — ', '')}`} td={h.amt} pv={h.amt} tv={0} in={1} />
-                  ))}
-                  <ST desc="TOTAL F" td={F_total} pv={F_prev} tv={F_this} />
+                  {deductions.length > 0 && (
+                    <>
+                      <SH rl="(E)" label="LESS : DEDUCTIONS" colored />
+                      {deductions.map((d, i) => {
+                        const pv = act_ded_prev_map[d.id] ?? 0;
+                        const tv = resolveAmt(d, A_this);
+                        return (
+                          <DR key={d.id} rl={`E${i + 1}`} desc={`${d.name || 'Deduction'}${d.mode === 'pct' ? ` @ ${d.pct}%` : ''}`}
+                            td={pv + tv} pv={pv} tv={tv} in={1} />
+                        );
+                      })}
+                      <ST desc="TOTAL DEDUCTIONS" td={ded_total} pv={ded_prev} tv={ded_this} />
+                      <SP />
+                    </>
+                  )}
+                  {additions.length > 0 && (
+                    <>
+                      <SH rl="(F)" label="ADD : ADDITIONS" />
+                      {additions.map((a, i) => {
+                        const pv = act_add_prev_map[a.id] ?? 0;
+                        const tv = resolveAmt(a, A_this);
+                        return (
+                          <DR key={a.id} rl={`F${i + 1}`} desc={`${a.name || 'Addition'}${a.mode === 'pct' ? ` @ ${a.pct}%` : ''}`}
+                            td={pv + tv} pv={pv} tv={tv} in={1} />
+                        );
+                      })}
+                      <ST desc="TOTAL ADDITIONS" td={add_total} pv={add_prev} tv={add_this} />
+                      <SP />
+                    </>
+                  )}
+                  <HT rl="(G)" desc="NET PAYABLE AMOUNT" td={J_total} pv={J_prev} tv={J_this} color="#166534" />
                   <SP />
-                  <HT rl="(G)" desc="NET AMOUNT (G = D − E − F)" td={G_total} pv={G_prev} tv={G_this} color="#0e6d41" />
-                  <SP />
-                  <SH rl="(H)" label="Recoveries / Penalties" />
-                  {hLines.map(line => <DR key={line.id} desc={line.label || 'Penalty'} td={line.amount} pv={0} tv={line.amount} in={1} />)}
-                  {adhocPct > 0 && <DR desc={`Adhoc Payment @ ${adhocPct}%`} td={adhoc_total} pv={adhoc_prev} tv={adhoc_this} in={1} />}
-                  <ST desc="TOTAL H" td={H_total} pv={H_prev} tv={H_this} />
-                  <SP />
-                  <DR rl="(I)" desc="RELEASE OF HOLD AMOUNT" td={I_total} pv={I_prev} tv={I_this} bold />
-                  <SP />
-                  <HT rl="(J)" desc="NET PAYABLE AMOUNT (J = G − H + I)" td={J_total} pv={J_prev} tv={J_this} color="#166534" />
-                  <SP />
-                  <DR desc="PAYMENT RECEIVED" td={paymentReceived} pv={paymentReceived} tv={null} />
-                  <tr style={{ background: paymentDue > 0 ? '#fef2f2' : '#f0fdf4', borderTop: `2px solid ${paymentDue > 0 ? '#fca5a5' : '#86efac'}` }}>
-                    <td colSpan={2} style={{ padding: '8px', fontWeight: 900, fontSize: 11, color: paymentDue > 0 ? '#b91c1c' : '#0e6d41' }}>NET PAYMENT DUE (IN NUMBERS)</td>
+                  <tr style={{ background: '#f0fdf4', borderTop: '2px solid #86efac' }}>
+                    <td colSpan={2} style={{ padding: '8px', fontWeight: 900, fontSize: 11, color: '#0e6d41' }}>NET PAYABLE (IN NUMBERS)</td>
                     <td colSpan={2} style={{ borderLeft: '1px solid #e2e8f0' }} />
-                    <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontWeight: 900, fontSize: 14, textAlign: 'right' as const, color: paymentDue > 0 ? '#b91c1c' : '#0e6d41', borderLeft: '1px solid #e2e8f0' }}>{fmt(Math.abs(paymentDue))}</td>
+                    <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontWeight: 900, fontSize: 14, textAlign: 'right' as const, color: '#166534', borderLeft: '1px solid #e2e8f0' }}>{fmt(J_this)}</td>
                   </tr>
-                  <tr style={{ background: paymentDue > 0 ? '#fff5f5' : '#f0fdf4', borderBottom: '1px solid #e2e8f0' }}>
-                    <td colSpan={2} style={{ padding: '8px', fontWeight: 700, fontSize: 11, color: '#475569' }}>NET PAYMENT DUE (IN WORDS)</td>
-                    <td colSpan={3} style={{ padding: '8px 12px', fontSize: 11, fontStyle: 'italic', color: paymentDue > 0 ? '#b91c1c' : '#0e6d41', borderLeft: '1px solid #e2e8f0' }}>{toWords(Math.abs(paymentDue))}</td>
+                  <tr style={{ background: '#f0fdf4', borderBottom: '1px solid #e2e8f0' }}>
+                    <td colSpan={2} style={{ padding: '8px', fontWeight: 700, fontSize: 11, color: '#475569' }}>NET PAYABLE (IN WORDS)</td>
+                    <td colSpan={3} style={{ padding: '8px 12px', fontSize: 11, fontStyle: 'italic', color: '#166534', borderLeft: '1px solid #e2e8f0' }}>{toWords(J_this)}</td>
                   </tr>
                 </tbody>
               </table>
